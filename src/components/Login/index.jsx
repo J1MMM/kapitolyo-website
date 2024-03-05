@@ -214,7 +214,7 @@ const LoginComponenet = () => {
               },
             }}
           >
-            TRICYCLE FRANCHISING AND RENEWAL SYSTEM TEST
+            TRICYCLE FRANCHISING AND RENEWAL SYSTEM
           </Typography>
 
           <form style={{ width: "100%" }} onSubmit={handleSubmit}>
