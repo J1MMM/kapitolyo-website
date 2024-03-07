@@ -14,6 +14,7 @@ import {
   Paper,
   Select,
   TextField,
+  TextareaAutosize,
   Typography,
 } from "@mui/material";
 import React, { useState } from "react";
@@ -477,6 +478,7 @@ const ClientInfo = ({
                 value={"San Pablo City"}
               />
             </Box>
+
             <TextField
               disabled={disable}
               margin="dense"
@@ -486,6 +488,16 @@ const ClientInfo = ({
               variant="outlined"
               required
               value={clientDetails?.remarks}
+            />
+            <TextField
+              disabled={disable}
+              margin="dense"
+              label="Complaints"
+              type="text"
+              fullWidth
+              variant="outlined"
+              required
+              value={clientDetails?.complaint}
             />
           </Box>
         </DialogContent>

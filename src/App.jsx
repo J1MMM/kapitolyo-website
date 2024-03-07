@@ -18,6 +18,7 @@ import VerifyResetToken from "./components/VerifyResetToken";
 import UserArchive from "./components/UserArchive";
 import ClientList from "./components/ClientList";
 import Violations from "./components/Violations";
+import ClientsPage from "./components/ClientsPage";
 
 function App() {
   return (
@@ -62,8 +63,17 @@ function App() {
               />
             }
           >
-            <Route path="clients" element={<ClientList />} />
             <Route path="violations" element={<Violations />} />
+
+            <Route path='clients' element={<Navigate to={'list'} replace />} />
+
+            <Route path='clients' element={<ClientsPage />}>
+              <Route path='list' element={<ClientList />} />
+              <Route path='archive' element={<ClientList />} />
+            </Route>
+
+
+
           </Route>
           {/* catch all  */}
         </Route>

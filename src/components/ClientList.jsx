@@ -346,7 +346,7 @@ const ClientList = () => {
     <Paper
       elevation={0}
       sx={{
-        p: 2,
+        p: 0,
         borderRadius: 3,
         minHeight: "calc(100vh-80px)",
         position: "relative",
@@ -444,8 +444,8 @@ const ClientList = () => {
           showCellVerticalBorder
           sx={{
             boxSizing: "border-box",
-            maxHeight: "75vh",
-            height: "80vh",
+            height: "70vh",
+            maxHeight: "70vh",
             width: "100%",
 
             ".data-grid-header": {
