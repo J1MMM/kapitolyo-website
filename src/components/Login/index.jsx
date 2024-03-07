@@ -134,7 +134,7 @@ const LoginComponenet = () => {
         maxWidth="xs"
         sx={{
           boxSizing: "border-box",
-          bgcolor: "white",
+          bgcolor: "secondary.main",
           height: "100%",
           minHeight: {
             xs: "500px",
@@ -214,7 +214,7 @@ const LoginComponenet = () => {
               },
             }}
           >
-            TRICYCLE FRANCHISING AND RENEWAL SYSTEMAAAA
+            TRICYCLE FRANCHISING AND RENEWAL SYSTEM
           </Typography>
 
           <form style={{ width: "100%" }} onSubmit={handleSubmit}>

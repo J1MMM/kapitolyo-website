@@ -91,7 +91,7 @@ const UsersTable = ({
               }}
             >
               <Box
-                bgcolor="#fff"
+                bgcolor="#FFF"
                 display="flex"
                 justifyContent="space-between"
                 p={3}

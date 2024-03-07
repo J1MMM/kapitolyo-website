@@ -1,53 +1,53 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.scss'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { AuthProvider } from './context/AuthProvider.jsx'
-import { ThemeProvider, createTheme } from '@mui/material'
-import { DataProvider } from './context/DataProvider.jsx'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.scss";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { AuthProvider } from "./context/AuthProvider.jsx";
+import { ThemeProvider, createTheme } from "@mui/material";
+import { DataProvider } from "./context/DataProvider.jsx";
 
 const theme = createTheme({
   typography: {
     allVariants: {
-      fontFamily: 'Poppins, sans-serif'
-    }
+      fontFamily: "Poppins, sans-serif",
+    },
   },
   palette: {
     primary: {
       main: "#150187",
-      light: '#FFD500'
+      light: "#FFD500",
     },
     secondary: {
       main: "#FFF",
-      light: "#FFF"
+      light: "#FFF",
     },
 
     common: {
-      main: "#FFF"
-    }
+      main: "#FFF",
+    },
   },
 
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          padding: '12px',
-          borderRadius: '8px'
+          padding: "12px",
+          borderRadius: "8px",
         },
         contained: {
-          fontWeight: 'bold'
+          fontWeight: "bold",
         },
         sizeSmall: {
-          padding: '8px',
-        }
-      }
-    }
-  }
-})
+          padding: "8px",
+        },
+      },
+    },
+  },
+});
 
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <ThemeProvider theme={theme} >
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <ThemeProvider theme={theme}>
     <AuthProvider>
       <DataProvider>
         <BrowserRouter>
@@ -58,4 +58,4 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       </DataProvider>
     </AuthProvider>
   </ThemeProvider>
-)
+);

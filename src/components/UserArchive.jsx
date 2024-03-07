@@ -154,7 +154,7 @@ const UserArchive = () => {
           }}
         >
           <Box
-            bgcolor="#fff"
+            bgcolor="#FFF"
             display="flex"
             justifyContent="space-between"
             p={3}
@@ -211,7 +211,7 @@ const UserArchive = () => {
                 component={"span"}
                 pr={1}
                 variant="caption"
-                color="white"
+                color="#FFF"
               >
                 restore
               </Typography>

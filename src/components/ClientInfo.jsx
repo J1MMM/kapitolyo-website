@@ -8,6 +8,7 @@ import {
   DialogTitle,
   Divider,
   FormControl,
+  FormLabel,
   InputLabel,
   MenuItem,
   Paper,
@@ -24,62 +25,14 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 const ClientInfo = ({
   open,
   onClose,
-  schoolYear,
-  setSchoolYear,
-  gradeLevel,
-  setGradeLevel,
-  section,
-  setSection,
   setSnack,
   setSeverity,
   setResMsg,
+  clientDetails,
 }) => {
   const axiosPrivate = useAxiosPrivate();
   const { setClasses } = useData();
   const [disable, setDisable] = useState(false);
-
-  const handleCreateClass = async (e) => {
-    setDisable(true);
-    e.preventDefault();
-
-    if (!section || !gradeLevel || !schoolYear) {
-      setResMsg("All Fields are required");
-      setSeverity("error");
-      setSnack(true);
-      setDisable(false);
-      return;
-    }
-
-    if (section.length > 30) {
-      setResMsg(
-        '"Oops! It looks like your text is a bit too long. Please keep it within 30 characters.'
-      );
-      setSeverity("error");
-      setSnack(true);
-      setDisable(false);
-      return;
-    }
-
-    try {
-      const response = await axiosPrivate.post("/class", {
-        section: section.trimStart().trimEnd(),
-        gradeLevel: gradeLevel,
-        schoolYear: schoolYear,
-      });
-
-      setResMsg(response.data.success);
-      setSeverity("success");
-      setSnack(true);
-      setClasses((prev) => [...prev, response.data.result]);
-    } catch (error) {
-      setDisable(false);
-    }
-    onClose(false);
-    setSection("");
-    setGradeLevel(1);
-    setSchoolYear(new Date());
-    setDisable(false);
-  };
 
   return (
     <Dialog
@@ -88,14 +41,15 @@ const ClientInfo = ({
       disableAutoFocus
       maxWidth="xl"
     >
-      <form onSubmit={handleCreateClass}>
+      <form>
         <DialogTitle variant="h5" bgcolor="primary.main" color="#FFF">
-          Client's Info
+          Client's Information
         </DialogTitle>
         <Divider />
         <DialogContent>
           <Box
             display="flex"
+            alignItems="center"
             gap={1}
             sx={{
               flexDirection: {
@@ -106,17 +60,16 @@ const ClientInfo = ({
             }}
           >
             <TextField
-              disabled={true}
               margin="dense"
-              id="section"
-              label="MTOP(AUTO GENERATED)"
+              label="MTOP"
               type="text"
               variant="outlined"
+              value={clientDetails?.mtop}
             />
 
-            <FormControl margin="dense">
+            <FormControl margin="dense" focused>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker label="Date" />
+                <DatePicker label="Date Renewal" readOnly />
               </LocalizationProvider>
             </FormControl>
           </Box>
@@ -124,12 +77,12 @@ const ClientInfo = ({
             component={"fieldset"}
             sx={{
               borderColor: "#E7EBF1",
-              borderWidth: "2px",
+              border: "2px solid grey",
               borderRadius: 2,
               mt: 2,
             }}
           >
-            <legend>OWNER'S INFO.</legend>
+            <legend style={{ color: "grey" }}>Owner's Information</legend>
             <Box
               display="flex"
               gap={2}
@@ -143,32 +96,32 @@ const ClientInfo = ({
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
                 label="Firstname"
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.fname}
               />
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
                 label="Middlename"
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.mi}
               />
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
                 label="Lastname"
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.lname}
               />
             </Box>
 
@@ -185,22 +138,22 @@ const ClientInfo = ({
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
                 label="Address"
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.address}
               />
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
                 label="Contact #"
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.contact}
               />
             </Box>
           </Box>
@@ -208,53 +161,12 @@ const ClientInfo = ({
             component={"fieldset"}
             sx={{
               borderColor: "#E7EBF1",
-              borderWidth: "2px",
+              border: "2px solid grey",
               borderRadius: 2,
               mt: 2,
             }}
           >
-            <legend>DRIVER'S INFO.</legend>
-            <Box
-              display="flex"
-              gap={2}
-              sx={{
-                flexDirection: {
-                  xs: "column",
-                  sm: "row",
-                },
-              }}
-            >
-              <TextField
-                disabled={disable}
-                margin="dense"
-                id="section"
-                label="Firstname"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-              />
-              <TextField
-                disabled={disable}
-                margin="dense"
-                id="section"
-                label="Middlename"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-              />
-              <TextField
-                disabled={disable}
-                margin="dense"
-                id="section"
-                label="Lastname"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-              />
-            </Box>
+            <legend style={{ color: "grey" }}>Driver's Information</legend>
 
             <Box
               display="flex"
@@ -269,36 +181,46 @@ const ClientInfo = ({
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
-                label="Address"
+                label="Fullname"
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.drivername}
               />
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
                 label="Contact #"
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.contact2}
               />
             </Box>
+            <TextField
+              disabled={disable}
+              margin="dense"
+              label="Address"
+              type="text"
+              fullWidth
+              variant="outlined"
+              required
+              value={clientDetails?.driveraddress}
+            />
           </Box>
 
           <Box
             component={"fieldset"}
             sx={{
               borderColor: "#E7EBF1",
-              borderWidth: "2px",
+              border: "2px solid grey",
               borderRadius: 2,
               mt: 2,
             }}
           >
-            <legend>VEHICLE INFO.</legend>
+            <legend style={{ color: "grey" }}>Vehicle's Information</legend>
             <Box
               display="flex"
               gap={2}
@@ -312,53 +234,22 @@ const ClientInfo = ({
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
-                label="Make"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-              />
-              <TextField
-                disabled={disable}
-                margin="dense"
-                id="section"
-                label="O.R. NO"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-              />
-            </Box>
-            <Box
-              display="flex"
-              gap={2}
-              sx={{
-                flexDirection: {
-                  xs: "column",
-                  sm: "row",
-                },
-              }}
-            >
-              <TextField
-                disabled={disable}
-                margin="dense"
-                id="section"
                 label="Model"
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.model}
               />
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
-                label="C.R. NO"
+                label="Plate No."
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.plateno}
               />
             </Box>
             <Box
@@ -374,22 +265,22 @@ const ClientInfo = ({
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
                 label="Motor No."
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.motorno}
               />
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
-                label="STROKE NO."
+                label="Stroke"
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.stroke}
               />
             </Box>
             <Box
@@ -405,22 +296,22 @@ const ClientInfo = ({
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
-                label="Model"
+                label="Chassis No."
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.chassisno}
               />
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
-                label="C.R. NO"
+                label="Fuel DISP.(cc)"
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.fueldisp}
               />
             </Box>
             <Box
@@ -436,26 +327,28 @@ const ClientInfo = ({
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
-                label="Model"
+                label="OR No."
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.or}
               />
+
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
-                label="C.R. NO"
+                label="CR No."
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.cr}
               />
             </Box>
             <Box
               display="flex"
+              alignItems="center"
               gap={2}
               sx={{
                 flexDirection: {
@@ -467,36 +360,61 @@ const ClientInfo = ({
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
-                label="Model"
+                label="TPL Provider"
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.tplprovider}
               />
-              <TextField
-                disabled={disable}
-                margin="dense"
-                id="section"
-                label="C.R. NO"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-              />
+
+              <FormControl margin="dense" fullWidth>
+                <Box
+                  component={"fieldset"}
+                  display="flex"
+                  gap={1}
+                  alignItems="center"
+                  borderRadius={1}
+                  border="1px solid lightgrey"
+                >
+                  <legend style={{ color: "gray" }}>TPL Effectivity</legend>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DatePicker slotProps={{ textField: { size: "small" } }} />
+                  </LocalizationProvider>
+                  <Typography variant="subtitle1" color="grey">
+                    to
+                  </Typography>
+                  <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <DatePicker
+                      slotProps={{ textField: { size: "small" } }}
+                      s
+                    />
+                  </LocalizationProvider>
+                </Box>
+              </FormControl>
             </Box>
+            <Box
+              display="flex"
+              gap={2}
+              sx={{
+                flexDirection: {
+                  xs: "column",
+                  sm: "row",
+                },
+              }}
+            ></Box>
           </Box>
 
           <Box
             component={"fieldset"}
             sx={{
               borderColor: "#E7EBF1",
-              borderWidth: "2px",
+              border: "2px solid grey",
               borderRadius: 2,
               mt: 2,
             }}
           >
-            <legend>Franchise Details</legend>
+            <legend style={{ color: "grey" }}>Franchise Details</legend>
             <Box
               display="flex"
               gap={2}
@@ -510,22 +428,22 @@ const ClientInfo = ({
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
                 label="Type of Franchise"
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.tpfrnch}
               />
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
                 label="Kind of Business"
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.kob}
               />
             </Box>
 
@@ -542,17 +460,16 @@ const ClientInfo = ({
               <TextField
                 disabled={disable}
                 margin="dense"
-                id="section"
                 label="TODA"
                 type="text"
                 fullWidth
                 variant="outlined"
                 required
+                value={clientDetails?.toc2}
               />
               <TextField
                 disabled={true}
                 margin="dense"
-                id="section"
                 label="Route"
                 type="text"
                 fullWidth
@@ -563,12 +480,12 @@ const ClientInfo = ({
             <TextField
               disabled={disable}
               margin="dense"
-              id="section"
               label="Remarks"
               type="text"
               fullWidth
               variant="outlined"
               required
+              value={clientDetails?.remarks}
             />
           </Box>
         </DialogContent>
