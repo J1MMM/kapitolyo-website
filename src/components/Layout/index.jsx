@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import "./style.scss";
 import Navbar from "../Navbar";
-import { BsChevronDown } from "react-icons/bs";
+import { BsChevronDown, BsGraphUpArrow } from "react-icons/bs";
 import useAuth from "../../hooks/useAuth";
 import {
   Avatar,
@@ -62,6 +62,8 @@ import ConfirmationDialog from "../ConfirmationDialog";
 import Logo1 from "../../assets/images/logo1.png";
 import Logo2 from "../../assets/images/logo2.png";
 import { SiGoogleclassroom } from "react-icons/si";
+import { PiUserList } from "react-icons/pi";
+import { RiFolderWarningLine } from "react-icons/ri";
 
 const Layout = () => {
   const { auth } = useAuth();
@@ -79,7 +81,7 @@ const Layout = () => {
   const logout = UseLogout();
 
   const isAdmin = Boolean(
-    auth?.roles?.find((role) => role === ROLES_LIST.Admin)
+    auth?.roles?.find((role) => role === ROLES_LIST.SuperAdmin)
   );
 
   const signout = async () => {
@@ -318,50 +320,34 @@ const Layout = () => {
           <NavLink to="/" className={"open mobile"}>
             {isAdmin ? (
               <>
-                <FiUsers size={22} />
+                <FiUsers size={24} />
                 <Typography component={"span"} className={"active"}>
-                  Users List
+                  Users
                 </Typography>
               </>
             ) : (
               <>
-                <FiHome size={22} />
+                <BsGraphUpArrow size={20} />
                 <Typography component={"span"} className={"active"}>
-                  Overview
+                  Dashboard
                 </Typography>
               </>
             )}
           </NavLink>
 
-          {/* {!isAdmin
-                        &&
-                        <NavLink to="lessons" className={'open mobile'}>
-                            <IoFolderOpenOutline size={22} />
-                            <Typography component={'span'} className={'active'}>Lessons</Typography>
-                        </NavLink>
-                    }
-
-                    {!isAdmin
-                        &&
-                        <NavLink to="students" className={'open mobile'}>
-                            <HiOutlineUserGroup size={26} />
-                            <Typography component={'span'} className={'active'}>Students</Typography>
-                        </NavLink>
-                    } */}
-
           {!isAdmin && (
-            <NavLink to="classroom" className={"open mobile"}>
-              <SiGoogleclassroom size={26} />
+            <NavLink to="clients" className={"open mobile"}>
+              <PiUserList size={26} />
               <Typography component={"span"} className={"active"}>
-                Classroom
+                Clients
               </Typography>
             </NavLink>
           )}
           {!isAdmin && (
-            <NavLink to="archive" className={"open mobile"}>
-              <HiOutlineArchiveBox size={24} />
+            <NavLink to="violations" className={"open mobile"}>
+              <RiFolderWarningLine size={26} />
               <Typography component={"span"} className={"active"}>
-                Archive
+                Violations
               </Typography>
             </NavLink>
           )}
