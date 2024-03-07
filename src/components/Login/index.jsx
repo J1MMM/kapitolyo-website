@@ -24,7 +24,7 @@ import axios from "../../api/axios";
 import "./style.scss";
 
 const LoginComponenet = () => {
-  document.title = "TRICYCLE FRANCHISING AND RENEWAL SYSTEM | LOGIN";
+  document.title = "LOGIN | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
   const { auth, setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -214,7 +214,7 @@ const LoginComponenet = () => {
               },
             }}
           >
-            TRICYCLE FRANCHISING AND RENEWAL SYSTEM
+            TRICYCLE FRANCHISING AND RENEWAL SYSTEMA
           </Typography>
 
           <form style={{ width: "100%" }} onSubmit={handleSubmit}>
