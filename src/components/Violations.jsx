@@ -12,6 +12,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import ClientInfo from "./ClientInfo";
 import AddClientModal from "./AddClientModal";
 import ViolationsNavbar from "./ViolationsNavbar";
+import ViolationsInfo from "./ViolationsInfo";
 
 function sortByDate(array, datePropertyName) {
   return array.sort(
@@ -21,8 +22,8 @@ function sortByDate(array, datePropertyName) {
 
 const columns = [
   {
-    field: "mtop",
-    headerName: "MTOP",
+    field: "ticket",
+    headerName: "TICKET NO.",
     width: 150,
     headerClassName: "data-grid-header",
     editable: false,
@@ -34,162 +35,109 @@ const columns = [
     headerClassName: "data-grid-header",
   },
   {
-    field: "lname",
-    headerName: "LASTNAME",
+    field: "doa",
+    headerName: "DATE OF APPREHENSION",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "fname",
-    headerName: "FIRSTNAME",
+    field: "cdl",
+    headerName: "CONFISCATED D.L",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "mi",
-    headerName: "MI",
+    field: "vname",
+    headerName: "VIOLATOR'S NAME",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "addressS",
+    headerName: "ADDRESS",
     width: 100,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "address",
-    headerName: "ADDRESS",
+    field: "typev",
+    headerName: "TYPE OF VEHICLE",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "contact",
-    headerName: "CONTACT\u00a0NO.",
+    field: "tfn",
+    headerName: "TRICYCLE FRANCHISE NO.",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "contact2",
-    headerName: "CONTACT\u00a0NO.2",
+    field: "platenoO",
+    headerName: "PLATE NO.",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "toc2",
-    headerName: "TODA",
+    field: "tov",
+    headerName: "TIME OF VIOLATION",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "drivername",
-    headerName: "DRIVER'S\u00a0NAME",
+    field: "pov",
+    headerName: "PLACE OF VIOLATION",
     width: 280,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "driveraddress",
-    headerName: "DRIVER'S\u00a0ADDRESS",
+    field: "vc",
+    headerName: "VIOLATIONS COMMITTED",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "or",
+    field: "ao",
+    headerName: "APPREHENDING OFFICER",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "orR",
     headerName: "O.R.",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "cr",
-    headerName: "C.R.",
+    field: "ord",
+    headerName: "O.R DATE",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "driverlicenseno",
-    headerName: "DRIVER'S\u00a0LICENSE\u00a0NO.",
-    width: 200,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "model",
-    headerName: "MODEL",
+    field: "amount",
+    headerName: "AMOUNT",
     width: 150,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "motorno",
-    headerName: "MOTOR\u00a0NO.",
-    width: 200,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "chassisno",
-    headerName: "CHASSIS\u00a0NO.",
-    width: 200,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "plateno",
-    headerName: "PLATE\u00a0NO.",
-    width: 100,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "stroke",
-    headerName: "STROKE",
-    width: 100,
-    headerClassName: "data-grid-header",
-    editable: false,
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "date",
-    headerName: "DATE RENEWAL",
-    width: 150,
-    headerClassName: "data-grid-header",
-    editable: false,
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "remarks",
+    field: "remarksS",
     headerName: "REMARKS",
-    width: 250,
-    headerClassName: "data-grid-header",
-    editable: false,
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "daterelease",
-    headerName: "DATE\u00a0RELEASE\u00a0OF\u00a0ST/TP",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
-    align: "center",
-    headerAlign: "center",
-  },
-  {
-    field: "complaint",
-    headerName: "COMPLAINT",
-    width: 800,
-    headerClassName: "data-grid-header",
-    editable: false,
-    align: "center",
-    headerAlign: "center",
-    headerColor: "red",
   },
 ];
 
@@ -269,6 +217,7 @@ const Violations = () => {
   const [noResponse, setNoResponse] = useState(false);
   const [clientInfo, setClientInfo] = useState(false);
   const [addClient, setAddClient] = useState(false);
+  const [violationsInfo, setViolationsInfo] = useState(false);
 
   const [filterButtonEl, setFilterButtonEl] = useState(null);
   const [page, setPage] = useState(0);
@@ -410,7 +359,7 @@ const Violations = () => {
               <Box sx={{ mb: { xs: 1, sm: 1, md: 0 } }}>
                 <Box display="flex" alignItems="center" gap={1} mb={-0.5}>
                   <Typography component={"span"} variant="h5">
-                    Violations
+                    Violators
                   </Typography>
                 </Box>
                 <Typography
@@ -418,7 +367,7 @@ const Violations = () => {
                   variant="caption"
                   color="InactiveCaptionText"
                 >
-                  Manage all clients efficiently
+                  Manage all violators efficiently
                 </Typography>
               </Box>
 
@@ -431,7 +380,7 @@ const Violations = () => {
                 <Button
                   variant="contained"
                   size="small"
-                  onClick={() => setClientInfo(true)}
+                  onClick={() => setViolationsInfo(true)}
                   disableFocusRipple
                 >
                   <Add sx={{ color: "#FFF" }} />
@@ -441,7 +390,7 @@ const Violations = () => {
                     variant="caption"
                     color="#FFF"
                   >
-                    Add Client
+                    Add Violators
                   </Typography>
                 </Button>
               </Box>
@@ -499,9 +448,9 @@ const Violations = () => {
               />
             </Box>
 
-            <ClientInfo
-              open={clientInfo}
-              onClose={setClientInfo}
+            <ViolationsInfo
+              open={violationsInfo}
+              onClose={setViolationsInfo}
               schoolYear={schoolYear}
               setSchoolYear={setSchoolYear}
               gradeLevel={gradeLevel}

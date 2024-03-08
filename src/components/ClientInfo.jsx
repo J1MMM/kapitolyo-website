@@ -66,6 +66,7 @@ const ClientInfo = ({
               type="text"
               variant="outlined"
               value={clientDetails?.mtop}
+              inputProps={{readOnly:true}}
             />
 
             <FormControl margin="dense" focused>
@@ -103,6 +104,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.fname}
+                inputProps={{readOnly:true}}
               />
               <TextField
                 disabled={disable}
@@ -113,6 +115,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.mi}
+                inputProps={{readOnly:true}}y 
               />
               <TextField
                 disabled={disable}
@@ -123,6 +126,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.lname}
+                inputProps={{readOnly:true}}
               />
             </Box>
 
@@ -145,6 +149,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.address}
+                inputProps={{readOnly:true}}
               />
               <TextField
                 disabled={disable}
@@ -155,6 +160,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.contact}
+                inputProps={{readOnly:true}}
               />
             </Box>
           </Box>
@@ -188,6 +194,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.drivername}
+                inputProps={{readOnly:true}}
               />
               <TextField
                 disabled={disable}
@@ -198,6 +205,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.contact2}
+                inputProps={{readOnly:true}}
               />
             </Box>
             <TextField
@@ -209,6 +217,7 @@ const ClientInfo = ({
               variant="outlined"
               required
               value={clientDetails?.driveraddress}
+              inputProps={{readOnly:true}}
             />
           </Box>
 
@@ -241,6 +250,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.model}
+                inputProps={{readOnly:true}}
               />
               <TextField
                 disabled={disable}
@@ -251,6 +261,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.plateno}
+                inputProps={{readOnly:true}}
               />
             </Box>
             <Box
@@ -272,6 +283,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.motorno}
+                inputProps={{readOnly:true}}
               />
               <TextField
                 disabled={disable}
@@ -282,6 +294,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.stroke}
+                inputProps={{readOnly:true}}
               />
             </Box>
             <Box
@@ -303,6 +316,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.chassisno}
+                inputProps={{readOnly:true}}
               />
               <TextField
                 disabled={disable}
@@ -313,6 +327,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.fueldisp}
+                inputProps={{readOnly:true}}
               />
             </Box>
             <Box
@@ -334,6 +349,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.or}
+                inputProps={{readOnly:true}}
               />
 
               <TextField
@@ -345,6 +361,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.cr}
+                inputProps={{readOnly:true}}
               />
             </Box>
             <Box
@@ -367,6 +384,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.tplprovider}
+                inputProps={{readOnly:true}}
               />
 
               <FormControl margin="dense" fullWidth>
@@ -435,6 +453,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.tpfrnch}
+                inputProps={{readOnly:true}}
               />
               <TextField
                 disabled={disable}
@@ -445,6 +464,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.kob}
+                inputProps={{readOnly:true}}
               />
             </Box>
 
@@ -467,6 +487,7 @@ const ClientInfo = ({
                 variant="outlined"
                 required
                 value={clientDetails?.toc2}
+                inputProps={{readOnly:true}}
               />
               <TextField
                 disabled={true}
@@ -476,6 +497,7 @@ const ClientInfo = ({
                 fullWidth
                 variant="outlined"
                 value={"San Pablo City"}
+                inputProps={{readOnly:true}}
               />
             </Box>
 
@@ -488,6 +510,7 @@ const ClientInfo = ({
               variant="outlined"
               required
               value={clientDetails?.remarks}
+              inputProps={{readOnly:true}}
             />
             <TextField
               disabled={disable}
@@ -498,6 +521,7 @@ const ClientInfo = ({
               variant="outlined"
               required
               value={clientDetails?.complaint}
+              inputProps={{readOnly:true}}
             />
           </Box>
         </DialogContent>
@@ -508,12 +532,12 @@ const ClientInfo = ({
             color="inherit"
             sx={{ mb: 1 }}
           >
-            <Typography>Cancel</Typography>
+            <Typography>Update</Typography>
           </Button>
           <Button type="submit" disabled={disable} sx={{ mr: 1, mb: 1 }}>
             {disable && <CircularProgress size={16} color="inherit" />}{" "}
             <Typography component={"span"} ml={1}>
-              {disable ? "Loading..." : "Submit"}
+              {disable ? "Loading..." : "Transfer"}
             </Typography>
           </Button>
         </DialogActions>

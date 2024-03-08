@@ -20,6 +20,7 @@ import UserArchive from "./components/UserArchive";
 import ClientList from "./components/ClientList";
 import Violations from "./components/Violations";
 import ClientsPage from "./components/ClientsPage";
+import ArchivedList from "./components/ArchivedList";
 
 function App() {
   return (
@@ -51,7 +52,6 @@ function App() {
           >
             <Route path="/" element={<Dashboard />} />
           </Route>
-
           {/* ctmo1  */}
           <Route
             element={
@@ -64,10 +64,10 @@ function App() {
 
             <Route path="clients" element={<ClientsPage />}>
               <Route path="list" element={<ClientList />} />
-              <Route path="archive" element={<ClientList />} />
+              <Route path="archive" element={<ArchivedList />} />
             </Route>
           </Route>
-          {/* ctmo2  */}
+          ctmo2
           <Route
             element={
               <RequireAuth
@@ -84,8 +84,15 @@ function App() {
             }
           >
             <Route path="violations" element={<Violations />} />
-          </Route>
+            <Route path="violations" element={<Violations />} />
 
+            <Route path="clients" element={<Navigate to={"list"} replace />} />
+
+            <Route path="clients" element={<ClientsPage />}>
+              <Route path="list" element={<ClientList />} />
+              <Route path="archive" element={<ArchivedList />} />
+            </Route>
+          </Route>
           {/* catch all  */}
         </Route>
         <Route path="*" element={<Missing />} />

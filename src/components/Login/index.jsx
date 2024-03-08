@@ -214,7 +214,7 @@ const LoginComponenet = () => {
               },
             }}
           >
-            RAAAAAAAAAAMEEEEEEEEEN
+            TRICYCLE FRANCHISING AND RENEWAL SYSTEM
           </Typography>
 
           <form style={{ width: "100%" }} onSubmit={handleSubmit}>
