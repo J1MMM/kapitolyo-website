@@ -139,6 +139,7 @@ const columns = [
     headerClassName: "data-grid-header",
     editable: false,
   },
+  
 ];
 
 function createData(
@@ -193,7 +194,7 @@ function createData(
   };
 }
 
-const Violations = () => {
+const PaidList = () => {
   const axiosPrivate = useAxiosPrivate();
   const { classes, rows, setRows } = useData();
   const [sortedClasses, setSortedClasses] = useState([]);
@@ -329,7 +330,7 @@ const Violations = () => {
               <Box sx={{ mb: { xs: 1, sm: 1, md: 0 } }}>
                 <Box display="flex" alignItems="center" gap={1} mb={-0.5}>
                   <Typography component={"span"} variant="h5">
-                    Violators
+                    Paid
                   </Typography>
                 </Box>
                 <Typography
@@ -337,7 +338,7 @@ const Violations = () => {
                   variant="caption"
                   color="InactiveCaptionText"
                 >
-                  Manage all violators efficiently
+                  Manage all paid efficiently
                 </Typography>
               </Box>
 
@@ -347,22 +348,6 @@ const Violations = () => {
                 gap={2}
                 sx={{ mb: { xs: 2, sm: 2, md: 0 } }}
               >
-                <Button
-                  variant="contained"
-                  size="small"
-                  onClick={() => setViolationsInfo(true)}
-                  disableFocusRipple
-                >
-                  <Add sx={{ color: "#FFF" }} />
-                  <Typography
-                    component={"span"}
-                    pr={1}
-                    variant="caption"
-                    color="#FFF"
-                  >
-                    Add Violators
-                  </Typography>
-                </Button>
               </Box>
             </Box>
 
@@ -445,8 +430,10 @@ const Violations = () => {
               setSeverity={setSeverity}
               setSnack={setSnack}
             />
+
+            
           </Paper>
   );
 };
 
-export default Violations;
+export default PaidList;

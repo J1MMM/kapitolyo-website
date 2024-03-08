@@ -13,6 +13,7 @@ import ClientInfo from "./ClientInfo";
 import AddClientModal from "./AddClientModal";
 import ViolationsNavbar from "./ViolationsNavbar";
 import ViolationsInfo from "./ViolationsInfo";
+import ReleasedTCTInfo from "./ReleasedTCTinfo";
 
 function sortByDate(array, datePropertyName) {
   return array.sort(
@@ -35,110 +36,41 @@ const columns = [
     headerClassName: "data-grid-header",
   },
   {
-    field: "doa",
-    headerName: "DATE OF APPREHENSION",
+    field: "tctno",
+    headerName: "TCT NO. REALEASE",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "cdl",
-    headerName: "CONFISCATED D.L",
+    field: "lastname",
+    headerName: "LAST NAME",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "vname",
-    headerName: "VIOLATOR'S NAME",
+    field: "firstname",
+    headerName: "FIRST NAME",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "addressS",
-    headerName: "ADDRESS",
+    field: "m.i",
+    headerName: "M.I",
     width: 100,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "typev",
-    headerName: "TYPE OF VEHICLE",
+    field: "daterelease",
+    headerName: "DATE OF RELEASE",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
-  {
-    field: "tfn",
-    headerName: "TRICYCLE FRANCHISE NO.",
-    width: 200,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "platenoO",
-    headerName: "PLATE NO.",
-    width: 200,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "tov",
-    headerName: "TIME OF VIOLATION",
-    width: 200,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "pov",
-    headerName: "PLACE OF VIOLATION",
-    width: 280,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "vc",
-    headerName: "VIOLATIONS COMMITTED",
-    width: 200,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "ao",
-    headerName: "APPREHENDING OFFICER",
-    width: 200,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "orR",
-    headerName: "O.R.",
-    width: 200,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "ord",
-    headerName: "O.R DATE",
-    width: 200,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "amount",
-    headerName: "AMOUNT",
-    width: 150,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "remarksS",
-    headerName: "REMARKS",
-    width: 200,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
+  
 ];
 
 function createData(
@@ -193,7 +125,7 @@ function createData(
   };
 }
 
-const Violations = () => {
+const ReleasedTCT = () => {
   const axiosPrivate = useAxiosPrivate();
   const { classes, rows, setRows } = useData();
   const [sortedClasses, setSortedClasses] = useState([]);
@@ -218,6 +150,7 @@ const Violations = () => {
   const [clientInfo, setClientInfo] = useState(false);
   const [addClient, setAddClient] = useState(false);
   const [violationsInfo, setViolationsInfo] = useState(false);
+  const [releasedTCTInfo, setReleasedTCTInfo] = useState(false);
 
   const [filterButtonEl, setFilterButtonEl] = useState(null);
   const [page, setPage] = useState(0);
@@ -329,7 +262,7 @@ const Violations = () => {
               <Box sx={{ mb: { xs: 1, sm: 1, md: 0 } }}>
                 <Box display="flex" alignItems="center" gap={1} mb={-0.5}>
                   <Typography component={"span"} variant="h5">
-                    Violators
+                    Released TCT Management
                   </Typography>
                 </Box>
                 <Typography
@@ -337,7 +270,7 @@ const Violations = () => {
                   variant="caption"
                   color="InactiveCaptionText"
                 >
-                  Manage all violators efficiently
+                  Manage all released TCT efficiently
                 </Typography>
               </Box>
 
@@ -350,7 +283,7 @@ const Violations = () => {
                 <Button
                   variant="contained"
                   size="small"
-                  onClick={() => setViolationsInfo(true)}
+                  onClick={() => setReleasedTCTInfo(true)}
                   disableFocusRipple
                 >
                   <Add sx={{ color: "#FFF" }} />
@@ -360,7 +293,7 @@ const Violations = () => {
                     variant="caption"
                     color="#FFF"
                   >
-                    Add Violators
+                    Add Ticket
                   </Typography>
                 </Button>
               </Box>
@@ -418,9 +351,9 @@ const Violations = () => {
               />
             </Box>
 
-            <ViolationsInfo
-              open={violationsInfo}
-              onClose={setViolationsInfo}
+            <ReleasedTCTInfo
+              open={releasedTCTInfo}
+              onClose={setReleasedTCTInfo}
               schoolYear={schoolYear}
               setSchoolYear={setSchoolYear}
               gradeLevel={gradeLevel}
@@ -445,8 +378,10 @@ const Violations = () => {
               setSeverity={setSeverity}
               setSnack={setSnack}
             />
+
+            
           </Paper>
   );
 };
 
-export default Violations;
+export default ReleasedTCT;

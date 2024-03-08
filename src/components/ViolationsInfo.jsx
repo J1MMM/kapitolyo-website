@@ -245,10 +245,6 @@ const ViolationsInfo = ({
               required
             />
           </Box>
-          {/* </Box> */}
-
-          {/* <Box component={"fieldset"} sx={{ borderColor: '#E7EBF1', borderWidth: '2px', borderRadius: 2, mt: 2 }}>
-                        <legend>Vehicle's Info.</legend> */}
           <Box
             display="flex"
             gap={2}

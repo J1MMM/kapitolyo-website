@@ -1,4 +1,4 @@
-// ch6ang5es h6append
+// ch6ang5es h6append 
 import Layout from "./components/Layout";
 import {
   Navigate,
@@ -21,6 +21,9 @@ import ClientList from "./components/ClientList";
 import Violations from "./components/Violations";
 import ClientsPage from "./components/ClientsPage";
 import ArchivedList from "./components/ArchivedList";
+import PaidList from "./components/PaidList";
+import ViolationsPage from "./components/ViolationsPage"
+import ReleasedTCT from "./components/ReleasedTCT";
 
 function App() {
   return (
@@ -44,15 +47,20 @@ function App() {
                   ROLES_LIST.SuperAdmin,
                   ROLES_LIST.Admin,
                   ROLES_LIST.CTMO1,
-                  ROLES_LIST.CTMO2,
-                  ROLES_LIST.CTMO3,
                 ]}
               />
             }
           >
             <Route path="/" element={<Dashboard />} />
           </Route>
-          {/* ctmo1  */}
+          {/* only Admin allowed  */}
+          <Route
+            element={<RequireAuth allowedRoles={[ROLES_LIST.SuperAdmin]} />}
+          >
+            <Route path="user-archive" element={<UserArchive />} />
+          </Route>
+
+          {/* only teachers are allowed on this route  */}
           <Route
             element={
               <RequireAuth
@@ -60,38 +68,21 @@ function App() {
               />
             }
           >
-            <Route path="clients" element={<Navigate to={"list"} replace />} />
-
-            <Route path="clients" element={<ClientsPage />}>
-              <Route path="list" element={<ClientList />} />
-              <Route path="archive" element={<ArchivedList />} />
+            <Route path='violations' element={<Navigate to={'list'} replace />} />
+            <Route path="violations" element={<ViolationsPage />} >
+              <Route path='list' element={<Violations />} />
+              <Route path='paidlist' element={<PaidList />} />
+              <Route path='released' element={<ReleasedTCT />} />
             </Route>
-          </Route>
-          ctmo2
-          <Route
-            element={
-              <RequireAuth
-                allowedRoles={[ROLES_LIST.Admin, ROLES_LIST.CTMO2]}
-              />
-            }
-          ></Route>
-          {/* ctmo3  */}
-          <Route
-            element={
-              <RequireAuth
-                allowedRoles={[ROLES_LIST.Admin, ROLES_LIST.CTMO3]}
-              />
-            }
-          >
-            <Route path="violations" element={<Violations />} />
-            <Route path="violations" element={<Violations />} />
-
-            <Route path="clients" element={<Navigate to={"list"} replace />} />
-
-            <Route path="clients" element={<ClientsPage />}>
-              <Route path="list" element={<ClientList />} />
-              <Route path="archive" element={<ArchivedList />} />
+            
+            <Route path='clients' element={<Navigate to={'list'} replace />} />
+            <Route path='clients' element={<ClientsPage />}>
+              <Route path='list' element={<ClientList />} />
+              <Route path='archive' element={<ArchivedList />} />
             </Route>
+
+
+
           </Route>
           {/* catch all  */}
         </Route>

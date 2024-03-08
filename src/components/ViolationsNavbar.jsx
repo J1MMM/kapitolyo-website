@@ -18,13 +18,13 @@ const ViolationsNavbar = () => {
         borderTopRightRadius: 5,
       }}
     >
-      <NavLink to="violations" className={"classroom-navigation"}>
+      <NavLink to="list" className={"classroom-navigation"}>
         Violation
       </NavLink>
-      <NavLink to="lessons" className={"classroom-navigation"}>
+      <NavLink to="paidlist" className={"classroom-navigation"}>
         Paid
       </NavLink>
-      <NavLink to="archive" className={"classroom-navigation"}>
+      <NavLink to="released" className={"classroom-navigation"}>
         Released TCT
       </NavLink>
     </Box>
