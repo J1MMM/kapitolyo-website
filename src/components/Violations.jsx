@@ -11,6 +11,7 @@ import EditClassModal from "./EditClassModal";
 import { DataGrid } from "@mui/x-data-grid";
 import ClientInfo from "./ClientInfo";
 import AddClientModal from "./AddClientModal";
+import ViolationsNavbar from "./ViolationsNavbar";
 
 function sortByDate(array, datePropertyName) {
   return array.sort(
@@ -350,14 +351,11 @@ const Violations = () => {
       sx={{
         p: 2,
         borderRadius: 3,
-        minHeight: "calc(100vh-80px)",
-        position: "relative",
-        width: "100%",
-        boxSizing: "border-box",
+        minHeight: "80vh",
       }}
     >
       <Box
-        bgcolor="#FFF"
+        bgcolor="#fff"
         display="flex"
         justifyContent="space-between"
         pb={1}
@@ -372,129 +370,165 @@ const Violations = () => {
           mb: {
             xs: 0,
             sm: 0,
-            md: 0,
+            md: 2,
           },
         }}
       >
-        <Box sx={{ mb: { xs: 1, sm: 1, md: 0 } }}>
-          <Box display="flex" alignItems="center" gap={1} mb={-0.5}>
-            <Typography component={"span"} variant="h5">
-              Violations
-            </Typography>
-          </Box>
-          <Typography
-            component={"span"}
-            variant="caption"
-            color="InactiveCaptionText"
+        <Box display={"flex"} flexDirection={"column"} gap={2} width={"100%"}>
+          <ViolationsNavbar />
+          <Paper
+            elevation={0}
+            sx={{
+              p: 0,
+              borderRadius: 3,
+              minHeight: "calc(100vh-80px)",
+              position: "relative",
+              width: "100%",
+              boxSizing: "border-box",
+            }}
           >
-            Manage all clients efficiently
-          </Typography>
-        </Box>
-
-        <Box
-          display="flex"
-          alignItems="center"
-          gap={2}
-          sx={{ mb: { xs: 2, sm: 2, md: 0 } }}
-        >
-          <Button
-            variant="contained"
-            size="small"
-            onClick={() => setClientInfo(true)}
-            disableFocusRipple
-          >
-            <Add sx={{ color: "#FFF" }} />
-            <Typography
-              component={"span"}
-              pr={1}
-              variant="caption"
-              color="#FFF"
+            <Box
+              bgcolor="#FFF"
+              display="flex"
+              justifyContent="space-between"
+              pb={1}
+              boxSizing="border-box"
+              zIndex="99"
+              sx={{
+                flexDirection: {
+                  xs: "column",
+                  sm: "column",
+                  md: "row",
+                },
+                mb: {
+                  xs: 0,
+                  sm: 0,
+                  md: 0,
+                },
+              }}
             >
-              Add Client
-            </Typography>
-          </Button>
+              <Box sx={{ mb: { xs: 1, sm: 1, md: 0 } }}>
+                <Box display="flex" alignItems="center" gap={1} mb={-0.5}>
+                  <Typography component={"span"} variant="h5">
+                    Violations
+                  </Typography>
+                </Box>
+                <Typography
+                  component={"span"}
+                  variant="caption"
+                  color="InactiveCaptionText"
+                >
+                  Manage all clients efficiently
+                </Typography>
+              </Box>
+
+              <Box
+                display="flex"
+                alignItems="center"
+                gap={2}
+                sx={{ mb: { xs: 2, sm: 2, md: 0 } }}
+              >
+                <Button
+                  variant="contained"
+                  size="small"
+                  onClick={() => setClientInfo(true)}
+                  disableFocusRipple
+                >
+                  <Add sx={{ color: "#FFF" }} />
+                  <Typography
+                    component={"span"}
+                    pr={1}
+                    variant="caption"
+                    color="#FFF"
+                  >
+                    Add Client
+                  </Typography>
+                </Button>
+              </Box>
+            </Box>
+
+            <Box display="flex" gap={3} flexWrap="wrap">
+              <DataGrid
+                ref={setFilterButtonEl}
+                columns={columns}
+                rows={rows}
+                rowCount={totalRows}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      page: 0,
+                      pageSize: 10,
+                    },
+                  },
+                }}
+                pageSizeOptions={[10, 50, 100]}
+                onCellDoubleClick={() => setClientInfo(true)}
+                paginationModel={{ page: page, pageSize: pageSize }}
+                onFilterModelChange={() => setPage(0)}
+                onPaginationModelChange={(e) => {
+                  setPage(e.page);
+                  setPageSize(e.pageSize);
+                }}
+                onStateChange={(e) =>
+                  setTotalRows(countTrueValues(e?.visibleRowsLookup))
+                }
+                loading={rows?.length == 0}
+                disableRowSelectionOnClick
+                showCellVerticalBorder
+                sx={{
+                  boxSizing: "border-box",
+                  maxHeight: "75vh",
+                  height: "80vh",
+                  width: "100%",
+
+                  ".data-grid-header": {
+                    bgcolor: "#150187",
+                    color: "#FFF",
+                    ".MuiDataGrid-columnHeaderTitle": {
+                      fontWeight: "bold",
+                    },
+                    "&.MuiDataGrid-root": {
+                      border: "none",
+                      color: "#FFF",
+                    },
+                    ".MuiIconButton-sizeSmall": {
+                      color: "#FFF",
+                    },
+                  },
+                }}
+              />
+            </Box>
+
+            <ClientInfo
+              open={clientInfo}
+              onClose={setClientInfo}
+              schoolYear={schoolYear}
+              setSchoolYear={setSchoolYear}
+              gradeLevel={gradeLevel}
+              setGradeLevel={setGradeLevel}
+              section={section}
+              setSection={setSection}
+              setResMsg={setResMsg}
+              setSeverity={setSeverity}
+              setSnack={setSnack}
+            />
+
+            <AddClientModal
+              open={addClient}
+              onClose={setAddClient}
+              schoolYear={schoolYear}
+              setSchoolYear={setSchoolYear}
+              gradeLevel={gradeLevel}
+              setGradeLevel={setGradeLevel}
+              section={section}
+              setSection={setSection}
+              setResMsg={setResMsg}
+              setSeverity={setSeverity}
+              setSnack={setSnack}
+            />
+          </Paper>
         </Box>
       </Box>
-
-      <Box display="flex" gap={3} flexWrap="wrap">
-        <DataGrid
-          ref={setFilterButtonEl}
-          columns={columns}
-          rows={rows}
-          rowCount={totalRows}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                page: 0,
-                pageSize: 10,
-              },
-            },
-          }}
-          pageSizeOptions={[10, 50, 100]}
-          onCellDoubleClick={() => setClientInfo(true)}
-          paginationModel={{ page: page, pageSize: pageSize }}
-          onFilterModelChange={() => setPage(0)}
-          onPaginationModelChange={(e) => {
-            setPage(e.page);
-            setPageSize(e.pageSize);
-          }}
-          onStateChange={(e) =>
-            setTotalRows(countTrueValues(e?.visibleRowsLookup))
-          }
-          loading={rows?.length == 0}
-          disableRowSelectionOnClick
-          showCellVerticalBorder
-          sx={{
-            boxSizing: "border-box",
-            maxHeight: "75vh",
-            height: "80vh",
-            width: "100%",
-
-            ".data-grid-header": {
-              bgcolor: "#150187",
-              color: "#FFF",
-              ".MuiDataGrid-columnHeaderTitle": {
-                fontWeight: "bold",
-              },
-              "&.MuiDataGrid-root": {
-                border: "none",
-                color: "#FFF",
-              },
-              ".MuiIconButton-sizeSmall": {
-                color: "#FFF",
-              },
-            },
-          }}
-        />
-      </Box>
-
-      <ClientInfo
-        open={clientInfo}
-        onClose={setClientInfo}
-        schoolYear={schoolYear}
-        setSchoolYear={setSchoolYear}
-        gradeLevel={gradeLevel}
-        setGradeLevel={setGradeLevel}
-        section={section}
-        setSection={setSection}
-        setResMsg={setResMsg}
-        setSeverity={setSeverity}
-        setSnack={setSnack}
-      />
-
-      <AddClientModal
-        open={addClient}
-        onClose={setAddClient}
-        schoolYear={schoolYear}
-        setSchoolYear={setSchoolYear}
-        gradeLevel={gradeLevel}
-        setGradeLevel={setGradeLevel}
-        section={section}
-        setSection={setSection}
-        setResMsg={setResMsg}
-        setSeverity={setSeverity}
-        setSnack={setSnack}
-      />
     </Paper>
   );
 };
