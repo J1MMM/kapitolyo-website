@@ -475,19 +475,7 @@ const ClientList = () => {
         clientDetails={clientDetails}
       />
 
-      {/* <AddClientModal
-        open={addClient}
-        onClose={setAddClient}
-        schoolYear={schoolYear}
-        setSchoolYear={setSchoolYear}
-        gradeLevel={gradeLevel}
-        setGradeLevel={setGradeLevel}
-        section={section}
-        setSection={setSection}
-        setResMsg={setResMsg}
-        setSeverity={setSeverity}
-        setSnack={setSnack}
-      /> */}
+    
 
       <Addclient
         open={addclient}
