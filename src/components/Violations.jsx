@@ -139,7 +139,6 @@ const columns = [
     headerClassName: "data-grid-header",
     editable: false,
   },
-  
 ];
 
 function createData(
@@ -476,8 +475,6 @@ const Violations = () => {
               setSeverity={setSeverity}
               setSnack={setSnack}
             />
-
-            
           </Paper>
         </Box>
       </Box>
