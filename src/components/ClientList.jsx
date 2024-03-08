@@ -253,7 +253,7 @@ const ClientList = () => {
 
   const [filterButtonEl, setFilterButtonEl] = useState(null);
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(100);
   const [totalRows, setTotalRows] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -415,7 +415,7 @@ const ClientList = () => {
                 pagination: {
                   paginationModel: {
                     page: 0,
-                    pageSize: 10,
+                    pageSize: 100,
                   },
                 },
               }}
