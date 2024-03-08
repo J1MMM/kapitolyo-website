@@ -1,22 +1,11 @@
 import { Add } from "@mui/icons-material";
-import { Box, Button, Divider, Grow, Paper, Typography } from "@mui/material";
+import { Box, Button, Grow, Paper, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
-import CreateClassModal from "./CreateClassModal";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import useData from "../hooks/useData";
-import SnackBar from "./SnackBar";
-import emptyTable from "../assets/images/undraw_empty_re_opql.svg";
-import EditClassModal from "./EditClassModal";
 import { DataGrid } from "@mui/x-data-grid";
 import ClientInfo from "./ClientInfo";
 import AddClientModal from "./AddClientModal";
-
-function sortByDate(array, datePropertyName) {
-  return array.sort(
-    (a, b) => new Date(a[datePropertyName]) - new Date(b[datePropertyName])
-  );
-}
 
 const columns = [
   {
@@ -331,10 +320,11 @@ const ClientList = () => {
     }
     return count;
   }
+
   const getClientDetails = (id) => {
-    const client = rows.find((v) => v.id == id);
-    setClientDetails(client);
-    console.log(client);
+    const foundClient = rows.find((v) => v.id == id);
+    setClientDetails(foundClient);
+    console.log(foundClient);
   };
 
   const handleRowDoubleClick = (e) => {
@@ -343,129 +333,131 @@ const ClientList = () => {
   };
 
   return (
-    <Paper
-      elevation={0}
-      sx={{
-        p: 0,
-        borderRadius: 3,
-        minHeight: "calc(100vh-80px)",
-        position: "relative",
-        width: "100%",
-        boxSizing: "border-box",
-      }}
-    >
-      <Box
-        bgcolor="#FFF"
-        display="flex"
-        justifyContent="space-between"
-        pb={1}
-        boxSizing="border-box"
-        zIndex="99"
-        sx={{
-          flexDirection: {
-            xs: "column",
-            sm: "column",
-            md: "row",
-          },
-          mb: {
-            xs: 0,
-            sm: 0,
-            md: 0,
-          },
-        }}
-      >
-        <Box sx={{ mb: { xs: 1, sm: 1, md: 0 } }}>
-          <Box display="flex" alignItems="center" gap={1} mb={-0.5}>
-            <Typography component={"span"} variant="h5">
-              Clients Management
-            </Typography>
-          </Box>
-          <Typography
-            component={"span"}
-            variant="caption"
-            color="InactiveCaptionText"
-          >
-            Manage all clients efficiently
-          </Typography>
-        </Box>
-
-        <Box
-          display="flex"
-          alignItems="center"
-          gap={2}
-          sx={{ mb: { xs: 2, sm: 2, md: 0 } }}
-        >
-          <Button
-            variant="contained"
-            size="small"
-            onClick={() => setClientInfo(true)}
-            disableFocusRipple
-          >
-            <Add sx={{ color: "#FFF" }} />
-            <Typography
-              component={"span"}
-              pr={1}
-              variant="caption"
-              color="#FFF"
-            >
-              Add Client
-            </Typography>
-          </Button>
-        </Box>
-      </Box>
-
-      <Box display="flex" gap={3} flexWrap="wrap">
-        <DataGrid
-          ref={setFilterButtonEl}
-          columns={columns}
-          rows={rows}
-          rowCount={totalRows}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                page: 0,
-                pageSize: 10,
-              },
-            },
-          }}
-          pageSizeOptions={[10, 50, 100]}
-          onCellDoubleClick={(e) => handleRowDoubleClick(e)}
-          paginationModel={{ page: page, pageSize: pageSize }}
-          onFilterModelChange={() => setPage(0)}
-          onPaginationModelChange={(e) => {
-            setPage(e.page);
-            setPageSize(e.pageSize);
-          }}
-          onStateChange={(e) =>
-            setTotalRows(countTrueValues(e?.visibleRowsLookup))
-          }
-          loading={rows?.length == 0}
-          disableRowSelectionOnClick
-          showCellVerticalBorder
+    <>
+      <Grow in={true}>
+        <Paper
+          elevation={0}
           sx={{
-            boxSizing: "border-box",
-            height: "70vh",
-            maxHeight: "70vh",
+            p: 0,
+            borderRadius: 3,
+            minHeight: "calc(100vh-80px)",
+            position: "relative",
             width: "100%",
-
-            ".data-grid-header": {
-              bgcolor: "#150187",
-              color: "#FFF",
-              ".MuiDataGrid-columnHeaderTitle": {
-                fontWeight: "bold",
-              },
-              "&.MuiDataGrid-root": {
-                border: "none",
-                color: "#FFF",
-              },
-              ".MuiIconButton-sizeSmall": {
-                color: "#FFF",
-              },
-            },
+            boxSizing: "border-box",
           }}
-        />
-      </Box>
+        >
+          <Box
+            bgcolor="#FFF"
+            display="flex"
+            justifyContent="space-between"
+            pb={1}
+            boxSizing="border-box"
+            zIndex="99"
+            sx={{
+              flexDirection: {
+                xs: "column",
+                sm: "column",
+                md: "row",
+              },
+              mb: {
+                xs: 0,
+                sm: 0,
+                md: 0,
+              },
+            }}
+          >
+            <Box sx={{ mb: { xs: 1, sm: 1, md: 0 } }}>
+              <Box display="flex" alignItems="center" gap={1} mb={-0.5}>
+                <Typography component={"span"} variant="h5">
+                  Clients Management
+                </Typography>
+              </Box>
+              <Typography
+                component={"span"}
+                variant="caption"
+                color="InactiveCaptionText"
+              >
+                Manage all clients efficiently
+              </Typography>
+            </Box>
 
+            <Box
+              display="flex"
+              alignItems="center"
+              gap={2}
+              sx={{ mb: { xs: 2, sm: 2, md: 0 } }}
+            >
+              <Button
+                variant="contained"
+                size="small"
+                onClick={() => setClientInfo(true)}
+                disableFocusRipple
+              >
+                <Add sx={{ color: "#FFF" }} />
+                <Typography
+                  component={"span"}
+                  pr={1}
+                  variant="caption"
+                  color="#FFF"
+                >
+                  Add Client
+                </Typography>
+              </Button>
+            </Box>
+          </Box>
+          <Box display="flex" gap={3} flexWrap="wrap">
+            <DataGrid
+              ref={setFilterButtonEl}
+              columns={columns}
+              rows={rows}
+              rowCount={totalRows}
+              initialState={{
+                pagination: {
+                  paginationModel: {
+                    page: 0,
+                    pageSize: 10,
+                  },
+                },
+              }}
+              pageSizeOptions={[10, 50, 100]}
+              onCellDoubleClick={(e) => handleRowDoubleClick(e)}
+              paginationModel={{ page: page, pageSize: pageSize }}
+              onFilterModelChange={() => setPage(0)}
+              onPaginationModelChange={(e) => {
+                setPage(e.page);
+                setPageSize(e.pageSize);
+              }}
+              onStateChange={(e) =>
+                setTotalRows(countTrueValues(e?.visibleRowsLookup))
+              }
+              loading={rows?.length == 0}
+              disableRowSelectionOnClick
+              showCellVerticalBorder
+              sx={{
+                boxSizing: "border-box",
+                height: "70vh",
+                maxHeight: "70vh",
+                width: "100%",
+
+                ".data-grid-header": {
+                  bgcolor: "#150187",
+                  color: "#FFF",
+                  ".MuiDataGrid-columnHeaderTitle": {
+                    fontWeight: "bold",
+                  },
+                  "&.MuiDataGrid-root": {
+                    border: "none",
+                    color: "#FFF",
+                  },
+                  ".MuiIconButton-sizeSmall": {
+                    color: "#FFF",
+                  },
+                },
+              }}
+            />
+          </Box>
+        </Paper>
+      </Grow>
       <ClientInfo
         open={clientInfo}
         onClose={setClientInfo}
@@ -494,7 +486,7 @@ const ClientList = () => {
         setSeverity={setSeverity}
         setSnack={setSnack}
       />
-    </Paper>
+    </>
   );
 };
 
