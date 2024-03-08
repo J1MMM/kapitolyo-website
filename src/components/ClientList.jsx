@@ -6,6 +6,7 @@ import useData from "../hooks/useData";
 import { DataGrid } from "@mui/x-data-grid";
 import ClientInfo from "./ClientInfo";
 import AddClientModal from "./AddClientModal";
+import Addclient from "./Addclient";
 
 const columns = [
   {
@@ -249,11 +250,12 @@ const ClientList = () => {
   const [empty, setEmpty] = useState(false);
   const [noResponse, setNoResponse] = useState(false);
   const [clientInfo, setClientInfo] = useState(false);
-  const [addClient, setAddClient] = useState(false);
+  const [addclient, setAddclient] = useState(false);
+  
 
   const [filterButtonEl, setFilterButtonEl] = useState(null);
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(100);
+  const [pageSize, setPageSize] = useState(10);
   const [totalRows, setTotalRows] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -390,7 +392,7 @@ const ClientList = () => {
               <Button
                 variant="contained"
                 size="small"
-                onClick={() => setClientInfo(true)}
+                onClick={() => setAddclient(true)}
                 disableFocusRipple
               >
                 <Add sx={{ color: "#FFF" }} />
@@ -473,9 +475,23 @@ const ClientList = () => {
         clientDetails={clientDetails}
       />
 
-      <AddClientModal
+      {/* <AddClientModal
         open={addClient}
         onClose={setAddClient}
+        schoolYear={schoolYear}
+        setSchoolYear={setSchoolYear}
+        gradeLevel={gradeLevel}
+        setGradeLevel={setGradeLevel}
+        section={section}
+        setSection={setSection}
+        setResMsg={setResMsg}
+        setSeverity={setSeverity}
+        setSnack={setSnack}
+      /> */}
+
+      <Addclient
+        open={addclient}
+        onClose={setAddclient}
         schoolYear={schoolYear}
         setSchoolYear={setSchoolYear}
         gradeLevel={gradeLevel}
