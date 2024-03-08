@@ -11,6 +11,7 @@ import EditClassModal from './EditClassModal';
 import { DataGrid } from '@mui/x-data-grid';
 import ClientInfo from './ClientInfo';
 import AddClientModal from './AddClientModal';
+import ClientsNavbar from './ClientsNavbar';
 
 function sortByDate(array, datePropertyName) {
     return array.sort((a, b) => new Date(a[datePropertyName]) - new Date(b[datePropertyName]));
@@ -270,7 +271,7 @@ const ClientList = () => {
         <Paper
             elevation={0}
             sx={{
-                p: 2,
+                p: 0,
                 borderRadius: 3,
                 minHeight: 'calc(100vh-80px)',
                 position: 'relative',

@@ -10,7 +10,9 @@ import emptyTable from '../assets/images/undraw_empty_re_opql.svg'
 import EditClassModal from './EditClassModal';
 import { DataGrid } from '@mui/x-data-grid';
 import ClientInfo from './ClientInfo';
-import AddClientModal from './AddClientModal';
+import ViolationsInfo from './ViolationsInfo';
+import ViolationsNavbar from './ViolationsNavbar';
+
 
 function sortByDate(array, datePropertyName) {
     return array.sort((a, b) => new Date(a[datePropertyName]) - new Date(b[datePropertyName]));
@@ -162,7 +164,7 @@ function createData(
 
 const Violations = () => {
     const axiosPrivate = useAxiosPrivate()
-    const { classes, rows, setRows } = useData()
+    const { classes, setClasses, setStudents, setStudentsArchived, setLessons } = useData()
     const [sortedClasses, setSortedClasses] = useState([])
     const [createClassModal, setCreateClassModal] = useState(false)
     const [editClassModal, setEditClassModal] = useState(false)
@@ -183,13 +185,8 @@ const Violations = () => {
     const [empty, setEmpty] = useState(false)
     const [noResponse, setNoResponse] = useState(false)
     const [clientInfo, setClientInfo] = useState(false);
-    const [addClient, setAddClient] = useState(false);
-
-    const [filterButtonEl, setFilterButtonEl] = useState(null);
-    const [page, setPage] = useState(0);
-    const [pageSize, setPageSize] = useState(10);
-    const [totalRows, setTotalRows] = useState(0);
-    const [isLoading, setIsLoading] = useState(true);
+    const [violationsInfo, setViolationsInfo] = useState(false);
+    
 
     useEffect(() => {
         if (classes.length == 0) {
@@ -199,19 +196,88 @@ const Violations = () => {
         }
     }, [classes])
 
-   
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        document.title = "Clients Management"
+        let isMounted = true;
+        const controller = new AbortController();
+
+        const getClasses = async () => {
+            try {
+                const response = await axiosPrivate.get('/class', {
+                    signal: controller.signal
+                });
+
+                isMounted && setClasses(response.data.filter(item => item.archive == false))
+            } catch (err) {
+                setNoResponse(true)
+            }
+        }
+
+        getClasses()
+
+        return () => {
+            isMounted = false;
+            isMounted && controller.abort();
+        }
+    }, [])
+    return(
+        <Paper
+            elevation={0}
+            sx={{
+                p: 2,
+                borderRadius: 3,
+                minHeight: '80vh',
+            }}
+        >
+            <Box
+                bgcolor='#fff'
+                display='flex'
+                justifyContent='space-between'
+                pb={1}
+                boxSizing='border-box'
+                zIndex='99'
+                sx={{
+                    flexDirection: {
+                        xs: "column",
+                        sm: "column",
+                        md: "row"
+                    },
+                    mb: {
+                        xs: 0,
+                        sm: 0,
+                        md: 2
+                    }
+                }}
+            >
+                <Box
+                    display={'flex'}
+                    flexDirection={'column'}
+                    gap={2}
+                    width={'100%'}
+                >
+                    <ViolationsNavbar />
+                    <Outlet />
+                </Box>
+            </Box>
+        </Paper>
+    )
 
     // useEffect(() => {
     //     setSortedClasses(v => sortByDate(classes, 'schoolYear'))
 
     // }, [classes])
 
-
+    const [filterButtonEl, setFilterButtonEl] = useState(null);
+    const [rows, setRows] = useState([]);
+    const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(100);
+    const [totalRows, setTotalRows] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        setIsLoading(true)
-
         const fetchData = async () => {
+            setIsLoading(true)
             try {
                 const response = await axiosPrivate.get(`/franchise`);
                 setTotalRows(response.data.totalRows);
@@ -248,12 +314,9 @@ const Violations = () => {
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
+            setIsLoading(false)
         };
-        if(rows.length == 0){
-            fetchData();
-        }
-        setIsLoading(false)
-
+        fetchData();
     }, []);
 
     function countTrueValues(obj) {
@@ -301,9 +364,9 @@ const Violations = () => {
             >
                 <Box sx={{ mb: { xs: 1, sm: 1, md: 0 } }} >
                     <Box display='flex' alignItems='center' gap={1} mb={-.5}>
-                        <Typography component={'span'} variant='h5' >Violations</Typography>
+                        <Typography component={'span'} variant='h5' >Violations Management</Typography>
                     </Box>
-                    <Typography component={'span'} variant='caption' color='InactiveCaptionText' >Manage all clients efficiently</Typography>
+                    <Typography component={'span'} variant='caption' color='InactiveCaptionText' >Manage all violators efficiently</Typography>
                 </Box>
 
                 <Box display='flex' alignItems='center' gap={2} sx={{ mb: { xs: 2, sm: 2, md: 0 } }}>
@@ -311,12 +374,12 @@ const Violations = () => {
                     <Button
                         variant='contained'
                         size='small'
-                        onClick={() => setClientInfo(true)}
+                        onClick={() => setViolationsInfo(true)}
                         disableFocusRipple
                     >
                         <Add sx={{ color: '#FFF' }} />
                         <Typography component={'span'} pr={1} variant='caption' color="#FFF">
-                            Add Client
+                            Add Violators
                         </Typography>
                     </Button>
                 </Box>
@@ -346,7 +409,7 @@ const Violations = () => {
                     onFilterModelChange={() => setPage(0)}
                     onPaginationModelChange={(e) => { setPage(e.page); setPageSize(e.pageSize) }}
                     onStateChange={(e) => setTotalRows(countTrueValues(e?.visibleRowsLookup))}
-                    loading={rows?.length == 0}
+                    loading={isLoading}
                     disableRowSelectionOnClick
                     showCellVerticalBorder
 
@@ -377,10 +440,10 @@ const Violations = () => {
 
             </Box>
 
-            
-            <ClientInfo
-                open={clientInfo}
-                onClose={setClientInfo}
+
+            <ViolationsInfo
+                open={violationsInfo}
+                onClose={setViolationsInfo}
                 schoolYear={schoolYear}
                 setSchoolYear={setSchoolYear}
                 gradeLevel={gradeLevel}
@@ -392,9 +455,9 @@ const Violations = () => {
                 setSnack={setSnack}
             />
 
-            <AddClientModal
-                open={addClient}
-                onClose={setAddClient}
+            <ClientInfo
+                open={createClassModal}
+                onClose={setCreateClassModal}
                 schoolYear={schoolYear}
                 setSchoolYear={setSchoolYear}
                 gradeLevel={gradeLevel}
