@@ -20,6 +20,7 @@ import UserArchive from "./components/UserArchive";
 import ClientList from "./components/ClientList";
 import Violations from "./components/Violations";
 import ClientsPage from "./components/ClientsPage";
+import ArchivedList from "./components/ArchivedList";
 
 function App() {
   return (
@@ -65,12 +66,14 @@ function App() {
             }
           >
             <Route path="violations" element={<Violations />} />
+              <Route path='violations' element={<Violations />} />
 
+            
             <Route path='clients' element={<Navigate to={'list'} replace />} />
 
             <Route path='clients' element={<ClientsPage />}>
               <Route path='list' element={<ClientList />} />
-              <Route path='archive' element={<ClientList />} />
+              <Route path='archive' element={<ArchivedList />} />
             </Route>
 
 

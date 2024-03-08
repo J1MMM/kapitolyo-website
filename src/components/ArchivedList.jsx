@@ -9,7 +9,7 @@ import AddClientModal from "./AddClientModal";
 
 const columns = [
   {
-    field: "mtop",
+    field: "mtopP",
     headerName: "MTOP",
     width: 150,
     headerClassName: "data-grid-header",
@@ -22,119 +22,119 @@ const columns = [
     headerClassName: "data-grid-header",
   },
   {
-    field: "lname",
+    field: "lnameE",
     headerName: "LASTNAME",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "fname",
+    field: "fnameE",
     headerName: "FIRSTNAME",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "mi",
+    field: "miI",
     headerName: "MI",
     width: 100,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "address",
+    field: "addressS",
     headerName: "ADDRESS",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "contact",
+    field: "contactT",
     headerName: "CONTACT\u00a0NO.",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "contact2",
+    field: "contact22",
     headerName: "CONTACT\u00a0NO.2",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "toc2",
+    field: "toc22",
     headerName: "TODA",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "drivername",
+    field: "drivernameE",
     headerName: "DRIVER'S\u00a0NAME",
     width: 280,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "driveraddress",
+    field: "driveraddressS",
     headerName: "DRIVER'S\u00a0ADDRESS",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "or",
+    field: "orR",
     headerName: "O.R.",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "cr",
+    field: "crR",
     headerName: "C.R.",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "driverlicenseno",
+    field: "driverlicensenoO",
     headerName: "DRIVER'S\u00a0LICENSE\u00a0NO.",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "model",
+    field: "modelL",
     headerName: "MODEL",
     width: 150,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "motorno",
+    field: "motornoO",
     headerName: "MOTOR\u00a0NO.",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "chassisno",
+    field: "chassisnoO",
     headerName: "CHASSIS\u00a0NO.",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "plateno",
+    field: "platenoO",
     headerName: "PLATE\u00a0NO.",
     width: 100,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
-    field: "stroke",
+    field: "strokeO",
     headerName: "STROKE",
     width: 100,
     headerClassName: "data-grid-header",
@@ -143,7 +143,7 @@ const columns = [
     headerAlign: "center",
   },
   {
-    field: "date",
+    field: "dateE",
     headerName: "DATE RENEWAL",
     width: 150,
     headerClassName: "data-grid-header",
@@ -152,7 +152,7 @@ const columns = [
     headerAlign: "center",
   },
   {
-    field: "remarks",
+    field: "remarksS",
     headerName: "REMARKS",
     width: 250,
     headerClassName: "data-grid-header",
@@ -161,7 +161,7 @@ const columns = [
     headerAlign: "center",
   },
   {
-    field: "daterelease",
+    field: "datereleaseE",
     headerName: "DATE\u00a0RELEASE\u00a0OF\u00a0ST/TP",
     width: 200,
     headerClassName: "data-grid-header",
@@ -170,7 +170,7 @@ const columns = [
     headerAlign: "center",
   },
   {
-    field: "complaint",
+    field: "complaintT",
     headerName: "COMPLAINT",
     width: 800,
     headerClassName: "data-grid-header",
@@ -379,30 +379,6 @@ const ClientList = () => {
               >
                 Manage all clients efficiently
               </Typography>
-            </Box>
-
-            <Box
-              display="flex"
-              alignItems="center"
-              gap={2}
-              sx={{ mb: { xs: 2, sm: 2, md: 0 } }}
-            >
-              <Button
-                variant="contained"
-                size="small"
-                onClick={() => setClientInfo(true)}
-                disableFocusRipple
-              >
-                <Add sx={{ color: "#FFF" }} />
-                <Typography
-                  component={"span"}
-                  pr={1}
-                  variant="caption"
-                  color="#FFF"
-                >
-                  Add Client
-                </Typography>
-              </Button>
             </Box>
           </Box>
           <Box display="flex" gap={3} flexWrap="wrap">
