@@ -16,10 +16,9 @@ import {
 } from "@mui/material";
 import { Mail, Visibility, VisibilityOff } from "@mui/icons-material";
 import useAuth from "../../hooks/useAuth";
-import SnackBar from "../SnackBar";
-import spc_seal_logo from "../../assets/images/SPCSEALL.png";
-import ctmo_logo from "../../assets/images/CTMOLOGOO.png";
-import login_bg_img from "../../assets/images/backgroundddd.jpg";
+import SnackBar from "../common/ui/SnackBar";
+import spc_seal_logo from "../../assets/images/logo1.png";
+import ctmo_logo from "../../assets/images/logo2.png";
 import axios from "../../api/axios";
 import "./style.scss";
 

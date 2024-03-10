@@ -8,15 +8,6 @@ const UseLogout = () => {
 
     const logout = async () => {
         setAuth({});
-        setStudents([])
-        setUsers([])
-        setLessons([])
-        setLessons([])
-        setLessonsArchived([])
-        setStudentsArchived([])
-        setClasses([])
-        setClassesArchived([])
-        setAllStudents([])
         try {
             const response = axios('/logout', {
                 withCredentials: true

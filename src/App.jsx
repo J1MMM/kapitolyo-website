@@ -1,91 +1,59 @@
-// ch6ang5es h6append 
 import Layout from "./components/Layout";
-import {
-  Navigate,
-  Route,
-  Routes,
-  ScrollRestoration,
-  useLocation,
-} from "react-router-dom";
-import Dashboard from "./components/Dashboard";
+import { Route, Routes } from "react-router-dom";
+import Dashboard from "./components/DashboardPage/Dashboard";
 import Missing from "./components/Missing";
-import RequireAuth from "./components/RequireAuth";
-import Unauthorized from "./components/Unauthorized";
-import PersistLogin from "./components/PersistLogin";
-import ROLES_LIST from "./components/ROLES_LIST";
+import RequireAuth from "./components/Auth/RequireAuth";
+import Unauthorized from "./components/common/ui/Unauthorized";
+import PersistLogin from "./components/Auth/PersistLogin";
+import ROLES_LIST from "./components/common/data/ROLES_LIST";
 import LoginComponenet from "./components/Login/index";
-import ResetPassword from "./components/resetPassword";
-import VerifyResetToken from "./components/VerifyResetToken";
-import UserArchive from "./components/UserArchive";
-import ClientList from "./components/ClientList";
-import Violations from "./components/Violations";
-import ClientsPage from "./components/ClientsPage";
-import ArchivedList from "./components/ArchivedList";
-import PaidList from "./components/PaidList";
-import ViolationsPage from "./components/ViolationsPage"
-import ReleasedTCT from "./components/ReleasedTCT";
+import ResetPassword from "./components/ResetPassword/resetPassword";
+import VerifyResetToken from "./components/ResetPassword/VerifyResetToken";
+import ClientsPageLayout from "./components/ClientPage/Layout";
+import ClientsTable from "./components/ClientPage/Clients/ClientsTable";
+import ClientArchived from "./components/ClientPage/ArchiveClients/ClientsArchived";
+import ViolationsTable from "./components/ViolationsPage/Violations/ViolationsTable";
+import PaidTable from "./components/ViolationsPage/Paid/PaidList";
+import ReleasedtctTable from "./components/ViolationsPage/ReleasedTCT/ReleasedtctTable";
+import ViolationsPageLayout from "./components/ViolationsPage/Layout";
+import UserArchive from "./components/UsersAccountPage/UserArchive";
+import Users from "./components/UsersAccountPage/Users";
+import useAuth from "./hooks/useAuth";
 
 function App() {
+  const { auth } = useAuth();
+  const isSuperAdmin = Boolean(auth.roles?.find(v => v == ROLES_LIST.SuperAdmin))
+
   return (
     <Routes>
       <Route element={<PersistLogin />}>
-        {/* public routes  */}
         <Route path="/login" element={<LoginComponenet />} />
-        <Route path="/unauthorized" element={<Unauthorized />} />
 
-        {/* reset password  */}
-        <Route element={<VerifyResetToken />}>
-          <Route path="/reset-password/:token" element={<ResetPassword />} />
-        </Route>
-        {/* protected routes  */}
         <Route path="/" element={<Layout />}>
-          {/* admin and teaches allowed  */}
-          <Route
-            element={
-              <RequireAuth
-                allowedRoles={[
-                  ROLES_LIST.SuperAdmin,
-                  ROLES_LIST.Admin,
-                  ROLES_LIST.CTMO1,
-                ]}
-              />
-            }
-          >
-            <Route path="/" element={<Dashboard />} />
-          </Route>
-          {/* only Admin allowed  */}
-          <Route
-            element={<RequireAuth allowedRoles={[ROLES_LIST.SuperAdmin]} />}
-          >
+          <Route path="" element={isSuperAdmin ? <Users /> : <Dashboard />} />
+          <Route element={<RequireAuth allowedRoles={[ROLES_LIST.SuperAdmin]} />}>
             <Route path="user-archive" element={<UserArchive />} />
           </Route>
 
-          {/* only teachers are allowed on this route  */}
-          <Route
-            element={
-              <RequireAuth
-                allowedRoles={[ROLES_LIST.Admin, ROLES_LIST.CTMO1]}
-              />
-            }
-          >
-            <Route path='violations' element={<Navigate to={'list'} replace />} />
-            <Route path="violations" element={<ViolationsPage />} >
-              <Route path='list' element={<Violations />} />
-              <Route path='paidlist' element={<PaidList />} />
-              <Route path='released' element={<ReleasedTCT />} />
-            </Route>
-            
-            <Route path='clients' element={<Navigate to={'list'} replace />} />
-            <Route path='clients' element={<ClientsPage />}>
-              <Route path='list' element={<ClientList />} />
-              <Route path='archive' element={<ArchivedList />} />
+          <Route element={<RequireAuth allowedRoles={[ROLES_LIST.Admin, ROLES_LIST.CTMO1, ROLES_LIST.CTMO2, ROLES_LIST.CTMO3]} />}>
+            <Route path='clients' element={<ClientsPageLayout />}>
+              <Route path='' element={<ClientsTable />} />
+              <Route path='archive' element={<ClientArchived />} />
             </Route>
 
-
-
+            <Route path="violations" element={<ViolationsPageLayout />} >
+              <Route path="" element={<ViolationsTable />} />
+              <Route path="paid" element={<PaidTable />} />
+              <Route path="released-tct" element={<ReleasedtctTable />} />
+            </Route>
           </Route>
-          {/* catch all  */}
         </Route>
+
+        <Route element={<VerifyResetToken />}>
+          <Route path="/reset-password/:token" element={<ResetPassword />} />
+        </Route>
+
+        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<Missing />} />
       </Route>
     </Routes>
