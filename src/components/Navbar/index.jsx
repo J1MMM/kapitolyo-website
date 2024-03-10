@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
-import ROLES_LIST from "../ROLES_LIST";
+import ROLES_LIST from "../common/data/ROLES_LIST";
 import { FiUsers, FiList, FiArchive } from "react-icons/fi";
 import { Typography } from "@mui/material";
 import { BsArchive, BsGraphUpArrow } from "react-icons/bs";
@@ -14,28 +14,10 @@ import { Archive } from "@mui/icons-material";
 
 const Navbar = ({ navOpen }) => {
   const axiosPrivate = useAxiosPrivate();
-  const { classes, setClasses } = useData();
   const { auth } = useAuth();
   const isAdmin = Boolean(
     auth?.roles?.find((role) => role === ROLES_LIST.SuperAdmin)
   );
-
-  // useEffect(() => {
-  //     const getClasses = async () => {
-  //         try {
-  //             const response = await axiosPrivate.get('/class');
-
-  //             setClasses(response.data.filter(item => item.archive == false))
-  //         } catch (err) {
-  //             console.log(err);
-  //         }
-  //     }
-
-  //     if (classes.length == 0) {
-  //         getClasses()
-  //     }
-
-  // }, [])
 
   return (
     <div className="navbar">
