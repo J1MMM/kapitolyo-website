@@ -369,7 +369,7 @@ const ClientList = () => {
             <Box sx={{ mb: { xs: 1, sm: 1, md: 0 } }}>
               <Box display="flex" alignItems="center" gap={1} mb={-0.5}>
                 <Typography component={"span"} variant="h5">
-                  Clients Management
+                  Archived Clients
                 </Typography>
               </Box>
               <Typography
