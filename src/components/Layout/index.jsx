@@ -56,9 +56,9 @@ import {
 } from "react-icons/hi2";
 import { GrUserAdd } from "react-icons/gr";
 import UseLogout from "../../hooks/useLogout";
-import ROLES_LIST from "../ROLES_LIST";
-import UserAvatar from "../UserAvatar";
-import ConfirmationDialog from "../ConfirmationDialog";
+import ROLES_LIST from "../common/data/ROLES_LIST";
+import UserAvatar from "../common/ui/UserAvatar";
+import ConfirmationDialog from "../common/ui/ConfirmationDialog";
 import Logo1 from "../../assets/images/logo1.png";
 import Logo2 from "../../assets/images/logo2.png";
 import { SiGoogleclassroom } from "react-icons/si";
