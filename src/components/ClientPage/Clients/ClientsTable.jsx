@@ -108,7 +108,7 @@ const ClientsTable = () => {
           onStateChange={(e) =>
             setTotalRows(helper.countTrueValues(e?.visibleRowsLookup))
           }
-          loading={false}
+          loading={isLoading}
         />
       </TableLayout>
 
