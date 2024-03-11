@@ -2,12 +2,12 @@ import { Add } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useData from "../../../hooks/useData";
-import { DataGrid } from "@mui/x-data-grid";
 import ClientInfo from "./ClientInfo";
 import AddClientForm from "./AddClientForm";
 import TableLayout from "../../common/ui/TableLayout";
 import helper from "../helper";
 import ContainedButton from "../../common/ui/ContainedButton";
+import DataTable from "../../common/ui/DataTable";
 
 const ClientsTable = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -16,12 +16,11 @@ const ClientsTable = () => {
   const [snack, setSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [resMsg, setResMsg] = useState("");
-  const [empty, setEmpty] = useState(false);
   const [noResponse, setNoResponse] = useState(false);
   const [clientInfo, setClientInfo] = useState(false);
   const [addclient, setAddclient] = useState(false);
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(100);
+  const [pageSize, setPageSize] = useState(50);
   const [totalRows, setTotalRows] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -85,29 +84,22 @@ const ClientsTable = () => {
     <>
       <TableLayout
         title="Clients Management"
-        subTitle="Manage all clients efficiently"
+        subTitle="Efficiently monitor client status and details"
         button={
           <ContainedButton
             title="Add Client"
             onClick={() => setAddclient(true)}
-            icon={<Add sx={{ color: "#FFF" }} />} />
+            icon={<Add sx={{ color: "#FFF" }} />}
+          />
         }
       >
-        <DataGrid
+        <DataTable
           columns={helper.clientsColumns}
           rows={rows}
           rowCount={totalRows}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                page: 0,
-                pageSize: 100,
-              },
-            },
-          }}
-          pageSizeOptions={[10, 50, 100]}
+          page={page}
+          pageSize={pageSize}
           onCellDoubleClick={(e) => handleRowDoubleClick(e)}
-          paginationModel={{ page: page, pageSize: pageSize }}
           onFilterModelChange={() => setPage(0)}
           onPaginationModelChange={(e) => {
             setPage(e.page);
@@ -116,30 +108,7 @@ const ClientsTable = () => {
           onStateChange={(e) =>
             setTotalRows(helper.countTrueValues(e?.visibleRowsLookup))
           }
-          loading={rows?.length == 0}
-          disableRowSelectionOnClick
-          showCellVerticalBorder
-          sx={{
-            boxSizing: "border-box",
-            height: "70vh",
-            maxHeight: "70vh",
-            width: "100%",
-
-            ".data-grid-header": {
-              bgcolor: "#150187",
-              color: "#FFF",
-              ".MuiDataGrid-columnHeaderTitle": {
-                fontWeight: "bold",
-              },
-              "&.MuiDataGrid-root": {
-                border: "none",
-                color: "#FFF",
-              },
-              ".MuiIconButton-sizeSmall": {
-                color: "#FFF",
-              },
-            },
-          }}
+          loading={isLoading}
         />
       </TableLayout>
 
