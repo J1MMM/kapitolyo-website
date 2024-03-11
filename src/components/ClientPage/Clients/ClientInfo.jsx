@@ -1,548 +1,221 @@
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
-  FormControl,
-  FormLabel,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  TextField,
-  TextareaAutosize,
-  Typography,
-} from "@mui/material";
+import { Box, Button, FormControl, Typography } from "@mui/material";
 import React, { useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useData from "../../../hooks/useData";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import OutlinedTextField from "../../common/ui/OutlinedTextField";
+import FlexRow from "../../common/ui/FlexRow";
+import Fieldset from "../../common/ui/Fieldset";
+import DialogForm from "../../common/ui/DialogForm";
 
-const ClientInfo = ({
-  open,
-  onClose,
-  setSnack,
-  setSeverity,
-  setResMsg,
-  clientDetails,
-}) => {
+const ClientInfo = ({ open, onClose, clientDetails }) => {
   const axiosPrivate = useAxiosPrivate();
   const { setClasses } = useData();
   const [disable, setDisable] = useState(false);
 
   return (
-    <Dialog
+    <DialogForm
+      title="Client's Information"
       open={open}
       onClose={() => onClose(false)}
-      disableAutoFocus
-      maxWidth="xl"
-    >
-      <form>
-        <DialogTitle variant="h5" bgcolor="primary.main" color="#FFF">
-          Client's Information
-        </DialogTitle>
-        <Divider />
-        <DialogContent>
-          <Box
-            display="flex"
-            alignItems="center"
-            gap={1}
-            sx={{
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-              justifyContent: "space-between",
-            }}
-          >
-            <TextField
-              margin="dense"
-              label="MTOP"
-              type="text"
-              variant="outlined"
-              value={clientDetails?.mtop}
-              inputProps={{ readOnly: true }}
-            />
-
-            <FormControl margin="dense" focused>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker label="Date Renewal" readOnly />
-              </LocalizationProvider>
-            </FormControl>
-          </Box>
-          <Box
-            component={"fieldset"}
-            sx={{
-              borderColor: "#E7EBF1",
-              border: "2px solid grey",
-              borderRadius: 2,
-              mt: 2,
-            }}
-          >
-            <legend style={{ color: "grey" }}>Owner's Information</legend>
-            <Box
-              display="flex"
-              gap={2}
-              sx={{
-                flexDirection: {
-                  xs: "column",
-                  sm: "row",
-                },
-              }}
-            >
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Firstname"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.fname}
-                inputProps={{ readOnly: true }}
-              />
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Middlename"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.mi}
-                inputProps={{ readOnly: true }} y
-              />
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Lastname"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.lname}
-                inputProps={{ readOnly: true }}
-              />
-            </Box>
-
-            <Box
-              display="flex"
-              gap={2}
-              sx={{
-                flexDirection: {
-                  xs: "column",
-                  sm: "row",
-                },
-              }}
-            >
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Address"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.address}
-                inputProps={{ readOnly: true }}
-              />
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Contact #"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.contact}
-                inputProps={{ readOnly: true }}
-              />
-            </Box>
-          </Box>
-          <Box
-            component={"fieldset"}
-            sx={{
-              borderColor: "#E7EBF1",
-              border: "2px solid grey",
-              borderRadius: 2,
-              mt: 2,
-            }}
-          >
-            <legend style={{ color: "grey" }}>Driver's Information</legend>
-
-            <Box
-              display="flex"
-              gap={2}
-              sx={{
-                flexDirection: {
-                  xs: "column",
-                  sm: "row",
-                },
-              }}
-            >
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Fullname"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.drivername}
-                inputProps={{ readOnly: true }}
-              />
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Contact #"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.contact2}
-                inputProps={{ readOnly: true }}
-              />
-            </Box>
-            <TextField
-              disabled={disable}
-              margin="dense"
-              label="Address"
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-              value={clientDetails?.driveraddress}
-              inputProps={{ readOnly: true }}
-            />
-          </Box>
-
-          <Box
-            component={"fieldset"}
-            sx={{
-              borderColor: "#E7EBF1",
-              border: "2px solid grey",
-              borderRadius: 2,
-              mt: 2,
-            }}
-          >
-            <legend style={{ color: "grey" }}>Vehicle's Information</legend>
-            <Box
-              display="flex"
-              gap={2}
-              sx={{
-                flexDirection: {
-                  xs: "column",
-                  sm: "row",
-                },
-              }}
-            >
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Model"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.model}
-                inputProps={{ readOnly: true }}
-              />
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Plate No."
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.plateno}
-                inputProps={{ readOnly: true }}
-              />
-            </Box>
-            <Box
-              display="flex"
-              gap={2}
-              sx={{
-                flexDirection: {
-                  xs: "column",
-                  sm: "row",
-                },
-              }}
-            >
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Motor No."
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.motorno}
-                inputProps={{ readOnly: true }}
-              />
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Stroke"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.stroke}
-                inputProps={{ readOnly: true }}
-              />
-            </Box>
-            <Box
-              display="flex"
-              gap={2}
-              sx={{
-                flexDirection: {
-                  xs: "column",
-                  sm: "row",
-                },
-              }}
-            >
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Chassis No."
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.chassisno}
-                inputProps={{ readOnly: true }}
-              />
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Fuel DISP.(cc)"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.fueldisp}
-                inputProps={{ readOnly: true }}
-              />
-            </Box>
-            <Box
-              display="flex"
-              gap={2}
-              sx={{
-                flexDirection: {
-                  xs: "column",
-                  sm: "row",
-                },
-              }}
-            >
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="OR No."
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.or}
-                inputProps={{ readOnly: true }}
-              />
-
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="CR No."
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.cr}
-                inputProps={{ readOnly: true }}
-              />
-            </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              gap={2}
-              sx={{
-                flexDirection: {
-                  xs: "column",
-                  sm: "row",
-                },
-              }}
-            >
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="TPL Provider"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.tplprovider}
-                inputProps={{ readOnly: true }}
-              />
-
-              <FormControl margin="dense" fullWidth>
-                <Box
-                  component={"fieldset"}
-                  display="flex"
-                  gap={1}
-                  alignItems="center"
-                  borderRadius={1}
-                  border="1px solid lightgrey"
-                >
-                  <legend style={{ color: "gray" }}>TPL Effectivity</legend>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker slotProps={{ textField: { size: "small" } }} />
-                  </LocalizationProvider>
-                  <Typography variant="subtitle1" color="grey">
-                    to
-                  </Typography>
-                  <LocalizationProvider dateAdapter={AdapterDateFns}>
-                    <DatePicker
-                      slotProps={{ textField: { size: "small" } }}
-                      s
-                    />
-                  </LocalizationProvider>
-                </Box>
-              </FormControl>
-            </Box>
-            <Box
-              display="flex"
-              gap={2}
-              sx={{
-                flexDirection: {
-                  xs: "column",
-                  sm: "row",
-                },
-              }}
-            ></Box>
-          </Box>
-
-          <Box
-            component={"fieldset"}
-            sx={{
-              borderColor: "#E7EBF1",
-              border: "2px solid grey",
-              borderRadius: 2,
-              mt: 2,
-            }}
-          >
-            <legend style={{ color: "grey" }}>Franchise Details</legend>
-            <Box
-              display="flex"
-              gap={2}
-              sx={{
-                flexDirection: {
-                  xs: "column",
-                  sm: "row",
-                },
-              }}
-            >
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Type of Franchise"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.tpfrnch}
-                inputProps={{ readOnly: true }}
-              />
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="Kind of Business"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.kob}
-                inputProps={{ readOnly: true }}
-              />
-            </Box>
-
-            <Box
-              display="flex"
-              gap={2}
-              sx={{
-                flexDirection: {
-                  xs: "column",
-                  sm: "row",
-                },
-              }}
-            >
-              <TextField
-                disabled={disable}
-                margin="dense"
-                label="TODA"
-                type="text"
-                fullWidth
-                variant="outlined"
-                required
-                value={clientDetails?.toc2}
-                inputProps={{ readOnly: true }}
-              />
-              <TextField
-                disabled={true}
-                margin="dense"
-                label="Route"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={"San Pablo City"}
-                inputProps={{ readOnly: true }}
-              />
-            </Box>
-
-            <TextField
-              disabled={disable}
-              margin="dense"
-              label="Remarks"
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-              value={clientDetails?.remarks}
-              inputProps={{ readOnly: true }}
-            />
-            <TextField
-              disabled={disable}
-              margin="dense"
-              label="Complaints"
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-              value={clientDetails?.complaint}
-              inputProps={{ readOnly: true }}
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            disabled={disable}
-            onClick={() => onClose(false)}
-            color="inherit"
-            sx={{ mb: 1 }}
-          >
+      actions={
+        <Box pb={1} mr={2}>
+          <Button disabled={disable}>
+            <Typography component={"span"}>Transfer</Typography>
+          </Button>
+          <Button disabled={disable}>
             <Typography>Update</Typography>
           </Button>
-          <Button type="submit" disabled={disable} sx={{ mr: 1, mb: 1 }}>
-            {disable && <CircularProgress size={16} color="inherit" />}{" "}
-            <Typography component={"span"} ml={1}>
-              {disable ? "Loading..." : "Transfer"}
-            </Typography>
-          </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
+        </Box>
+      }
+    >
+      <FlexRow>
+        <OutlinedTextField
+          label="MTOP"
+          readOnly={true}
+          value={clientDetails?.mtop}
+          sx={{ maxWidth: 250 }}
+        />
+
+        <FormControl margin="dense" focused>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker label="Date Renewal" readOnly />
+          </LocalizationProvider>
+        </FormControl>
+      </FlexRow>
+
+      <Fieldset legend="Owner's Information">
+        <FlexRow>
+          <OutlinedTextField
+            label="Firstname"
+            readOnly={true}
+            value={clientDetails?.fname}
+          />
+          <OutlinedTextField
+            label="MI"
+            value={clientDetails?.mi}
+            readOnly={true}
+          />
+          <OutlinedTextField
+            label="Lastname"
+            value={clientDetails?.lname}
+            readOnly={true}
+          />
+        </FlexRow>
+        <FlexRow>
+          <OutlinedTextField
+            label="Address"
+            value={clientDetails?.address}
+            readOnly={true}
+          />
+          <OutlinedTextField
+            label="Contact number"
+            value={clientDetails?.contact}
+            readOnly={true}
+          />
+        </FlexRow>
+      </Fieldset>
+
+      <Fieldset legend="Driver's Information">
+        <FlexRow>
+          <OutlinedTextField
+            label="Fullname"
+            value={clientDetails?.drivername}
+            readOnly={true}
+          />
+          <OutlinedTextField
+            label="Contact number"
+            value={clientDetails?.contact2}
+            readOnly={true}
+          />
+        </FlexRow>
+        <OutlinedTextField
+          label="Address"
+          value={clientDetails?.driveraddress}
+          readOnly={true}
+        />
+      </Fieldset>
+
+      <Fieldset legend="Vehicle's Information">
+        <FlexRow>
+          <OutlinedTextField
+            label="Model"
+            value={clientDetails?.model}
+            readOnly={true}
+          />
+          <OutlinedTextField
+            readOnly={true}
+            label="Plate No."
+            value={clientDetails?.plateno}
+          />
+        </FlexRow>
+        <FlexRow>
+          <OutlinedTextField
+            label="Motor No."
+            value={clientDetails?.motorno}
+            readOnly={true}
+          />
+          <OutlinedTextField
+            label="Stroke"
+            value={clientDetails?.stroke}
+            readOnly={true}
+          />
+        </FlexRow>
+        <FlexRow>
+          <OutlinedTextField
+            label="Chassis No."
+            value={clientDetails?.chassisno}
+            readOnly={true}
+          />
+          <OutlinedTextField
+            label="Fuel DISP.(cc)"
+            value={clientDetails?.fueldisp}
+            readOnly={true}
+          />
+        </FlexRow>
+        <FlexRow>
+          <OutlinedTextField
+            label="OR No."
+            value={clientDetails?.or}
+            readOnly={true}
+          />
+          <OutlinedTextField
+            label="CR No."
+            value={clientDetails?.cr}
+            readOnly={true}
+          />
+        </FlexRow>
+        <FlexRow>
+          <OutlinedTextField
+            label="TPL Provider"
+            value={clientDetails?.tplprovider}
+            readOnly={true}
+          />
+
+          <FormControl margin="dense" fullWidth>
+            <Box
+              component={"fieldset"}
+              display="flex"
+              gap={1}
+              alignItems="center"
+              borderRadius={1}
+              border="1px solid lightgrey"
+            >
+              <legend style={{ color: "gray" }}>TPL Effectivity</legend>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker slotProps={{ textField: { size: "small" } }} />
+              </LocalizationProvider>
+              <Typography variant="subtitle1" color="grey">
+                to
+              </Typography>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker slotProps={{ textField: { size: "small" } }} s />
+              </LocalizationProvider>
+            </Box>
+          </FormControl>
+        </FlexRow>
+      </Fieldset>
+
+      <Fieldset legend="Franchise Details">
+        <FlexRow>
+          <OutlinedTextField
+            label="Type of Franchise"
+            value={clientDetails?.tpfrnch}
+            readOnly={true}
+          />
+          <OutlinedTextField
+            label="Kind of Business"
+            value={clientDetails?.kob}
+            readOnly={true}
+          />
+        </FlexRow>
+
+        <FlexRow>
+          <OutlinedTextField
+            label="TODA"
+            value={clientDetails?.toc2}
+            readOnly={true}
+          />
+          <OutlinedTextField
+            label="Route"
+            value={"San Pablo City"}
+            readOnly={true}
+          />
+        </FlexRow>
+
+        <OutlinedTextField
+          label="Remarks"
+          value={clientDetails?.remarks}
+          readOnly={true}
+        />
+        <OutlinedTextField
+          label="Complaints"
+          value={clientDetails?.complaint}
+          readOnly={true}
+        />
+      </Fieldset>
+    </DialogForm>
   );
 };
 
