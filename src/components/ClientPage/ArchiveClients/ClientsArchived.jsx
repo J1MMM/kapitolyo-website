@@ -8,29 +8,65 @@ import Helper from "../helper";
 
 const ClientArchived = () => {
   const axiosPrivate = useAxiosPrivate();
-  const { rows } = useData();
+  const { archivedFranchises, setArchivedFranchises } = useData();
   const [clientDetails, setClientDetails] = useState();
 
   const [snack, setSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [resMsg, setResMsg] = useState("");
 
+  const [isEmpty, setIsEmpty] = useState(false);
   const [noResponse, setNoResponse] = useState(false);
   const [clientInfo, setClientInfo] = useState(false);
 
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(50);
   const [totalRows, setTotalRows] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    setIsLoading(true);
+    const fetchData = async () => {
+      try {
+        const response = await axiosPrivate.get("/franchise/archive");
+        console.log(response.data.rows);
+        if (response.data?.rows.length == 0) {
+          setIsEmpty(true);
+        }
+        setTotalRows(response.data?.totalRows);
+        setArchivedFranchises(() => {
+          return response.data?.rows.map((data) => {
+            return Helper.createClientsData(
+              data._id,
+              data.MTOP,
+              data.LASTNAME,
+              data["FIRST NAME"],
+              data.MI,
+              data.ADDRESS,
+              data["CONTACT NO."],
+              data["CONTACT NO.2"],
+              data["TO+C2+H1:H4"],
+              data["DRIVER'S NAME"],
+              data["DRIVER'S ADDRESS"],
+              data["O.R."],
+              data["C.R."],
+              data["DRIVER'S LICENSE NO."],
+              data["MODEL"],
+              data["MOTOR NO."],
+              data["CHASSIS NO."],
+              data["PLATE NO"],
+              data["STROKE"],
+              new Date(data["DATE RENEWAL"]),
+              data["REMARKS"],
+              data["DATE RELEASE OF ST/TP"],
+              data["COMPLAINT"]
+            );
+          });
+        });
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-    const fetchData = async () => {};
-    if (rows.length == 0) {
-      fetchData();
-    }
-    setIsLoading(false);
+    fetchData();
   }, []);
 
   function countTrueValues(obj) {
@@ -44,7 +80,7 @@ const ClientArchived = () => {
   }
 
   const getClientDetails = (id) => {
-    const foundClient = rows.find((v) => v.id == id);
+    const foundClient = archivedFranchises.find((v) => v.id == id);
     setClientDetails(foundClient);
     console.log(foundClient);
   };
@@ -62,7 +98,7 @@ const ClientArchived = () => {
       >
         <DataTable
           columns={Helper.clientsColumns}
-          rows={[]}
+          rows={archivedFranchises}
           rowCount={totalRows}
           onCellDoubleClick={(e) => handleRowDoubleClick(e)}
           onFilterModelChange={() => setPage(0)}
@@ -73,7 +109,7 @@ const ClientArchived = () => {
           onStateChange={(e) =>
             setTotalRows(countTrueValues(e?.visibleRowsLookup))
           }
-          loading={false}
+          loading={archivedFranchises.length == 0 && !isEmpty}
           page={page}
           pageSize={pageSize}
         />
@@ -86,6 +122,8 @@ const ClientArchived = () => {
         setSeverity={setSeverity}
         setSnack={setSnack}
         clientDetails={clientDetails}
+        archiveMode={true}
+        printable={false}
       />
     </>
   );

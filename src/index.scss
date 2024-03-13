@@ -157,6 +157,10 @@ body {
 .react-calendar__tile--active:enabled:focus {
   background: #150187;
 }
+.MuiDialog-paper{
+
+  &::-webkit-scrollbar{display: none}
+}
 
 .react-calendar__viewContainer {
   padding: 16px;

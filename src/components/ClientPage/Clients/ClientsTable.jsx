@@ -3,15 +3,15 @@ import React, { useEffect, useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useData from "../../../hooks/useData";
 import ClientInfo from "./ClientInfo";
-import AddClientForm from "./AddClientForm";
 import TableLayout from "../../common/ui/TableLayout";
 import helper from "../helper";
 import ContainedButton from "../../common/ui/ContainedButton";
 import DataTable from "../../common/ui/DataTable";
+import AddFranchiseForm from "./AddFranchiseForm";
 
 const ClientsTable = () => {
   const axiosPrivate = useAxiosPrivate();
-  const { rows, setRows } = useData();
+  const { franchises, setFranchises } = useData();
   const [clientDetails, setClientDetails] = useState();
   const [snack, setSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
@@ -22,15 +22,18 @@ const ClientsTable = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(50);
   const [totalRows, setTotalRows] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isEmpty, setIsEmpty] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
     const fetchData = async () => {
       try {
-        const response = await axiosPrivate.get(`/franchise`);
+        const response = await axiosPrivate.get("/franchise");
+        console.log(response.data.rows);
+        if (response.data?.rows.length == 0) {
+          setIsEmpty(true);
+        }
         setTotalRows(response.data?.totalRows);
-        setRows(() => {
+        setFranchises(() => {
           return response.data?.rows.map((data) => {
             return helper.createClientsData(
               data._id,
@@ -52,7 +55,7 @@ const ClientsTable = () => {
               data["CHASSIS NO."],
               data["PLATE NO"],
               data["STROKE"],
-              data["DATE "],
+              new Date(data["DATE RENEWAL"]),
               data["REMARKS"],
               data["DATE RELEASE OF ST/TP"],
               data["COMPLAINT"]
@@ -64,14 +67,11 @@ const ClientsTable = () => {
       }
     };
 
-    if (rows.length == 0) {
-      fetchData();
-    }
-    setIsLoading(false);
+    fetchData();
   }, []);
 
   const getClientDetails = (id) => {
-    const foundClient = rows.find((v) => v.id == id);
+    const foundClient = franchises.find((v) => v.id == id);
     setClientDetails(foundClient);
   };
 
@@ -95,7 +95,7 @@ const ClientsTable = () => {
       >
         <DataTable
           columns={helper.clientsColumns}
-          rows={rows}
+          rows={franchises}
           rowCount={totalRows}
           page={page}
           pageSize={pageSize}
@@ -108,7 +108,7 @@ const ClientsTable = () => {
           onStateChange={(e) =>
             setTotalRows(helper.countTrueValues(e?.visibleRowsLookup))
           }
-          loading={isLoading}
+          loading={franchises.length == 0 && !isEmpty}
         />
       </TableLayout>
 
@@ -121,12 +121,13 @@ const ClientsTable = () => {
         clientDetails={clientDetails}
       />
 
-      <AddClientForm
+      <AddFranchiseForm
         open={addclient}
         onClose={setAddclient}
         setResMsg={setResMsg}
         setSeverity={setSeverity}
         setSnack={setSnack}
+        printable={false}
       />
     </>
   );

@@ -108,6 +108,7 @@ const UserArchive = () => {
       setSeverity("error");
       setSnack(true);
     }
+    setRestoreConfirmation(false);
     setSelectedRows([]);
   };
 
@@ -129,6 +130,7 @@ const UserArchive = () => {
       setSeverity("error");
       setSnack(true);
     }
+    setDeleteConfirmation(false);
     setSelectedRows([]);
   };
 
@@ -177,8 +179,9 @@ const UserArchive = () => {
                   Archived Users
                 </Typography>
                 <Chip
-                  label={`${userArchived?.length} ${userArchived.length <= 1 ? "User" : "Users"
-                    }`}
+                  label={`${userArchived?.length} ${
+                    userArchived.length <= 1 ? "User" : "Users"
+                  }`}
                   sx={{
                     fontFamily: "Poppins, sans-serif",
                     color: "primary.main",
@@ -310,10 +313,10 @@ const UserArchive = () => {
                         selectedRows.length === userArchived.length
                           ? []
                           : userArchived
-                            .map((user) =>
-                              Boolean(user.roles.SuperAdmin) ? null : user._id
-                            )
-                            .filter((user) => user)
+                              .map((user) =>
+                                Boolean(user.roles.SuperAdmin) ? null : user._id
+                              )
+                              .filter((user) => user)
                       )
                     }
                     size={mobileView ? "small" : "medium"}
@@ -470,9 +473,7 @@ const UserArchive = () => {
               <CircularProgress />
             </Box>
           )}
-          {isEmpty && (
-            <Empty message="No Archive Users Found" />
-          )}
+          {isEmpty && <Empty message="No Archive Users Found" />}
           <ConfirmationDialog
             title={`Restore Confirmation`}
             content={

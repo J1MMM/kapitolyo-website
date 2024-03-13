@@ -90,8 +90,12 @@ const AddUserDialog = ({
       } else {
         setResMsg("Request Failed");
       }
+
       setSeverity("error");
       setSnack(true);
+      setDisabled(false);
+
+      return;
     }
 
     setFname("");
