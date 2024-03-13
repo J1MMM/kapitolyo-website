@@ -56,12 +56,9 @@ const columns = [
     headerClassName: "data-grid-header",
     editable: false,
   },
-
 ];
 
-
 const ReleasedtctTable = () => {
-  const { classes, rows, setRows } = useData();
   const [snack, setSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [resMsg, setResMsg] = useState("");
@@ -75,12 +72,8 @@ const ReleasedtctTable = () => {
   useEffect(() => {
     setIsLoading(true);
 
-    const fetchData = async () => {
-
-    };
-    if (rows.length == 0) {
-      fetchData();
-    }
+    const fetchData = async () => {};
+    fetchData();
     setIsLoading(false);
   }, []);
 
@@ -103,7 +96,8 @@ const ReleasedtctTable = () => {
           <ContainedButton
             title="Add Ticket"
             onClick={() => setReleasedTCTInfo(true)}
-            icon={<Add sx={{ color: "#FFF" }} />} />
+            icon={<Add sx={{ color: "#FFF" }} />}
+          />
         }
       >
         <DataGrid
@@ -129,7 +123,6 @@ const ReleasedtctTable = () => {
           onStateChange={(e) =>
             setTotalRows(countTrueValues(e?.visibleRowsLookup))
           }
-          loading={rows?.length == 0}
           disableRowSelectionOnClick
           showCellVerticalBorder
           sx={{

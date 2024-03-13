@@ -130,7 +130,6 @@ const columns = [
     headerClassName: "data-grid-header",
     editable: false,
   },
-
 ];
 
 function createData(
@@ -187,7 +186,6 @@ function createData(
 
 const PaidTable = () => {
   const axiosPrivate = useAxiosPrivate();
-  const { rows } = useData();
 
   const [snack, setSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
@@ -205,11 +203,8 @@ const PaidTable = () => {
   useEffect(() => {
     setIsLoading(true);
 
-    const fetchData = async () => {
-    };
-    if (rows.length == 0) {
-      fetchData();
-    }
+    const fetchData = async () => {};
+    fetchData();
     setIsLoading(false);
   }, []);
 
@@ -248,7 +243,6 @@ const PaidTable = () => {
         />
       </TableLayout>
     </>
-
   );
 };
 
