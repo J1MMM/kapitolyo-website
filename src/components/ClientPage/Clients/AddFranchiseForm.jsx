@@ -2,16 +2,10 @@ import {
   Box,
   Button,
   CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
-  TextField,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -23,23 +17,84 @@ import DialogForm from "../../common/ui/DialogForm";
 import OutlinedTextField from "../../common/ui/OutlinedTextField";
 import FlexRow from "../../common/ui/FlexRow";
 import Fieldset from "../../common/ui/Fieldset";
+import {
+  useOwnerInformation,
+  useDriverInformation,
+  useVehicleInformation,
+  useFranchiseInformation,
+} from "../../../hooks/franchiseHooks";
 
-const AddFranchiseForm = ({
-  open,
-  onClose,
-  setSnack,
-  setSeverity,
-  setResMsg,
-  clientDetails,
-  printable,
-}) => {
+const AddFranchiseForm = ({ open, onClose, printable }) => {
   const axiosPrivate = useAxiosPrivate();
   const { franchises, availableMTOP, setAvailableMTOP } = useData();
   const [disable, setDisable] = useState(false);
   const [mtop, setMtop] = useState("");
+  const [dateRenewal, setdateRenewal] = useState(new Date());
+  const {
+    ownerFname,
+    setOwnerFname,
+    ownerLname,
+    setOwnerLname,
+    ownerMI,
+    setOwnerMI,
+    ownerAddress,
+    setOwnerAddress,
+    ownerContact,
+    setOwnerContact,
+  } = useOwnerInformation();
+  const {
+    driverFullname,
+    setDriverFullname,
+    driverAddress,
+    setDriverAddress,
+    driverContact,
+    setDriverContact,
+  } = useDriverInformation();
+  const {
+    model,
+    setModel,
+    plateno,
+    setPlateno,
+    motorno,
+    setMotorno,
+    stroke,
+    setStroke,
+    chasisno,
+    setChasisno,
+    fueldisp,
+    setFueldisp,
+    OR,
+    setOR,
+    CR,
+    setCR,
+    tplProvider,
+    setTplProvider,
+    tplDate1,
+    setTplDate1,
+    tplDate2,
+    setTplDate2,
+  } = useVehicleInformation();
+  const {
+    typeOfFranchise,
+    setTypeOfFranchise,
+    kindOfBusiness,
+    setKindOfBusiness,
+    toda,
+    setToda,
+    route,
+    setRoute,
+    remarks,
+    setRemarks,
+    complaints,
+    setComplaints,
+  } = useFranchiseInformation();
 
   const availableMtopEl = availableMTOP.map((mtop) => {
-    return <MenuItem value={mtop}>{mtop}</MenuItem>;
+    return (
+      <MenuItem key={mtop} value={mtop}>
+        {mtop}
+      </MenuItem>
+    );
   });
 
   return (
@@ -76,8 +131,11 @@ const AddFranchiseForm = ({
     >
       <FlexRow>
         <FormControl fullWidth margin="dense" sx={{ maxWidth: 250 }}>
-          <InputLabel id="gender">MTOP</InputLabel>
+          <InputLabel id="gender">
+            {availableMTOP.length == 0 ? "no MTOP available" : "MTOP"}
+          </InputLabel>
           <Select
+            disabled={availableMTOP.length == 0}
             label="MTOP"
             required
             fullWidth
@@ -90,7 +148,11 @@ const AddFranchiseForm = ({
 
         <FormControl margin="dense" focused>
           <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <DatePicker label="Date Renewal" readOnly />
+            <DatePicker
+              label="Date Renewal"
+              value={dateRenewal}
+              onChange={(date) => setdateRenewal(date)}
+            />
           </LocalizationProvider>
         </FormControl>
       </FlexRow>
@@ -106,7 +168,11 @@ const AddFranchiseForm = ({
             },
           }}
         >
-          <OutlinedTextField label="Firstname" />
+          <OutlinedTextField
+            label="Firstname"
+            value={ownerFname}
+            onChange={(e) => setOwnerFname(e.target.value)}
+          />
           <OutlinedTextField label="Middlename" />
           <OutlinedTextField label="Lastname" />
         </Box>
