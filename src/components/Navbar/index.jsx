@@ -15,9 +15,26 @@ import { Archive } from "@mui/icons-material";
 const Navbar = ({ navOpen }) => {
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
+  const { setAvailableMTOP } = useData();
   const isAdmin = Boolean(
     auth?.roles?.find((role) => role === ROLES_LIST.SuperAdmin)
   );
+
+  useEffect(() => {
+    const getAvailableMTOP = async () => {
+      try {
+        const response = await axiosPrivate.get("/franchise/available");
+        console.log(response.data);
+        if (response.data) {
+          setAvailableMTOP(response.data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getAvailableMTOP();
+  }, []);
 
   return (
     <div className="navbar">

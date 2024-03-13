@@ -1,24 +1,26 @@
-import useAuth from './useAuth';
-import axios from '../api/axios';
-import useData from './useData';
+import useAuth from "./useAuth";
+import axios from "../api/axios";
+import useData from "./useData";
 
 const UseLogout = () => {
-    const { setAuth } = useAuth();
-    const { setUsers, setStudents, setLessons, setLessonsArchived, setStudentsArchived, setTabpage, setClasses, setClassesArchived, setAllStudents } = useData();
+  const { setAuth } = useAuth();
+  const { setFranchises, setArchivedFranchises, setAvailableMTOP } = useData();
 
-    const logout = async () => {
-        setAuth({});
-        try {
-            const response = axios('/logout', {
-                withCredentials: true
-            })
-        } catch (error) {
-            console.error(error);
-        }
-
+  const logout = async () => {
+    setAuth({});
+    setFranchises([]);
+    setArchivedFranchises([]);
+    setAvailableMTOP([]);
+    try {
+      const response = axios("/logout", {
+        withCredentials: true,
+      });
+    } catch (error) {
+      console.error(error);
     }
+  };
 
-    return logout
-}
+  return logout;
+};
 
 export default UseLogout;

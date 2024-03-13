@@ -36,20 +36,24 @@ const AddViolators = ({
   setResMsg,
 }) => {
   const axiosPrivate = useAxiosPrivate();
-  const { setClasses } = useData();
+  const { franchises } = useData();
   const [disable, setDisable] = useState(false);
 
-  const handleSubmit = () => {
-
-  }
+  const handleSubmit = () => {};
 
   return (
-    <Dialog open={open} onClose={() => onClose(false)} disableAutoFocus maxWidth="md">
+    <Dialog
+      open={open}
+      onClose={() => onClose(false)}
+      disableAutoFocus
+      maxWidth="md"
+    >
       <form onSubmit={handleSubmit}>
-        <DialogTitle variant="h5" bgcolor="primary.main" color="#FFF">Add Violator</DialogTitle>
+        <DialogTitle variant="h5" bgcolor="primary.main" color="#FFF">
+          Add Violator
+        </DialogTitle>
         <Divider />
         <DialogContent>
-
           <FlexRow>
             <TextField
               disabled={disable}
@@ -60,13 +64,10 @@ const AddViolators = ({
             />
             <FormControl margin="dense">
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  label="Date of Appehension"
-                />
+                <DatePicker label="Date of Appehension" />
               </LocalizationProvider>
             </FormControl>
           </FlexRow>
-
 
           <Box
             display="flex"
@@ -78,8 +79,6 @@ const AddViolators = ({
               },
             }}
           >
-
-
             <TextField
               disabled={disable}
               margin="dense"

@@ -1,69 +1,29 @@
 import React, { useEffect, useState } from "react";
-import {
-  NavLink,
-  Navigate,
-  Outlet,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
-import "./style.scss";
+import { NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
-import { BsChevronDown, BsGraphUpArrow } from "react-icons/bs";
+import { BsGraphUpArrow } from "react-icons/bs";
 import useAuth from "../../hooks/useAuth";
 import {
-  Avatar,
   Box,
-  Button,
   Chip,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Divider,
   IconButton,
   ListItemIcon,
-  ListItemText,
   Menu,
   MenuItem,
   Typography,
 } from "@mui/material";
-import {
-  AccountCircle,
-  ArrowBackIosNewSharp,
-  ArrowCircleDownSharp,
-  ArrowDownward,
-  ArrowDownwardSharp,
-  ArrowDropDown,
-  CloseRounded,
-  ContentCut,
-  KeyboardArrowDown,
-  Logout,
-  MenuBookOutlined,
-  MenuOutlined,
-  MenuRounded,
-  MenuSharp,
-  MiscellaneousServicesOutlined,
-  PersonAdd,
-  VisibilityOff,
-} from "@mui/icons-material";
-import { FiHome, FiLogOut, FiUser, FiUsers } from "react-icons/fi";
-import {
-  HiOutlineArchiveBox,
-  HiOutlineUserGroup,
-  HiUser,
-  HiUsers,
-} from "react-icons/hi2";
-import { GrUserAdd } from "react-icons/gr";
+import { CloseRounded, Logout, MenuRounded } from "@mui/icons-material";
+import { FiLogOut, FiUser, FiUsers } from "react-icons/fi";
+import { HiOutlineArchiveBox } from "react-icons/hi2";
 import UseLogout from "../../hooks/useLogout";
 import ROLES_LIST from "../common/data/ROLES_LIST";
 import UserAvatar from "../common/ui/UserAvatar";
 import ConfirmationDialog from "../common/ui/ConfirmationDialog";
 import Logo1 from "../../assets/images/logo1.png";
 import Logo2 from "../../assets/images/logo2.png";
-import { SiGoogleclassroom } from "react-icons/si";
 import { PiUserList } from "react-icons/pi";
 import { RiFolderWarningLine } from "react-icons/ri";
+import "./style.scss";
 
 const Layout = () => {
   const { auth } = useAuth();
@@ -73,7 +33,6 @@ const Layout = () => {
   const [headerShadow, setHeaderShadow] = useState(false);
   const fullname = auth?.fullname || undefined;
   const email = auth?.email || undefined;
-  // menu
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -86,6 +45,7 @@ const Layout = () => {
 
   const signout = async () => {
     await logout();
+    setOpenDialog(false);
     navigate("/login", { replace: true });
   };
 
