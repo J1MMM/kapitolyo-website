@@ -43,8 +43,8 @@ const ClientInfo = ({ open, onClose, clientDetails, archiveMode }) => {
       const response = await axiosPrivate.patch("/franchise", { id });
       console.log(response.data);
       if (response.data) {
-        insertNewMTOP(clientDetails?.mtop);
         setFranchises((prev) => prev.filter((franchise) => franchise.id != id));
+        insertNewMTOP(clientDetails?.mtop);
         onClose(false);
         setDropConfirm(false);
         setAlertSeverity("success");

@@ -10,7 +10,6 @@ import AddViolators from "./AddViolatorForm";
 
 const ViolationsTable = () => {
   const axiosPrivate = useAxiosPrivate();
-  const { classes, rows, setRows } = useData();
   const [snack, setSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [resMsg, setResMsg] = useState("");
@@ -25,12 +24,8 @@ const ViolationsTable = () => {
 
   useEffect(() => {
     setIsLoading(true);
-    const fetchData = async () => {
-
-    };
-    if (rows.length == 0) {
-      fetchData();
-    }
+    const fetchData = async () => {};
+    fetchData();
     setIsLoading(false);
   }, []);
 
