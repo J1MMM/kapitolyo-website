@@ -173,43 +173,95 @@ const AddFranchiseForm = ({ open, onClose, printable }) => {
             value={ownerFname}
             onChange={(e) => setOwnerFname(e.target.value)}
           />
-          <OutlinedTextField label="Middlename" />
-          <OutlinedTextField label="Lastname" />
+          <OutlinedTextField 
+          label="Middlename" 
+          value={ownerMI}
+          onChange={(e) => setOwnerMI(e.target.value)}
+          />
+
+          <OutlinedTextField 
+          label="Lastname" 
+          value={ownerLname}
+          onChange={(e) => setOwnerLname(e.target.value)}
+          />
         </Box>
 
         <FlexRow>
-          <OutlinedTextField label="Address" />
-          <OutlinedTextField label="Contact Number" />
+          <OutlinedTextField 
+          label="Address" 
+          value={ownerAddress}
+          onChange={(e) => setOwnerAddress(e.target.value)}
+          />
+          <OutlinedTextField label="Contact Number" 
+          value={ownerContact}
+          onChange={(e) => setOwnerContact(e.target.value)}
+          />
         </FlexRow>
       </Fieldset>
 
       <Fieldset legend="Driver's Information">
         <FlexRow>
-          <OutlinedTextField label="Fullname" />
-          <OutlinedTextField label="Contact Number" />
+          <OutlinedTextField label="Fullname" 
+          value={driverFullname}
+          onChange={(e) => setDriverFullname(e.target.value)}
+          />
+          <OutlinedTextField label="Contact Number" 
+          value={driverContact}
+          onChange={(e) => setDriverContact(e.target.value)}
+          />
         </FlexRow>
 
-        <OutlinedTextField label="Address" />
+        <OutlinedTextField label="Address" 
+        value={driverAddress}
+        onChange={(e) => setDriverAddress(e.target.value)}
+        />
       </Fieldset>
 
       <Fieldset legend="Vehicle's Information">
         <FlexRow>
-          <OutlinedTextField label="Model" />
-          <OutlinedTextField label="Plate No." />
+          <OutlinedTextField label="Model" 
+          value={model}
+          onChange={(e) => setModel(e.target.value)}
+          />
+          <OutlinedTextField 
+          label="Plate No." 
+          value={plateno}
+          onChange={(e) => setPlateno(e.target.value)}
+          />
         </FlexRow>
 
         <FlexRow>
-          <OutlinedTextField label="Motor No." />
-          <OutlinedTextField label="Stroke" />
+          <OutlinedTextField label="Motor No." 
+          value={motorno}
+          onChange={(e) => setMotorno(e.target.value)}
+          />
+          <OutlinedTextField label="Stroke" 
+          value={stroke}
+          onChange={(e) => setStroke(e.target.value)}
+          />
         </FlexRow>
 
         <FlexRow>
-          <OutlinedTextField label="Chassis No." />
-          <OutlinedTextField label="Fuel DISP.(cc)" />
+          <OutlinedTextField label="Chassis No." 
+          value={chasisno}
+          onChange={(e) => setChasisno(e.target.value)}
+          />
+          <OutlinedTextField label="Fuel DISP.(cc)" 
+          value={fueldisp}
+          onChange={(e) => setFueldisp(e.target.value)}
+          />
         </FlexRow>
         <FlexRow>
-          <OutlinedTextField label="OR No." />
-          <OutlinedTextField label="CR No." />
+          <OutlinedTextField 
+          label="OR No." 
+          value={OR}
+          onChange={(e) => setOR(e.target.value)}
+          />
+          <OutlinedTextField 
+          label="CR No." 
+          value={CR}
+          onChange={(e) => setCR(e.target.value)}
+          />
         </FlexRow>
 
         <Box
@@ -223,7 +275,11 @@ const AddFranchiseForm = ({ open, onClose, printable }) => {
             },
           }}
         >
-          <OutlinedTextField label="TPL Provider" />
+          <OutlinedTextField 
+          label="TPL Provider" 
+          value={tplProvider}
+          onChange={(e) => setTplProvider(e.target.value)}
+          />
 
           <FormControl margin="dense" fullWidth>
             <Box
@@ -236,13 +292,21 @@ const AddFranchiseForm = ({ open, onClose, printable }) => {
             >
               <legend style={{ color: "gray" }}>TPL Effectivity</legend>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker slotProps={{ textField: { size: "small" } }} />
+                <DatePicker 
+                slotProps={{ textField: { size: "small" } }} 
+                value={tplDate1}
+                onChange={(date) => setTplDate1(date)}
+                />
               </LocalizationProvider>
               <Typography variant="subtitle1" color="grey">
                 to
               </Typography>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker slotProps={{ textField: { size: "small" } }} s />
+                <DatePicker 
+                slotProps={{ textField: { size: "small" } }}
+                value={tplDate2}
+                onChange={(date) => setTplDate2(date)}
+                />
               </LocalizationProvider>
             </Box>
           </FormControl>
@@ -250,17 +314,38 @@ const AddFranchiseForm = ({ open, onClose, printable }) => {
       </Fieldset>
       <Fieldset legend="Franchise Details">
         <FlexRow>
-          <OutlinedTextField label="Type of Franchise" />
-          <OutlinedTextField label="Kind of Business" />
+          <OutlinedTextField 
+          label="Type of Franchise" 
+          value={typeOfFranchise}
+          onChange={(e) => setTypeOfFranchise(e.target.value)}
+          />
+          <OutlinedTextField 
+          label="Kind of Business" 
+          value={kindOfBusiness}
+          onChange={(e) => setKindOfBusiness(e.target.value)}
+          />
         </FlexRow>
 
         <FlexRow>
-          <OutlinedTextField label="TODA" />
-          <OutlinedTextField label="Route" />
+          <OutlinedTextField label="TODA" 
+          value={toda}
+          onChange={(e) => setToda(e.target.value)} 
+          />
+          <OutlinedTextField 
+          label="Route" 
+          value={route}
+          onChange={(e) => setRoute(e.target.value)}
+          />
         </FlexRow>
 
-        <OutlinedTextField label="Remarks" />
-        <OutlinedTextField label="Complaints" />
+        <OutlinedTextField label="Remarks"          
+        value={remarks}
+        onChange={(e) => setRemarks(e.target.value)}
+        />
+        <OutlinedTextField label="Complaints" 
+        value={complaints}
+        onChange={(e) => setComplaints(e.target.value)}
+        />
       </Fieldset>
     </DialogForm>
   );
