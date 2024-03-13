@@ -14,7 +14,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useData from "../../../hooks/useData";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -34,9 +34,8 @@ const AddFranchiseForm = ({
   printable,
 }) => {
   const axiosPrivate = useAxiosPrivate();
-  const { franchises, availableMTOP } = useData();
+  const { franchises, availableMTOP, setAvailableMTOP } = useData();
   const [disable, setDisable] = useState(false);
-
   const [mtop, setMtop] = useState("");
 
   const availableMtopEl = availableMTOP.map((mtop) => {

@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, Typography } from "@mui/material";
+import { Box, Button, FormControl, Snackbar, Typography } from "@mui/material";
 import React, { useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useData from "../../../hooks/useData";
@@ -10,12 +10,31 @@ import Fieldset from "../../common/ui/Fieldset";
 import DialogForm from "../../common/ui/DialogForm";
 import ConfirmationDialog from "../../common/ui/ConfirmationDialog";
 import helper from "../helper";
+import SnackBar from "../../common/ui/SnackBar";
 
 const ClientInfo = ({ open, onClose, clientDetails, archiveMode }) => {
   const axiosPrivate = useAxiosPrivate();
   const [disable, setDisable] = useState(false);
   const [dropConfirm, setDropConfirm] = useState(false);
-  const { setFranchises, setArchivedFranchises, setAvailableMTOP } = useData();
+  const {
+    setFranchises,
+    setArchivedFranchises,
+    setAvailableMTOP,
+    availableMTOP,
+  } = useData();
+  const [alertShown, setAlertShown] = useState(false);
+  const [alertMsg, setAlertMsg] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("success");
+
+  const insertNewMTOP = (newMTOP) => {
+    const updatedMTOPs = [...availableMTOP, newMTOP];
+    updatedMTOPs.sort((a, b) => {
+      const mtopA = parseInt(a);
+      const mtopB = parseInt(b);
+      return mtopA - mtopB;
+    });
+    setAvailableMTOP(updatedMTOPs);
+  };
 
   const handleFranchiseRevoke = async () => {
     setDisable(true);
@@ -24,14 +43,21 @@ const ClientInfo = ({ open, onClose, clientDetails, archiveMode }) => {
       const response = await axiosPrivate.patch("/franchise", { id });
       console.log(response.data);
       if (response.data) {
+        insertNewMTOP(clientDetails?.mtop);
         setFranchises((prev) => prev.filter((franchise) => franchise.id != id));
-        setAvailableMTOP((prev) => [...prev, clientDetails?.mtop]);
-        setDropConfirm(false);
         onClose(false);
+        setDropConfirm(false);
+        setAlertSeverity("success");
+        setAlertMsg(
+          "Franchise successfully archived. The MTOP is now available for reassignment."
+        );
       }
     } catch (error) {
+      setAlertSeverity("error");
+      setAlertMsg("Failed to archive franchise. Please try again later.");
       console.log(error);
     }
+    setAlertShown(true);
     setDisable(false);
   };
 
@@ -272,6 +298,13 @@ const ClientInfo = ({ open, onClose, clientDetails, archiveMode }) => {
         title="Confirm Revocation"
         content="Are you sure you want to revoke this franchise? This action cannot be undone. Revoking this franchise will make its MTOP available for another client."
         disabled={disable}
+      />
+
+      <SnackBar
+        open={alertShown}
+        onClose={setAlertShown}
+        msg={alertMsg}
+        severity={alertSeverity}
       />
     </>
   );
