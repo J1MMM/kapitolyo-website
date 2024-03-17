@@ -24,21 +24,24 @@ import Logo2 from "../../assets/images/logo2.png";
 import { PiUserList } from "react-icons/pi";
 import { RiFolderWarningLine } from "react-icons/ri";
 import "./style.scss";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import useFranchises from "../../api/franchises";
+import useMTOP from "../../api/mtop";
+import useArchivedFranchises from "../../api/archiveFranchises";
 
 const Layout = () => {
+  const axiosPrivate = useAxiosPrivate();
+  const { franchises } = useFranchises();
+  const { availableMTOP } = useMTOP();
+  const { archivedFanchises } = useArchivedFranchises();
   const { auth } = useAuth();
-
   const [navOpen, setNavOpen] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [headerShadow, setHeaderShadow] = useState(false);
-  const fullname = auth?.fullname || undefined;
-  const email = auth?.email || undefined;
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-
   const navigate = useNavigate();
   const logout = UseLogout();
-
   const isAdmin = Boolean(
     auth?.roles?.find((role) => role === ROLES_LIST.SuperAdmin)
   );
@@ -47,13 +50,6 @@ const Layout = () => {
     await logout();
     setOpenDialog(false);
     navigate("/login", { replace: true });
-  };
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
   };
 
   useEffect(() => {
@@ -75,11 +71,13 @@ const Layout = () => {
   return (
     <div className="layout">
       <div className={headerShadow ? "header shadow" : "header"}>
+        <div className="header-tint" />
         <Box
           display="flex"
           alignItems="center"
           gap={2}
           boxSizing={"border-box"}
+          zIndex={2}
         >
           <IconButton
             onClick={() => setNavOpen((prev) => !prev)}
@@ -122,7 +120,7 @@ const Layout = () => {
 
         {/* mobile view nav  */}
         <IconButton
-          onClick={handleClick}
+          onClick={(e) => setAnchorEl(e.currentTarget)}
           sx={{
             display: {
               md: "none",
@@ -137,6 +135,7 @@ const Layout = () => {
         </IconButton>
 
         <Box
+          zIndex={2}
           mr={1}
           alignItems="center"
           sx={{
@@ -147,8 +146,8 @@ const Layout = () => {
             },
           }}
         >
-          {fullname && (
-            <IconButton onClick={handleClick}>
+          {auth?.fullname && (
+            <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
               <Box
                 display={"flex"}
                 justifyContent={"center"}
@@ -174,7 +173,7 @@ const Layout = () => {
               fontWeight={600}
               pb={-1}
             >
-              {fullname}
+              {auth?.fullname}
             </Typography>
             <Typography
               component={"span"}
@@ -182,7 +181,7 @@ const Layout = () => {
               fontSize={"x-small"}
               color={"#FFF"}
             >
-              {email}
+              {auth?.email}
             </Typography>
           </Box>
         </Box>
@@ -213,7 +212,7 @@ const Layout = () => {
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
-        onClose={handleClose}
+        onClose={() => setAnchorEl(null)}
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}
@@ -244,17 +243,17 @@ const Layout = () => {
           />
 
           <UserAvatar
-            fullname={auth.fullname}
+            fullname={auth?.fullname}
             height="70px"
             width="70px"
             border="3px solid #FFF"
             fontSize="2rem"
           />
           <Typography zIndex="2" variant="h6" mt={1}>
-            {fullname}
+            {auth?.fullname}
           </Typography>
           <Typography zIndex="2" variant="caption">
-            {email}
+            {auth?.email}
           </Typography>
 
           <Box mt={2} display="flex" alignItems="center" gap={1}>

@@ -1,7 +1,7 @@
 import { TextField } from "@mui/material";
 import React from "react";
 
-function OutlinedTextField({ label, value, onChange, readOnly, sx }) {
+function OutlinedTextField({ label, value, onChange, readOnly, sx, required }) {
   return (
     <TextField
       margin="dense"
@@ -12,7 +12,7 @@ function OutlinedTextField({ label, value, onChange, readOnly, sx }) {
       onChange={onChange}
       inputProps={{ readOnly: readOnly }}
       fullWidth
-      required
+      required={required}
       sx={sx}
     />
   );

@@ -42,7 +42,7 @@ const OverviewCard = ({ index, data }) => {
           </Box>
           <Box
             bgcolor={index == 0 ? "rgba(225,225,225,.3)" : "#ECEDFC"}
-            borderRadius="50%"
+            borderRadius={100}
             width={40}
             height={40}
             display="flex"
@@ -59,7 +59,7 @@ const OverviewCard = ({ index, data }) => {
           sx={{ mt: { xs: 0, sm: 3 } }}
           color={index == 0 ? "#FFF" : "#000"}
         >
-          {data.data.toLocaleString()}
+          {data.data}
         </Typography>
         <Typography
           component={"span"}

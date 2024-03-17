@@ -1,40 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import ROLES_LIST from "../common/data/ROLES_LIST";
-import { FiUsers, FiList, FiArchive } from "react-icons/fi";
+import { FiUserPlus, FiUsers } from "react-icons/fi";
 import { Typography } from "@mui/material";
 import { BsArchive, BsGraphUpArrow } from "react-icons/bs";
-import useData from "../../hooks/useData";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import "./style.scss";
-import { PiUserList, PiUserListLight } from "react-icons/pi";
+import { PiUserList } from "react-icons/pi";
 import { RiFolderWarningLine } from "react-icons/ri";
-import { Archive } from "@mui/icons-material";
 
 const Navbar = ({ navOpen }) => {
-  const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
-  const { setAvailableMTOP } = useData();
   const isAdmin = Boolean(
     auth?.roles?.find((role) => role === ROLES_LIST.SuperAdmin)
   );
-
-  useEffect(() => {
-    const getAvailableMTOP = async () => {
-      try {
-        const response = await axiosPrivate.get("/franchise/available");
-        console.log(response.data);
-        if (response.data) {
-          setAvailableMTOP(response.data);
-        }
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    getAvailableMTOP();
-  }, []);
 
   return (
     <div className="navbar">

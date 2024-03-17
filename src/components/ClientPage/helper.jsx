@@ -1,3 +1,38 @@
+import dayjs from "dayjs";
+
+const initialFranchiseDetails = {
+  id: "",
+  date: new Date(),
+  mtop: "",
+  lname: "",
+  fname: "",
+  mi: "",
+  address: "",
+  contact: "",
+  contact2: "",
+  toda: "",
+  drivername: "",
+  driveraddress: "",
+  or: "",
+  cr: "",
+  driverlicenseno: "",
+  model: "",
+  motorno: "",
+  chassisno: "",
+  plateno: "",
+  stroke: "",
+  remarks: "",
+  daterelease: null,
+  complaint: "",
+  tplDate1: null,
+  tplDate2: null,
+  typeofFranchise: "",
+  kindofBusiness: "",
+  fuelDisp: "",
+  tplProvider: "",
+  route: "",
+};
+
 function createClientsData(
   id,
   mtop,
@@ -7,7 +42,7 @@ function createClientsData(
   address,
   contact,
   contact2,
-  toc2,
+  toda,
   drivername,
   driveraddress,
   or,
@@ -32,7 +67,7 @@ function createClientsData(
     address,
     contact,
     contact2,
-    toc2,
+    toda,
     drivername,
     driveraddress,
     or,
@@ -107,7 +142,7 @@ const clientsColumns = [
     editable: false,
   },
   {
-    field: "toc2",
+    field: "toda",
     headerName: "TODA",
     width: 200,
     headerClassName: "data-grid-header",
@@ -193,6 +228,7 @@ const clientsColumns = [
     editable: false,
     align: "center",
     headerAlign: "center",
+    valueFormatter: (params) => dayjs(params.value).format("ddd, MMM D YYYY"),
   },
   {
     field: "remarks",
@@ -211,6 +247,8 @@ const clientsColumns = [
     editable: false,
     align: "center",
     headerAlign: "center",
+    valueFormatter: (params) =>
+      params.value ? dayjs(params.value).format("ddd, MMM D YYYY") : null,
   },
   {
     field: "complaint",
@@ -254,4 +292,5 @@ export default {
   clientsColumns,
   countTrueValues,
   parseCustomDate,
+  initialFranchiseDetails,
 };

@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 import { Link, ScrollRestoration, useNavigate } from "react-router-dom";
 import UseLogout from "../../hooks/useLogout";
 import useAuth from "../../hooks/useAuth";
-import { Box, Button, Grow, Paper, Slide, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grow,
+  List,
+  Paper,
+  Slide,
+  Typography,
+} from "@mui/material";
 import {
   HiOutlineUserGroup,
   HiMiniArrowSmallUp,
@@ -10,8 +19,10 @@ import {
 } from "react-icons/hi2";
 import {
   ArrowUpward,
+  FileCopyOutlined,
   FolderShared,
   FolderSharedOutlined,
+  ListAltOutlined,
   NewReleases,
   Repeat,
 } from "@mui/icons-material";
@@ -25,22 +36,19 @@ import "react-calendar/dist/Calendar.css";
 import BarGraph from "./BarGraph";
 import { RiEjectLine, RiUserAddLine } from "react-icons/ri";
 import Users from "../UsersAccountPage/Users";
-
+import { BsTicket, BsTicketDetailedFill } from "react-icons/bs";
+import useFranchises from "../../api/franchises";
 
 const Dashboard = () => {
-  const { classes } = useData();
   const { auth } = useAuth();
+  const { availableMTOP, franchises, franchisesLoading } = useData();
+
   const axiosPrivate = useAxiosPrivate();
 
   const [noServerRes, setNoServerRes] = useState(false);
-  const [studentsEmpty, setStudentsEmpty] = useState(false);
-
-  const isAdmin = Boolean(
-    auth?.roles?.find((role) => role === ROLES_LIST.SuperAdmin)
-  );
 
   useEffect(() => {
-    document.title = "TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
+    document.title = "Dashboard | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
     window.scrollTo(0, 0);
     let isMounted = true;
     const controller = new AbortController();
@@ -48,13 +56,10 @@ const Dashboard = () => {
     const getData = async () => {
       try {
       } catch (err) {
-        setNoServerRes(true);
         console.error(err);
       }
     };
-
     getData();
-
     return () => {
       isMounted = false;
       isMounted && controller.abort();
@@ -64,27 +69,37 @@ const Dashboard = () => {
   const cardData = [
     {
       title: "Registered Clients",
-      data: "10,789",
+      data: franchisesLoading ? (
+        <CircularProgress color="secondary" />
+      ) : (
+        franchises.length
+      ),
       icon: <HiOutlineUserGroup color={"#FFF"} size={20} />,
       subText: "Registered Clients in San Pablo City",
     },
     {
-      title: "For Renewal",
-      data: "5,482",
-      icon: <Repeat color={"#150187"} size={20} sx={{ color: "#150187" }} />,
-      subText: "total number of outdated farnchise",
+      title: "Available Franchises",
+      data: availableMTOP.length,
+      icon: (
+        <ListAltOutlined
+          color={"#1A237E"}
+          size={20}
+          sx={{ color: "#1A237E" }}
+        />
+      ),
+      subText: "Total count of available MTOP",
     },
     {
       title: "Recently Added",
       data: "187",
-      icon: <RiUserAddLine color={"#150187"} size={20} />,
+      icon: <RiUserAddLine color={"#1A237E"} size={20} />,
       subText: "clients that have been added recently",
     },
 
     {
       title: "Recently Revoked",
       data: "25",
-      icon: <PiWarningCircle color={"#150187"} size={20} />,
+      icon: <PiWarningCircle color={"#1A237E"} size={20} />,
       subText: "total count of clients revoked",
     },
   ];

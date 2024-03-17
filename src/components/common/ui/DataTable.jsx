@@ -41,7 +41,7 @@ const DataTable = ({
         height: "80vh",
         width: "100%",
         ".data-grid-header": {
-          bgcolor: "#150187",
+          bgcolor: "#1A237E",
           color: "#FFF",
           ".MuiDataGrid-columnHeaderTitle": {
             fontWeight: "bold",

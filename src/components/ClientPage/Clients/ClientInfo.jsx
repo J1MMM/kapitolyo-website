@@ -12,10 +12,19 @@ import ConfirmationDialog from "../../common/ui/ConfirmationDialog";
 import helper from "../helper";
 import SnackBar from "../../common/ui/SnackBar";
 
-const ClientInfo = ({ open, onClose, clientDetails, archiveMode }) => {
+const ClientInfo = ({
+  open,
+  onClose,
+  franchiseDetails,
+  archiveMode,
+  printable,
+}) => {
   const axiosPrivate = useAxiosPrivate();
   const [disable, setDisable] = useState(false);
   const [dropConfirm, setDropConfirm] = useState(false);
+  const [transferForm, setTransferForm] = useState(false);
+  const [updateForm, setUpdateForm] = useState(false);
+  const [readOnly, setReadOnly] = useState(true);
   const {
     setFranchises,
     setArchivedFranchises,
@@ -26,32 +35,18 @@ const ClientInfo = ({ open, onClose, clientDetails, archiveMode }) => {
   const [alertMsg, setAlertMsg] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("success");
 
-  const insertNewMTOP = (newMTOP) => {
-    const updatedMTOPs = [...availableMTOP, newMTOP];
-    updatedMTOPs.sort((a, b) => {
-      const mtopA = parseInt(a);
-      const mtopB = parseInt(b);
-      return mtopA - mtopB;
-    });
-    setAvailableMTOP(updatedMTOPs);
-  };
-
   const handleFranchiseRevoke = async () => {
     setDisable(true);
-    const id = clientDetails?.id;
+    const id = franchiseDetails?.id;
     try {
-      const response = await axiosPrivate.patch("/franchise", { id });
-      console.log(response.data);
-      if (response.data) {
-        setFranchises((prev) => prev.filter((franchise) => franchise.id != id));
-        insertNewMTOP(clientDetails?.mtop);
-        onClose(false);
-        setDropConfirm(false);
-        setAlertSeverity("success");
-        setAlertMsg(
-          "Franchise successfully archived. The MTOP is now available for reassignment."
-        );
-      }
+      await axiosPrivate.patch("/franchise", { id });
+      setFranchises((prev) => prev.filter((franchise) => franchise.id != id));
+      onClose(false);
+      setDropConfirm(false);
+      setAlertSeverity("success");
+      setAlertMsg(
+        "Franchise successfully archived. The MTOP is now available for reassignment."
+      );
     } catch (error) {
       setAlertSeverity("error");
       setAlertMsg("Failed to archive franchise. Please try again later.");
@@ -64,56 +59,81 @@ const ClientInfo = ({ open, onClose, clientDetails, archiveMode }) => {
   return (
     <>
       <DialogForm
-        achivedMode={archiveMode}
+        printable={printable}
         title="Client's Information"
         open={open}
         onClose={() => onClose(false)}
         actions={
           !archiveMode && (
-            <Box pb={2} mr={2} display="flex" gap={2}>
-              <Button
-                disabled={disable}
-                color="error"
-                size="small"
-                onClick={() => setDropConfirm(true)}
-                variant="outlined"
-              >
-                <Typography component={"span"}>DROP</Typography>
-              </Button>
-              <Button
-                disabled={disable}
-                color="primary"
-                size="small"
-                variant="outlined"
-              >
-                <Typography component={"span"}>Transfer</Typography>
-              </Button>
-              <Button
-                disabled={disable}
-                color="success"
-                size="small"
-                variant="outlined"
-              >
-                <Typography>Update</Typography>
-              </Button>
-            </Box>
+            <>
+              {transferForm && (
+                <>
+                  <Button disabled={disable}>Transfer</Button>
+                  <Button
+                    sx={{ color: "InactiveCaptionText" }}
+                    disabled={disable}
+                    onClick={() => setTransferForm(false)}
+                  >
+                    Cancel
+                  </Button>
+                </>
+              )}
+              {updateForm && (
+                <>
+                  <Button disabled={disable}>Update</Button>
+                  <Button
+                    sx={{ color: "InactiveCaptionText" }}
+                    disabled={disable}
+                    onClick={() => setUpdateForm(false)}
+                  >
+                    Cancel
+                  </Button>
+                </>
+              )}
+              {!transferForm && !updateForm && (
+                <>
+                  <Button
+                    color="error"
+                    disabled={disable}
+                    onClick={() => setDropConfirm(true)}
+                  >
+                    DROP
+                  </Button>
+                  <Button
+                    disabled={disable}
+                    onClick={() => {
+                      setReadOnly(false);
+                      setTransferForm(true);
+                    }}
+                  >
+                    Transfer
+                  </Button>
+                  <Button
+                    disabled={disable}
+                    onClick={() => setUpdateForm(true)}
+                  >
+                    Update
+                  </Button>
+                </>
+              )}
+            </>
           )
         }
       >
         <FlexRow>
           <OutlinedTextField
             label="MTOP"
-            readOnly={true}
-            value={clientDetails?.mtop}
+            value={franchiseDetails?.mtop}
             sx={{ maxWidth: 250 }}
+            readOnly={true}
           />
 
           <FormControl margin="dense" focused>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Date Renewal"
-                value={clientDetails?.date}
-                readOnly
+                value={franchiseDetails?.date}
+                readOnly={readOnly}
               />
             </LocalizationProvider>
           </FormControl>
@@ -123,30 +143,30 @@ const ClientInfo = ({ open, onClose, clientDetails, archiveMode }) => {
           <FlexRow>
             <OutlinedTextField
               label="Firstname"
-              readOnly={true}
-              value={clientDetails?.fname}
+              readOnly={readOnly}
+              value={franchiseDetails?.fname}
             />
             <OutlinedTextField
               label="MI"
-              value={clientDetails?.mi}
-              readOnly={true}
+              value={franchiseDetails?.mi}
+              readOnly={readOnly}
             />
             <OutlinedTextField
               label="Lastname"
-              value={clientDetails?.lname}
-              readOnly={true}
+              value={franchiseDetails?.lname}
+              readOnly={readOnly}
             />
           </FlexRow>
           <FlexRow>
             <OutlinedTextField
               label="Address"
-              value={clientDetails?.address}
-              readOnly={true}
+              value={franchiseDetails?.address}
+              readOnly={readOnly}
             />
             <OutlinedTextField
               label="Contact number"
-              value={clientDetails?.contact}
-              readOnly={true}
+              value={franchiseDetails?.contact}
+              readOnly={readOnly}
             />
           </FlexRow>
         </Fieldset>
@@ -155,19 +175,19 @@ const ClientInfo = ({ open, onClose, clientDetails, archiveMode }) => {
           <FlexRow>
             <OutlinedTextField
               label="Fullname"
-              value={clientDetails?.drivername}
-              readOnly={true}
+              value={franchiseDetails?.drivername}
+              readOnly={readOnly}
             />
             <OutlinedTextField
               label="Contact number"
-              value={clientDetails?.contact2}
-              readOnly={true}
+              value={franchiseDetails?.contact2}
+              readOnly={readOnly}
             />
           </FlexRow>
           <OutlinedTextField
             label="Address"
-            value={clientDetails?.driveraddress}
-            readOnly={true}
+            value={franchiseDetails?.driveraddress}
+            readOnly={readOnly}
           />
         </Fieldset>
 
@@ -175,56 +195,56 @@ const ClientInfo = ({ open, onClose, clientDetails, archiveMode }) => {
           <FlexRow>
             <OutlinedTextField
               label="Model"
-              value={clientDetails?.model}
-              readOnly={true}
+              value={franchiseDetails?.model}
+              readOnly={readOnly}
             />
             <OutlinedTextField
-              readOnly={true}
+              readOnly={readOnly}
               label="Plate No."
-              value={clientDetails?.plateno}
+              value={franchiseDetails?.plateno}
             />
           </FlexRow>
           <FlexRow>
             <OutlinedTextField
               label="Motor No."
-              value={clientDetails?.motorno}
-              readOnly={true}
+              value={franchiseDetails?.motorno}
+              readOnly={readOnly}
             />
             <OutlinedTextField
               label="Stroke"
-              value={clientDetails?.stroke}
-              readOnly={true}
+              value={franchiseDetails?.stroke}
+              readOnly={readOnly}
             />
           </FlexRow>
           <FlexRow>
             <OutlinedTextField
               label="Chassis No."
-              value={clientDetails?.chassisno}
-              readOnly={true}
+              value={franchiseDetails?.chassisno}
+              readOnly={readOnly}
             />
             <OutlinedTextField
               label="Fuel DISP.(cc)"
-              value={clientDetails?.fueldisp}
-              readOnly={true}
+              value={franchiseDetails?.fueldisp}
+              readOnly={readOnly}
             />
           </FlexRow>
           <FlexRow>
             <OutlinedTextField
               label="OR No."
-              value={clientDetails?.or}
-              readOnly={true}
+              value={franchiseDetails?.or}
+              readOnly={readOnly}
             />
             <OutlinedTextField
               label="CR No."
-              value={clientDetails?.cr}
-              readOnly={true}
+              value={franchiseDetails?.cr}
+              readOnly={readOnly}
             />
           </FlexRow>
           <FlexRow>
             <OutlinedTextField
               label="TPL Provider"
-              value={clientDetails?.tplprovider}
-              readOnly={true}
+              value={franchiseDetails?.tplprovider}
+              readOnly={readOnly}
             />
 
             <FormControl margin="dense" fullWidth>
@@ -238,13 +258,19 @@ const ClientInfo = ({ open, onClose, clientDetails, archiveMode }) => {
               >
                 <legend style={{ color: "gray" }}>TPL Effectivity</legend>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker slotProps={{ textField: { size: "small" } }} />
+                  <DatePicker
+                    slotProps={{ textField: { size: "small" } }}
+                    readOnly={readOnly}
+                  />
                 </LocalizationProvider>
                 <Typography variant="subtitle1" color="grey">
                   to
                 </Typography>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
-                  <DatePicker slotProps={{ textField: { size: "small" } }} s />
+                  <DatePicker
+                    slotProps={{ textField: { size: "small" } }}
+                    readOnly={readOnly}
+                  />
                 </LocalizationProvider>
               </Box>
             </FormControl>
@@ -255,38 +281,47 @@ const ClientInfo = ({ open, onClose, clientDetails, archiveMode }) => {
           <FlexRow>
             <OutlinedTextField
               label="Type of Franchise"
-              value={clientDetails?.tpfrnch}
-              readOnly={true}
+              value={franchiseDetails?.tpfrnch}
+              readOnly={readOnly}
             />
             <OutlinedTextField
               label="Kind of Business"
-              value={clientDetails?.kob}
-              readOnly={true}
+              value={franchiseDetails?.kob}
+              readOnly={readOnly}
             />
           </FlexRow>
 
           <FlexRow>
             <OutlinedTextField
               label="TODA"
-              value={clientDetails?.toc2}
-              readOnly={true}
+              value={franchiseDetails?.toc2}
+              readOnly={readOnly}
             />
             <OutlinedTextField
               label="Route"
               value={"San Pablo City"}
-              readOnly={true}
+              readOnly={readOnly}
             />
           </FlexRow>
-
-          <OutlinedTextField
-            label="Remarks"
-            value={clientDetails?.remarks}
-            readOnly={true}
-          />
+          <FlexRow>
+            <OutlinedTextField
+              label="Remarks"
+              value={franchiseDetails?.remarks}
+              readOnly={readOnly}
+            />
+            <FormControl margin="dense" fullWidth focused>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  label="Date Release of ST/TP"
+                  value={franchiseDetails?.daterelease}
+                />
+              </LocalizationProvider>
+            </FormControl>
+          </FlexRow>
           <OutlinedTextField
             label="Complaints"
-            value={clientDetails?.complaint}
-            readOnly={true}
+            value={franchiseDetails?.complaint}
+            readOnly={readOnly}
           />
         </Fieldset>
       </DialogForm>
