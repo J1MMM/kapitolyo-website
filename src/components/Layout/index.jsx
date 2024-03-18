@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useEffect, useState } from "react";
 import { NavLink, Navigate, Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import { BsGraphUpArrow } from "react-icons/bs";
@@ -10,6 +10,7 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
+  Slide,
   Typography,
 } from "@mui/material";
 import { CloseRounded, Logout, MenuRounded } from "@mui/icons-material";
@@ -28,16 +29,21 @@ import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useFranchises from "../../api/franchises";
 import useMTOP from "../../api/mtop";
 import useArchivedFranchises from "../../api/archiveFranchises";
+import useData from "../../hooks/useData";
+
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="left" ref={ref} {...props} />;
+});
 
 const Layout = () => {
   const axiosPrivate = useAxiosPrivate();
   const { franchises } = useFranchises();
   const { availableMTOP } = useMTOP();
   const { archivedFanchises } = useArchivedFranchises();
+  const { headerShadow } = useData();
   const { auth } = useAuth();
   const [navOpen, setNavOpen] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
-  const [headerShadow, setHeaderShadow] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
@@ -51,18 +57,6 @@ const Layout = () => {
     setOpenDialog(false);
     navigate("/login", { replace: true });
   };
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 0) {
-        setHeaderShadow(true);
-      } else {
-        setHeaderShadow(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  });
 
   if (!auth?.fullname) {
     return <Navigate to="/login" />;
@@ -124,6 +118,7 @@ const Layout = () => {
           sx={{
             display: {
               md: "none",
+              zIndex: 5,
             },
           }}
         >
@@ -202,7 +197,7 @@ const Layout = () => {
       <ConfirmationDialog
         title="Confirm Logout"
         confirm={signout}
-        content="Are you sure you want to Logout?"
+        content="Are you sure you want to log out? Logging out will end your current session and require you to sign in again to access your account."
         open={openDialog}
         setOpen={setOpenDialog}
       />
@@ -216,6 +211,7 @@ const Layout = () => {
         MenuListProps={{
           "aria-labelledby": "basic-button",
         }}
+        TransitionComponent={Transition}
       >
         <Box
           minWidth="250px"
@@ -233,6 +229,7 @@ const Layout = () => {
           }}
         >
           <Box
+            className="menu-cover"
             bgcolor="primary.main"
             width="100%"
             height="100px"
@@ -241,7 +238,7 @@ const Layout = () => {
             top="-8px"
             left="0"
           />
-
+          <div className="header-tint" />
           <UserAvatar
             fullname={auth?.fullname}
             height="70px"
@@ -276,7 +273,11 @@ const Layout = () => {
         </Box>
 
         <nav style={{ display: "none " }} className="navbar-nav menu-nav">
-          <NavLink to="/" className={"open mobile"}>
+          <NavLink
+            to="/"
+            className={"open mobile"}
+            onClick={() => setAnchorEl(null)}
+          >
             {isAdmin ? (
               <>
                 <FiUsers size={24} />
@@ -295,7 +296,11 @@ const Layout = () => {
           </NavLink>
 
           {!isAdmin && (
-            <NavLink to="clients" className={"open mobile"}>
+            <NavLink
+              to="clients"
+              className={"open mobile"}
+              onClick={() => setAnchorEl(null)}
+            >
               <PiUserList size={26} />
               <Typography component={"span"} className={"active"}>
                 Clients
@@ -303,7 +308,11 @@ const Layout = () => {
             </NavLink>
           )}
           {!isAdmin && (
-            <NavLink to="violations" className={"open mobile"}>
+            <NavLink
+              to="violations"
+              className={"open mobile"}
+              onClick={() => setAnchorEl(null)}
+            >
               <RiFolderWarningLine size={26} />
               <Typography component={"span"} className={"active"}>
                 Violations
@@ -311,7 +320,11 @@ const Layout = () => {
             </NavLink>
           )}
           {isAdmin && (
-            <NavLink to="user-archive" className={"open mobile"}>
+            <NavLink
+              to="user-archive"
+              className={"open mobile"}
+              onClick={() => setAnchorEl(null)}
+            >
               <HiOutlineArchiveBox size={26} />
               <Typography component={"span"} className={"active"}>
                 Archive
@@ -329,7 +342,10 @@ const Layout = () => {
               md: "flex",
             },
           }}
-          onClick={() => setOpenDialog(true)}
+          onClick={() => {
+            setOpenDialog(true);
+            setAnchorEl(null);
+          }}
         >
           <ListItemIcon sx={{ ml: 7 }}>
             <Logout />
@@ -340,7 +356,10 @@ const Layout = () => {
         <button
           style={{ display: "none" }}
           className="sign-out-btn menu-logout-btn"
-          onClick={() => setOpenDialog(true)}
+          onClick={() => {
+            setOpenDialog(true);
+            setAnchorEl(null);
+          }}
         >
           <FiLogOut size={22} />
           <span>Logout</span>

@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import ROLES_LIST from "../common/data/ROLES_LIST";
-import { FiUserPlus, FiUsers } from "react-icons/fi";
+import { FiUserPlus } from "react-icons/fi";
 import { Typography } from "@mui/material";
 import { BsArchive, BsGraphUpArrow } from "react-icons/bs";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
@@ -22,7 +22,7 @@ const Navbar = ({ navOpen }) => {
         <NavLink to="/" className={navOpen ? "open" : ""}>
           {isAdmin ? (
             <>
-              <FiUsers size={24} />
+              <FiUsers size={24} style={{ minWidth: 26 }} />
               <Typography
                 component={"span"}
                 className={navOpen ? "active" : ""}
@@ -32,7 +32,7 @@ const Navbar = ({ navOpen }) => {
             </>
           ) : (
             <>
-              <BsGraphUpArrow size={20} />
+              <BsGraphUpArrow size={20} style={{ minWidth: 26 }} />
               <Typography
                 component={"span"}
                 className={navOpen ? "active" : ""}
@@ -45,7 +45,7 @@ const Navbar = ({ navOpen }) => {
 
         {isAdmin && (
           <NavLink to={"user-archive"} className={navOpen ? "open" : ""}>
-            <BsArchive size={24} />
+            <BsArchive size={24} style={{ minWidth: 26 }} />
             <Typography component={"span"} className={navOpen ? "active" : ""}>
               Archived
             </Typography>
@@ -54,7 +54,7 @@ const Navbar = ({ navOpen }) => {
         {!isAdmin && (
           <>
             <NavLink to="clients" className={navOpen ? "open" : ""}>
-              <PiUserList size={26} />
+              <PiUserList size={26} style={{ minWidth: 26 }} />
               <Typography
                 component={"span"}
                 className={navOpen ? "active" : ""}
@@ -63,7 +63,7 @@ const Navbar = ({ navOpen }) => {
               </Typography>
             </NavLink>
             <NavLink to="violations" className={navOpen ? "open" : ""}>
-              <RiFolderWarningLine size={26} />
+              <RiFolderWarningLine size={26} style={{ minWidth: 26 }} />
               <Typography
                 component={"span"}
                 className={navOpen ? "active" : ""}

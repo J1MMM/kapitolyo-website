@@ -16,6 +16,8 @@ export const DataProvider = ({ children }) => {
   const [archivedFranchisesLoading, setArchivedFranchisesLoading] =
     useState(true);
 
+  const [headerShadow, setHeaderShadow] = useState(false);
+
   return (
     <DataContext.Provider
       value={{
@@ -35,6 +37,8 @@ export const DataProvider = ({ children }) => {
         setFranchisesLoading,
         archivedFranchisesLoading,
         setArchivedFranchisesLoading,
+        headerShadow,
+        setHeaderShadow,
       }}
     >
       {children}
