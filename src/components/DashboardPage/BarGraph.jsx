@@ -5,57 +5,58 @@ import { axisClasses } from "@mui/x-charts";
 const chartSetting = {
   yAxis: [
     {
-      label: "total count",
+      label: "count of clients",
     },
   ],
-  width: 650,
-  height: 370,
-
+  width: 900,
+  height: 400,
   sx: {
-    [`.${axisClasses.left} .${axisClasses.label}`]: {},
+    [`.${axisClasses.left} .${axisClasses.label}`]: {
+      // transform: "translate(-20px, 0)",
+    },
   },
 };
 const dataset = [
   {
-    london: 55,
-    paris: 90,
-    newYork: 20,
+    added: 55,
+    renewed: 90,
+    revoked: 20,
     month: "Mon",
   },
   {
-    london: 40,
-    paris: 70,
-    newYork: 30,
+    added: 40,
+    renewed: 70,
+    revoked: 30,
     month: "Tue",
   },
   {
-    london: 30,
-    paris: 53,
-    newYork: 23,
+    added: 30,
+    renewed: 53,
+    revoked: 23,
     month: "Wed",
   },
   {
-    london: 54,
-    paris: 70,
-    newYork: 11,
+    added: 54,
+    renewed: 70,
+    revoked: 11,
     month: "Thu",
   },
   {
-    london: 20,
-    paris: 69,
-    newYork: 7,
+    added: 20,
+    renewed: 69,
+    revoked: 7,
     month: "Fri",
   },
   {
-    london: 30,
-    paris: 63,
-    newYork: 19,
+    added: 30,
+    renewed: 63,
+    revoked: 19,
     month: "Sat",
   },
   {
-    london: 10,
-    paris: 60,
-    newYork: 8,
+    added: 10,
+    renewed: 60,
+    revoked: 8,
     month: "Sun",
   },
 ];
@@ -68,9 +69,24 @@ export default function BarGraph() {
       dataset={dataset}
       xAxis={[{ scaleType: "band", dataKey: "month" }]}
       series={[
-        { dataKey: "london", label: "Added Clients", valueFormatter },
-        { dataKey: "paris", label: "Renewed", valueFormatter },
-        { dataKey: "newYork", label: "Revoked", valueFormatter },
+        {
+          dataKey: "added",
+          label: "Added Clients",
+          valueFormatter,
+          color: "#4E79A7",
+        },
+        {
+          dataKey: "renewed",
+          label: "Renewed",
+          valueFormatter,
+          color: "#76B7B2",
+        },
+        {
+          dataKey: "revoked",
+          label: "Revoked",
+          valueFormatter,
+          color: "#E15759",
+        },
       ]}
       {...chartSetting}
     />

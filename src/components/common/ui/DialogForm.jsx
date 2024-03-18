@@ -7,14 +7,21 @@ import {
 } from "@mui/icons-material";
 import {
   Box,
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
+  DialogContentText,
   DialogTitle,
   Divider,
   IconButton,
+  Slide,
 } from "@mui/material";
-import React from "react";
+import React, { forwardRef, useEffect, useRef } from "react";
+
+const Transition = forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 function DialogForm({
   open,
@@ -22,43 +29,43 @@ function DialogForm({
   title,
   actions,
   children,
-  achivedMode,
   printable,
+  onSubmit,
 }) {
   return (
     <Dialog
+      scroll="paper"
+      id="client-info"
       open={open}
       disableAutoFocus
       maxWidth="md"
-      sx={{ "&::-webkit-scrollbar": { display: "none" } }}
+      TransitionComponent={Transition}
     >
-      <form>
-        <DialogTitle
-          variant="h5"
-          bgcolor="primary.main"
-          color="#FFF"
-          fontWeight={500}
-          display="flex"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          {title}
-
-          <Box>
-            {printable && (
-              <IconButton>
-                <PrintOutlined color="secondary" fontSize="large" />
-              </IconButton>
-            )}
-            <IconButton onClick={onClose}>
-              <CloseRounded color="secondary" fontSize="large" />
+      <DialogTitle
+        bgcolor="primary.main"
+        color="#FFF"
+        fontWeight={500}
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        {title}
+        <Box>
+          {printable && (
+            <IconButton>
+              <PrintOutlined color="secondary" fontSize="medium" />
             </IconButton>
-          </Box>
-        </DialogTitle>
-        <Divider />
-        <DialogContent>{children}</DialogContent>
-        <DialogActions>{actions}</DialogActions>
-      </form>
+          )}
+          <IconButton onClick={onClose}>
+            <CloseRounded color="secondary" fontSize="medium" />
+          </IconButton>
+        </Box>
+      </DialogTitle>
+      <Divider />
+      <DialogContent dividers>
+        <form onSubmit={onSubmit}>{children}</form>
+      </DialogContent>
+      <DialogActions>{actions}</DialogActions>
     </Dialog>
   );
 }

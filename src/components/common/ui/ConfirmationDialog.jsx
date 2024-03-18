@@ -37,7 +37,7 @@ const ConfirmationDialog = ({
         {title}
       </DialogTitle>
       <Divider />
-      <DialogContent component={"span"}>
+      <DialogContent component={"span"} dividers>
         <DialogContentText component={"span"} id="alert-dialog-description">
           <Alert
             component={"span"}
@@ -49,27 +49,22 @@ const ConfirmationDialog = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions component={"span"}>
-        <Box display="flex" gap={2} p={1} pt={0} pr={2} pb={2}>
+        <Box>
           <Button
             disabled={disabled}
             component={"span"}
-            size="small"
             onClick={() => setOpen(false)}
-            color="inherit"
-            variant="outlined"
             autoFocus
+            sx={{ color: "grey" }}
           >
             Cancel
           </Button>
           <Button
             disabled={disabled}
-            variant="outlined"
             component={"span"}
-            size="small"
             onClick={() => {
               confirm();
             }}
-            color="warning"
           >
             {disabled ? (
               <Box display="flex" alignItems="center" gap={2}>

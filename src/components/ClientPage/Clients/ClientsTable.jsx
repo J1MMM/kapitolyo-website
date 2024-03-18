@@ -12,10 +12,9 @@ import AddFranchiseForm from "./AddFranchiseForm";
 const ClientsTable = () => {
   const axiosPrivate = useAxiosPrivate();
   const { franchises, setFranchises } = useData();
-  const [clientDetails, setClientDetails] = useState();
-  const [snack, setSnack] = useState(false);
-  const [severity, setSeverity] = useState("success");
-  const [resMsg, setResMsg] = useState("");
+  const [franchiseDetails, setFranchiseDetails] = useState(
+    helper.initialFranchiseDetails
+  );
   const [noResponse, setNoResponse] = useState(false);
   const [clientInfo, setClientInfo] = useState(false);
   const [addclient, setAddclient] = useState(false);
@@ -24,60 +23,40 @@ const ClientsTable = () => {
   const [totalRows, setTotalRows] = useState(0);
   const [isEmpty, setIsEmpty] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axiosPrivate.get("/franchise");
-        console.log(response.data.rows);
-        if (response.data?.rows.length == 0) {
-          setIsEmpty(true);
-        }
-        setTotalRows(response.data?.totalRows);
-        setFranchises(() => {
-          return response.data?.rows.map((data) => {
-            return helper.createClientsData(
-              data._id,
-              data.MTOP,
-              data.LASTNAME,
-              data["FIRST NAME"],
-              data.MI,
-              data.ADDRESS,
-              data["CONTACT NO."],
-              data["CONTACT NO.2"],
-              data["TO+C2+H1:H4"],
-              data["DRIVER'S NAME"],
-              data["DRIVER'S ADDRESS"],
-              data["O.R."],
-              data["C.R."],
-              data["DRIVER'S LICENSE NO."],
-              data["MODEL"],
-              data["MOTOR NO."],
-              data["CHASSIS NO."],
-              data["PLATE NO"],
-              data["STROKE"],
-              new Date(data["DATE RENEWAL"]),
-              data["REMARKS"],
-              data["DATE RELEASE OF ST/TP"],
-              data["COMPLAINT"]
-            );
-          });
-        });
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  const getClientDetails = (id) => {
-    const foundClient = franchises.find((v) => v.id == id);
-    setClientDetails(foundClient);
-  };
-
   const handleRowDoubleClick = (e) => {
     setClientInfo(true);
-    getClientDetails(e.id);
+    const foundFranchise = franchises.find((v) => v.id == e.id);
+    console.log(foundFranchise);
+    setFranchiseDetails({
+      id: foundFranchise.id,
+      mtop: foundFranchise.mtop,
+      lname: foundFranchise.lname,
+      fname: foundFranchise.fname,
+      mi: foundFranchise.mi,
+      address: foundFranchise.address,
+      contact: foundFranchise.contact,
+      contact2: foundFranchise.contact2,
+      toda: foundFranchise.toda,
+      drivername: foundFranchise.drivername,
+      driveraddress: foundFranchise.driveraddress,
+      or: foundFranchise.or,
+      cr: foundFranchise.cr,
+      driverlicenseno: foundFranchise.driverlicenseno,
+      model: foundFranchise.model,
+      motorno: foundFranchise.motorno,
+      chassisno: foundFranchise.chassisno,
+      plateno: foundFranchise.plateno,
+      stroke: foundFranchise.stroke,
+      date: foundFranchise.date,
+      remarks: foundFranchise.remarks,
+      daterelease: foundFranchise.daterelease,
+      complaint: foundFranchise.complaint,
+      tplDate1: foundFranchise.tplDate1,
+      tplDate2: foundFranchise.tplDate2,
+      typeofFranchise: foundFranchise.typeofFranchise,
+      kindofBusiness: foundFranchise.kindofBusiness,
+      route: foundFranchise.route,
+    });
   };
 
   return (
@@ -115,20 +94,11 @@ const ClientsTable = () => {
       <ClientInfo
         open={clientInfo}
         onClose={setClientInfo}
-        setResMsg={setResMsg}
-        setSeverity={setSeverity}
-        setSnack={setSnack}
-        clientDetails={clientDetails}
+        franchiseDetails={franchiseDetails}
+        printable
       />
 
-      <AddFranchiseForm
-        open={addclient}
-        onClose={setAddclient}
-        setResMsg={setResMsg}
-        setSeverity={setSeverity}
-        setSnack={setSnack}
-        printable={false}
-      />
+      <AddFranchiseForm open={addclient} onClose={setAddclient} />
     </>
   );
 };

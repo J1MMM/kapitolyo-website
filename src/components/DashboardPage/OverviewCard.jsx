@@ -13,10 +13,12 @@ const OverviewCard = ({ index, data }) => {
   return (
     <Grow in={show}>
       <Paper
-        elevation={2}
+        elevation={3}
         sx={{
           borderRadius: 2,
           width: "100%",
+          minWidth: "250px",
+          minHeight: "180px",
           p: 2,
           display: "flex",
           flexDirection: "column",
@@ -35,6 +37,7 @@ const OverviewCard = ({ index, data }) => {
             <Typography
               component={"span"}
               variant="h6"
+              fontSize="medium"
               color={index == 0 ? "#FFF" : "InactiveCaptionText"}
             >
               {data.title}
@@ -42,7 +45,7 @@ const OverviewCard = ({ index, data }) => {
           </Box>
           <Box
             bgcolor={index == 0 ? "rgba(225,225,225,.3)" : "#ECEDFC"}
-            borderRadius="50%"
+            borderRadius={100}
             width={40}
             height={40}
             display="flex"
@@ -56,10 +59,10 @@ const OverviewCard = ({ index, data }) => {
           component={"span"}
           variant="h4"
           fontWeight="500"
-          sx={{ mt: { xs: 0, sm: 3 } }}
+          sx={{ mt: { xs: 0, sm: 2 } }}
           color={index == 0 ? "#FFF" : "#000"}
         >
-          {data.data.toLocaleString()}
+          {data.data}
         </Typography>
         <Typography
           component={"span"}

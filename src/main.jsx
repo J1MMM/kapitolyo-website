@@ -15,7 +15,7 @@ const theme = createTheme({
   },
   palette: {
     primary: {
-      main: "#150187",
+      main: "#1A237E",
       light: "#FFD500",
     },
     secondary: {
@@ -29,20 +29,20 @@ const theme = createTheme({
   },
 
   components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          padding: "12px",
-          borderRadius: "8px",
-        },
-        contained: {
-          fontWeight: "bold",
-        },
-        sizeSmall: {
-          padding: "8px",
-        },
-      },
-    },
+    // MuiButton: {
+    //   styleOverrides: {
+    //     root: {
+    //       padding: "12px",
+    //       borderRadius: "8px",
+    //     },
+    //     contained: {
+    //       fontWeight: "bold",
+    //     },
+    //     sizeSmall: {
+    //       padding: "8px",
+    //     },
+    //   },
+    // },
   },
 });
 

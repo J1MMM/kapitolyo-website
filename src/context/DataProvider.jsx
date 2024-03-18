@@ -5,9 +5,18 @@ const DataContext = createContext({});
 export const DataProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [userArchived, setUserArchived] = useState([]);
+
   const [availableMTOP, setAvailableMTOP] = useState([]);
+  const [availableMTOPLoading, setAvailableMTOPLoading] = useState(true);
+
   const [franchises, setFranchises] = useState([]);
+  const [franchisesLoading, setFranchisesLoading] = useState(true);
+
   const [archivedFranchises, setArchivedFranchises] = useState([]);
+  const [archivedFranchisesLoading, setArchivedFranchisesLoading] =
+    useState(true);
+
+  const [headerShadow, setHeaderShadow] = useState(false);
 
   return (
     <DataContext.Provider
@@ -22,6 +31,14 @@ export const DataProvider = ({ children }) => {
         setArchivedFranchises,
         availableMTOP,
         setAvailableMTOP,
+        availableMTOPLoading,
+        setAvailableMTOPLoading,
+        franchisesLoading,
+        setFranchisesLoading,
+        archivedFranchisesLoading,
+        setArchivedFranchisesLoading,
+        headerShadow,
+        setHeaderShadow,
       }}
     >
       {children}

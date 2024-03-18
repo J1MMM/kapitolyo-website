@@ -6,12 +6,12 @@ function Fieldset({ children, legend }) {
     <Box
       component={"fieldset"}
       sx={{
-        border: "1px solid #150187",
+        border: "1px solid #1A237E",
         borderRadius: 2,
         mt: 2,
       }}
     >
-      <legend style={{ color: "#150187" }}>{legend}</legend>
+      <legend style={{ color: "#1A237E" }}>{legend}</legend>
       {children}
     </Box>
   );

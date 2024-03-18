@@ -103,14 +103,14 @@ body {
   display: flex;
   height: auto;
   margin-bottom: 0;
-  background-color: #150187;
+  background-color: #1a237e;
 }
 
 .react-calendar__navigation button {
   min-width: 44px;
   background: none;
   color: #fff;
-  background-color: #150187;
+  background-color: #1a237e;
   border-radius: 0;
 }
 
@@ -125,7 +125,7 @@ body {
 
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
-  background-color: #150187;
+  background-color: #1a237e;
 }
 
 .react-calendar__month-view__weekdays {
@@ -149,17 +149,13 @@ body {
 }
 
 .react-calendar__tile--active {
-  background: #150187;
+  background: #1a237e;
   color: #fff;
 }
 
 .react-calendar__tile--active:enabled:hover,
 .react-calendar__tile--active:enabled:focus {
-  background: #150187;
-}
-.MuiDialog-paper{
-
-  &::-webkit-scrollbar{display: none}
+  background: #1a237e;
 }
 
 .react-calendar__viewContainer {
@@ -179,14 +175,11 @@ nav.navbar-nav {
     padding: 16px 24px;
     display: flex;
     align-items: center;
-    justify-content: start;
     gap: 16px;
     font-size: 16px;
     position: relative;
-
-    :first-child {
-      min-width: 18px;
-    }
+    box-sizing: border-box;
+    min-height: 4rem;
 
     span {
       display: none;
@@ -204,7 +197,7 @@ nav.navbar-nav {
 
     &.active {
       background-color: #f2f5f7;
-      color: #150187;
+      color: #1a237e;
       border-top-right-radius: 2rem;
       border-bottom-right-radius: 2rem;
     }
@@ -246,14 +239,18 @@ nav.navbar-nav {
   color: $light-grey;
 
   &:hover {
-    color: #150187;
+    color: #1a237e;
     background-color: #eeecff;
   }
 
   &.active {
-    color: #150187;
-    border-bottom: 3px solid #150187;
+    color: #1a237e;
+    border-bottom: 3px solid #1a237e;
   }
+}
+
+.glowingBorder {
+  filter: drop-shadow(0px 0px 30px #6d58df);
 }
 
 @media (max-width: 900px) {

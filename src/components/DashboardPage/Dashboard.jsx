@@ -2,7 +2,22 @@ import React, { useEffect, useState } from "react";
 import { Link, ScrollRestoration, useNavigate } from "react-router-dom";
 import UseLogout from "../../hooks/useLogout";
 import useAuth from "../../hooks/useAuth";
-import { Box, Button, Grow, Paper, Slide, Typography } from "@mui/material";
+import {
+  MdBookmarkAdd,
+  MdOutlineBookmarkAdd,
+  MdOutlineEventAvailable,
+} from "react-icons/md";
+
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Grow,
+  List,
+  Paper,
+  Slide,
+  Typography,
+} from "@mui/material";
 import {
   HiOutlineUserGroup,
   HiMiniArrowSmallUp,
@@ -10,12 +25,23 @@ import {
 } from "react-icons/hi2";
 import {
   ArrowUpward,
+  Checklist,
+  ChecklistOutlined,
+  FileCopyOutlined,
   FolderShared,
   FolderSharedOutlined,
+  InfoOutlined,
+  ListAltOutlined,
   NewReleases,
   Repeat,
 } from "@mui/icons-material";
-import { PiFolderSimpleUserDuotone, PiWarningCircle } from "react-icons/pi";
+import {
+  PiFolderSimpleUserDuotone,
+  PiListBullets,
+  PiListBulletsBold,
+  PiListBulletsLight,
+  PiWarningCircle,
+} from "react-icons/pi";
 import useData from "../../hooks/useData";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import NoServerResponse from "../common/ui/NoServerResponse";
@@ -25,22 +51,31 @@ import "react-calendar/dist/Calendar.css";
 import BarGraph from "./BarGraph";
 import { RiEjectLine, RiUserAddLine } from "react-icons/ri";
 import Users from "../UsersAccountPage/Users";
-
-
+import { BsList, BsTicket, BsTicketDetailedFill } from "react-icons/bs";
+import useFranchises from "../../api/franchises";
+import PageContainer from "../common/ui/PageContainer";
+import TableLayout from "../common/ui/TableLayout";
+import { FiList } from "react-icons/fi";
+import PieGraph from "./PieGraph";
+import { FaListOl } from "react-icons/fa6";
+import LineGraph from "./lineGraph";
 const Dashboard = () => {
-  const { classes } = useData();
   const { auth } = useAuth();
+  const {
+    availableMTOP,
+    availableMTOPLoading,
+    franchises,
+    franchisesLoading,
+    headerShadow,
+    setHeaderShadow,
+  } = useData();
+
   const axiosPrivate = useAxiosPrivate();
 
   const [noServerRes, setNoServerRes] = useState(false);
-  const [studentsEmpty, setStudentsEmpty] = useState(false);
-
-  const isAdmin = Boolean(
-    auth?.roles?.find((role) => role === ROLES_LIST.SuperAdmin)
-  );
 
   useEffect(() => {
-    document.title = "TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
+    document.title = "Dashboard | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
     window.scrollTo(0, 0);
     let isMounted = true;
     const controller = new AbortController();
@@ -48,43 +83,66 @@ const Dashboard = () => {
     const getData = async () => {
       try {
       } catch (err) {
-        setNoServerRes(true);
         console.error(err);
       }
     };
-
     getData();
-
     return () => {
       isMounted = false;
       isMounted && controller.abort();
+      setHeaderShadow(false);
     };
   }, []);
 
   const cardData = [
     {
       title: "Registered Clients",
-      data: "10,789",
-      icon: <HiOutlineUserGroup color={"#FFF"} size={20} />,
+      data: franchisesLoading ? (
+        <Typography
+          component={"div"}
+          display="flex"
+          alignItems="center"
+          gap={2}
+        >
+          <CircularProgress size={18} color="secondary" />
+          loading...
+        </Typography>
+      ) : (
+        franchises.length
+      ),
+      icon: <HiOutlineUserGroup color={"#FFF"} size={18} />,
       subText: "Registered Clients in San Pablo City",
     },
     {
-      title: "For Renewal",
-      data: "5,482",
-      icon: <Repeat color={"#150187"} size={20} sx={{ color: "#150187" }} />,
-      subText: "total number of outdated farnchise",
+      title: "Available Franchises",
+      data: availableMTOPLoading ? (
+        <Typography
+          component={"div"}
+          display="flex"
+          alignItems="center"
+          gap={2}
+          color="primary"
+        >
+          <CircularProgress size={18} />
+          loading...
+        </Typography>
+      ) : (
+        availableMTOP.length
+      ),
+      icon: <FaListOl color={"#1A237E"} sx={{ color: "#1A237E" }} size={16} />,
+      subText: "Total count of available MTOP",
     },
     {
       title: "Recently Added",
       data: "187",
-      icon: <RiUserAddLine color={"#150187"} size={20} />,
+      icon: <RiUserAddLine color={"#1A237E"} size={18} />,
       subText: "clients that have been added recently",
     },
 
     {
       title: "Recently Revoked",
       data: "25",
-      icon: <PiWarningCircle color={"#150187"} size={20} />,
+      icon: <PiWarningCircle color={"#1A237E"} size={20} />,
       subText: "total count of clients revoked",
     },
   ];
@@ -95,32 +153,56 @@ const Dashboard = () => {
 
   if (noServerRes) return <NoServerResponse show={noServerRes} />;
   return (
-    <Box display="flex" flexDirection="column" padding={2}>
-      <Box
-        display={"grid"}
-        gridTemplateColumns={"1fr 1fr"}
-        gap={3}
-        position={"relative"}
-      >
-        <Box
-          display="grid"
-          gap={2}
-          flex={1}
-          width={"100%"}
-          // bgcolor="red"
-          sx={{
-            gridTemplateColumns: {
-              xs: "1fr",
-              sm: "1fr 1fr",
-              md: "1fr 1fr",
-            },
-          }}
+    <Box
+      height="100vh"
+      maxHeight="90vh"
+      sx={{ overflowY: "scroll", overflowX: "hidden" }}
+      width="100%"
+      onScroll={(e) => {
+        if (e.target.scrollTop > 0 && !headerShadow) setHeaderShadow(true);
+        if (e.target.scrollTop == 0 && headerShadow) setHeaderShadow(false);
+      }}
+    >
+      <PageContainer>
+        <TableLayout
+          title="Dashboard"
+          subTitle="Monitor Franchise and Violations Status"
         >
-          {cardEl}
-        </Box>
+          <Box
+            gap={2}
+            width="100%"
+            display="grid"
+            sx={{
+              gridTemplateColumns: {
+                xs: "1fr",
+                sm: "1fr 1fr",
+                lg: "1fr 1fr 1fr 1fr",
+              },
+            }}
+          >
+            {cardEl}
+          </Box>
+          {/* <Box width="100%" display="flex" justifyContent="center">
+            <BarGraph />
+          </Box> */}
+          <Box width="100%" display="flex" justifyContent="center">
+            <LineGraph />
+          </Box>
 
-        <BarGraph />
-      </Box>
+          {/* <Box
+            display="flex"
+            gap={2}
+            width="100%"
+            justifyContent="center"
+            alignItems="center"
+          >
+            {cardEl}
+          </Box>
+          <Box width="100%" display="flex">
+            <PieGraph />
+          </Box> */}
+        </TableLayout>
+      </PageContainer>
     </Box>
   );
 };

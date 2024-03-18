@@ -49,8 +49,8 @@ export const useVehicleInformation = () => {
   const [OR, setOR] = useState("");
   const [CR, setCR] = useState("");
   const [tplProvider, setTplProvider] = useState("");
-  const [tplDate1, setTplDate1] = useState();
-  const [tplDate2, setTplDate2] = useState("");
+  const [tplDate1, setTplDate1] = useState(null);
+  const [tplDate2, setTplDate2] = useState(null);
 
   return {
     model,
@@ -86,8 +86,11 @@ export const useFranchiseInformation = () => {
   const [route, setRoute] = useState("");
   const [remarks, setRemarks] = useState("");
   const [complaints, setComplaints] = useState("");
+  const [dateReleaseOfSTTP, setDateReleaseOfSTTP] = useState(null);
 
   return {
+    dateReleaseOfSTTP,
+    setDateReleaseOfSTTP,
     typeOfFranchise,
     setTypeOfFranchise,
     kindOfBusiness,
