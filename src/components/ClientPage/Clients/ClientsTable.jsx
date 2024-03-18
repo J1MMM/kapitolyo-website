@@ -8,10 +8,11 @@ import helper from "../helper";
 import ContainedButton from "../../common/ui/ContainedButton";
 import DataTable from "../../common/ui/DataTable";
 import AddFranchiseForm from "./AddFranchiseForm";
+import { Box, Grow } from "@mui/material";
 
 const ClientsTable = () => {
   const axiosPrivate = useAxiosPrivate();
-  const { franchises, setFranchises } = useData();
+  const { franchises, setFranchises, franchisesLoading } = useData();
   const [franchiseDetails, setFranchiseDetails] = useState(
     helper.initialFranchiseDetails
   );
@@ -60,7 +61,7 @@ const ClientsTable = () => {
   };
 
   return (
-    <>
+    <Box>
       <TableLayout
         title="Clients Management"
         subTitle="Efficiently monitor client status and details"
@@ -87,7 +88,7 @@ const ClientsTable = () => {
           onStateChange={(e) =>
             setTotalRows(helper.countTrueValues(e?.visibleRowsLookup))
           }
-          loading={franchises.length == 0 && !isEmpty}
+          loading={franchisesLoading}
         />
       </TableLayout>
 
@@ -99,7 +100,7 @@ const ClientsTable = () => {
       />
 
       <AddFranchiseForm open={addclient} onClose={setAddclient} />
-    </>
+    </Box>
   );
 };
 

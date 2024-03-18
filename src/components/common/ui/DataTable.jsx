@@ -1,5 +1,22 @@
-import { DataGrid } from "@mui/x-data-grid";
+import { Box, Typography } from "@mui/material";
+import { DataGrid, GridOverlay } from "@mui/x-data-grid";
 import React from "react";
+import emptyImg from "../../../assets/images/empty.svg";
+
+const EmptyRowsOverlay = () => (
+  <GridOverlay>
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      gap={2}
+    >
+      <img src={emptyImg} alt="" style={{ width: "100%", maxWidth: 100 }} />
+      <Typography color="gray">No data found</Typography>
+    </Box>
+  </GridOverlay>
+);
 
 const DataTable = ({
   columns,
@@ -54,6 +71,9 @@ const DataTable = ({
             color: "#FFF",
           },
         },
+      }}
+      slots={{
+        noRowsOverlay: EmptyRowsOverlay,
       }}
     />
   );

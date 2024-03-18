@@ -1,9 +1,20 @@
 import { TextField } from "@mui/material";
 import React from "react";
 
-function OutlinedTextField({ label, value, onChange, readOnly, sx, required }) {
+function OutlinedTextField({
+  label,
+  value,
+  onChange,
+  readOnly,
+  sx,
+  required,
+  InputProps,
+  error,
+  helperText,
+}) {
   return (
     <TextField
+      error={error}
       margin="dense"
       type="text"
       variant="outlined"
@@ -14,6 +25,8 @@ function OutlinedTextField({ label, value, onChange, readOnly, sx, required }) {
       fullWidth
       required={required}
       sx={sx}
+      InputProps={InputProps}
+      helperText={error && helperText}
     />
   );
 }

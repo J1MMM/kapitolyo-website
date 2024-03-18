@@ -34,12 +34,14 @@ function DialogForm({
 }) {
   return (
     <Dialog
+      component={"form"}
       scroll="paper"
       id="client-info"
       open={open}
       disableAutoFocus
       maxWidth="md"
       TransitionComponent={Transition}
+      onSubmit={onSubmit}
     >
       <DialogTitle
         bgcolor="primary.main"
@@ -62,9 +64,7 @@ function DialogForm({
         </Box>
       </DialogTitle>
       <Divider />
-      <DialogContent dividers>
-        <form onSubmit={onSubmit}>{children}</form>
-      </DialogContent>
+      <DialogContent dividers>{children}</DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>
   );

@@ -9,11 +9,13 @@ const ContainedButton = ({ onClick, icon, title, disable }) => {
       onClick={onClick}
       disableFocusRipple
       disabled={disable}
+      sx={{
+        px: 2,
+        py: 1,
+      }}
     >
       {icon}
-      <Typography component={"span"} pr={1} variant="caption" color="#FFF">
-        {title}
-      </Typography>
+      {title}
     </Button>
   );
 };

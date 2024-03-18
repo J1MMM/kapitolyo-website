@@ -2,7 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import useAuth from "../../hooks/useAuth";
 import ROLES_LIST from "../common/data/ROLES_LIST";
-import { FiUserPlus } from "react-icons/fi";
+import { FiUserPlus, FiUsers } from "react-icons/fi";
 import { Typography } from "@mui/material";
 import { BsArchive, BsGraphUpArrow } from "react-icons/bs";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";

@@ -12,6 +12,7 @@ import {
   Box,
   Button,
   CircularProgress,
+  Collapse,
   Grow,
   List,
   Paper,
@@ -72,24 +73,18 @@ const Dashboard = () => {
 
   const axiosPrivate = useAxiosPrivate();
 
+  const [graphShown, setGraphShown] = useState(false);
   const [noServerRes, setNoServerRes] = useState(false);
 
   useEffect(() => {
     document.title = "Dashboard | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
     window.scrollTo(0, 0);
-    let isMounted = true;
-    const controller = new AbortController();
 
-    const getData = async () => {
-      try {
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getData();
+    setTimeout(() => {
+      setGraphShown(true);
+    }, 300);
+
     return () => {
-      isMounted = false;
-      isMounted && controller.abort();
       setHeaderShadow(false);
     };
   }, []);
@@ -185,11 +180,15 @@ const Dashboard = () => {
           {/* <Box width="100%" display="flex" justifyContent="center">
             <BarGraph />
           </Box> */}
-          <Box width="100%" display="flex" justifyContent="center">
-            <LineGraph />
+          <Box width="100%" display="flex" justifyContent="center" height={400}>
+            <Slide in={graphShown} mountOnEnter unmountOnExit direction="up">
+              <Box>
+                <LineGraph />
+              </Box>
+            </Slide>
           </Box>
 
-          {/* <Box
+          <Box
             display="flex"
             gap={2}
             width="100%"
@@ -200,7 +199,7 @@ const Dashboard = () => {
           </Box>
           <Box width="100%" display="flex">
             <PieGraph />
-          </Box> */}
+          </Box>
         </TableLayout>
       </PageContainer>
     </Box>
