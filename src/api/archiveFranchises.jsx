@@ -19,6 +19,7 @@ const useArchivedFranchises = () => {
       console.log("get arch9ve");
       try {
         const response = await axiosPrivate.get("/franchise/archive");
+        console.log(response.data);
         setArchivedFranchises(() => {
           return response.data?.rows.map((data) => {
             return helper.createClientsData(

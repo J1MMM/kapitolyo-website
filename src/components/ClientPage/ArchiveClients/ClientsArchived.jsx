@@ -5,10 +5,15 @@ import ClientInfo from "../Clients/ClientInfo";
 import TableLayout from "../../common/ui/TableLayout";
 import DataTable from "../../common/ui/DataTable";
 import Helper from "../helper";
+import { Grow, Paper } from "@mui/material";
 
 const ClientArchived = () => {
   const axiosPrivate = useAxiosPrivate();
-  const { archivedFranchises, setArchivedFranchises } = useData();
+  const {
+    archivedFranchises,
+    setArchivedFranchises,
+    archivedFranchisesLoading,
+  } = useData();
   const [franchiseDetails, setFranchiseDetails] = useState(
     Helper.initialFranchiseDetails
   );
@@ -86,7 +91,7 @@ const ClientArchived = () => {
           onStateChange={(e) =>
             setTotalRows(countTrueValues(e?.visibleRowsLookup))
           }
-          loading={archivedFranchises.length == 0 && !isEmpty}
+          loading={archivedFranchisesLoading}
           page={page}
           pageSize={pageSize}
         />

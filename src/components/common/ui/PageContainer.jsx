@@ -7,7 +7,6 @@ const PageContainer = ({ children }) => {
       elevation={0}
       sx={{
         p: 2,
-        borderRadius: 3,
         minHeight: "80vh",
       }}
     >
