@@ -5,7 +5,7 @@ The TRICYCLE FRANCHISING AND RENEWAL SYSTEM is a comprehensive web-based applica
 
 ## Features
 - Streamlined management of tricycle franchise applications
-- # Enhanced process for renewing existing franchises
+- Enhanced process for renewing existing franchises
 - User-friendly interface for inputting and updating franchise details
 - Search and filter functionality for easy access to specific records
 - Secure authentication system to protect sensitive information
