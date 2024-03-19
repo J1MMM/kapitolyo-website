@@ -57,6 +57,10 @@ const ClientsTable = () => {
       typeofFranchise: foundFranchise.typeofFranchise,
       kindofBusiness: foundFranchise.kindofBusiness,
       route: foundFranchise.route,
+      fuelDisp: foundFranchise.fuelDisp,
+      ownerSex: foundFranchise.ownerSex,
+      driverSex: foundFranchise.driverSex,
+      tplProvider: foundFranchise.tplProvider,
     });
   };
 

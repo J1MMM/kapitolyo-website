@@ -15,6 +15,7 @@ const useFranchises = () => {
       console.log("get franchises");
       try {
         const response = await axiosPrivate.get("/franchise");
+        console.log(response.data.rows);
         setFranchises(() => {
           return response.data?.rows.map((data) => {
             return helper.createClientsData(
@@ -24,8 +25,8 @@ const useFranchises = () => {
               data.FIRSTNAME,
               data.MI,
               data.ADDRESS,
-              data.OWNER_NO,
-              data.DRIVERS_NO,
+              data.OWNER_NO?.replace(/-/g, "").replace(/^0+/g, ""),
+              data.DRIVER_NO?.replace(/-/g, "").replace(/^0+/g, ""),
               data.TODA,
               data.DRIVERS_NAME,
               data.DRIVERS_ADDRESS,
@@ -37,14 +38,14 @@ const useFranchises = () => {
               data.CHASSIS_NO,
               data.PLATE_NO,
               data.STROKE,
-              data.DATE_RENEWAL
-                ? new Date(data.DATE_RENEWAL)
-                : data.DATE_RENEWAL,
+              data.DATE_RENEWAL && new Date(data.DATE_RENEWAL),
               data.REMARKS,
-              data.DATE_RELEASE_OF_ST_TP
-                ? new Date(data.DATE_RELEASE_OF_ST_TP)
-                : data.DATE_RELEASE_OF_ST_TP,
-              data.COMPLAINT
+              data.DATE_RELEASE_OF_ST_TP &&
+                new Date(data.DATE_RELEASE_OF_ST_TP),
+              data.COMPLAINT,
+              data.DATE_ARCHIVED,
+              data.OWNER_SEX,
+              data.DRIVERS_SEX
             );
           });
         });

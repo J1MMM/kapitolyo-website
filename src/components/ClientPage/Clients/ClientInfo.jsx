@@ -1,4 +1,14 @@
-import { Box, Button, FormControl, Snackbar, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  Snackbar,
+  Typography,
+} from "@mui/material";
 import React, { useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useData from "../../../hooks/useData";
@@ -158,14 +168,35 @@ const ClientInfo = ({
             />
           </FlexRow>
           <FlexRow>
-            <OutlinedTextField
-              label="Address"
-              value={franchiseDetails?.address}
-              readOnly={readOnly}
-            />
+            <FormControl fullWidth margin="dense">
+              <InputLabel>Sex</InputLabel>
+              <Select
+                readOnly={readOnly}
+                disabled={disable}
+                label="Sex"
+                required
+                fullWidth
+                value={
+                  franchiseDetails.OwnerSex ? franchiseDetails.OwnerSex : ""
+                }
+              >
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
+              </Select>
+            </FormControl>
             <OutlinedTextField
               label="Contact number"
               value={franchiseDetails?.contact}
+              readOnly={readOnly}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">+63</InputAdornment>
+                ),
+              }}
+            />
+            <OutlinedTextField
+              label="Address"
+              value={franchiseDetails?.address}
               readOnly={readOnly}
             />
           </FlexRow>
@@ -178,17 +209,45 @@ const ClientInfo = ({
               value={franchiseDetails?.drivername}
               readOnly={readOnly}
             />
+            <FormControl fullWidth margin="dense">
+              <InputLabel>Sex</InputLabel>
+              <Select
+                disabled={disable}
+                readOnly={readOnly}
+                label="Sex"
+                required
+                fullWidth
+                value={
+                  franchiseDetails.driverSex ? franchiseDetails.driverSex : ""
+                }
+              >
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
+              </Select>
+            </FormControl>
             <OutlinedTextField
-              label="Contact number"
+              label="Contact no."
               value={franchiseDetails?.contact2}
               readOnly={readOnly}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">+63</InputAdornment>
+                ),
+              }}
             />
           </FlexRow>
-          <OutlinedTextField
-            label="Address"
-            value={franchiseDetails?.driveraddress}
-            readOnly={readOnly}
-          />
+          <FlexRow>
+            <OutlinedTextField
+              label="Address"
+              value={franchiseDetails?.driveraddress}
+              readOnly={readOnly}
+            />
+            <OutlinedTextField
+              required={true}
+              label="Driver's License no."
+              value={franchiseDetails.driverlicenseno}
+            />
+          </FlexRow>
         </Fieldset>
 
         <Fieldset legend="Vehicle's Information">
@@ -200,7 +259,7 @@ const ClientInfo = ({
             />
             <OutlinedTextField
               readOnly={readOnly}
-              label="Plate No."
+              label="Plate no."
               value={franchiseDetails?.plateno}
             />
           </FlexRow>
@@ -230,12 +289,12 @@ const ClientInfo = ({
           </FlexRow>
           <FlexRow>
             <OutlinedTextField
-              label="OR No."
+              label="OR no."
               value={franchiseDetails?.or}
               readOnly={readOnly}
             />
             <OutlinedTextField
-              label="CR No."
+              label="CR no."
               value={franchiseDetails?.cr}
               readOnly={readOnly}
             />
@@ -304,11 +363,6 @@ const ClientInfo = ({
             />
           </FlexRow>
           <FlexRow>
-            <OutlinedTextField
-              label="Remarks"
-              value={franchiseDetails?.remarks}
-              readOnly={readOnly}
-            />
             <FormControl margin="dense" fullWidth focused>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
@@ -317,6 +371,11 @@ const ClientInfo = ({
                 />
               </LocalizationProvider>
             </FormControl>
+            <OutlinedTextField
+              label="Remarks"
+              value={franchiseDetails?.remarks}
+              readOnly={readOnly}
+            />
           </FlexRow>
           <OutlinedTextField
             label="Complaints"

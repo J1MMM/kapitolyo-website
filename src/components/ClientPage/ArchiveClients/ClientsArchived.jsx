@@ -6,6 +6,23 @@ import TableLayout from "../../common/ui/TableLayout";
 import DataTable from "../../common/ui/DataTable";
 import Helper from "../helper";
 import { Grow, Paper } from "@mui/material";
+import dayjs from "dayjs";
+
+const date_archived_column_format = {
+  field: "dateArchived",
+  headerName: "Date Archived",
+  width: 250,
+  headerClassName: "data-grid-header",
+  editable: false,
+  menu: false,
+  option: false,
+  sort: false,
+  align: "center",
+  headerAlign: "center",
+  headerClassName: "data-grid-header",
+  valueFormatter: (params) =>
+    params.value ? dayjs(params.value).format("ddd, MMM D YYYY") : null,
+};
 
 const ClientArchived = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -69,6 +86,10 @@ const ClientArchived = () => {
       typeofFranchise: foundFranchise.typeofFranchise,
       kindofBusiness: foundFranchise.kindofBusiness,
       route: foundFranchise.route,
+      driverSex: foundFranchise.driverSex,
+      fuelDisp: foundFranchise.fuelDisp,
+      ownerSex: foundFranchise.ownerSex,
+      tplProvider: foundFranchise.tplProvider,
     });
   };
 
@@ -79,7 +100,7 @@ const ClientArchived = () => {
         subTitle="Clients records you have archived"
       >
         <DataTable
-          columns={Helper.clientsColumns}
+          columns={[...Helper.clientsColumns, date_archived_column_format]}
           rows={archivedFranchises}
           rowCount={totalRows}
           onCellDoubleClick={(e) => handleRowDoubleClick(e)}

@@ -50,9 +50,12 @@ const AddFranchiseForm = ({ open, onClose }) => {
         ownerMI: franchiseDetails.mi,
         ownerAddress: franchiseDetails.address,
         ownerContact: franchiseDetails.contact,
+        ownerSex: franchiseDetails.ownerSex,
         driverFullname: franchiseDetails.drivername,
         driverAddress: franchiseDetails.driveraddress,
         driverContact: franchiseDetails.contact2,
+        driverSex: franchiseDetails.driverSex,
+        driverlicenseno: franchiseDetails.driverlicenseno,
         model: franchiseDetails.model,
         plateno: franchiseDetails.plateno,
         motorno: franchiseDetails.motorno,
@@ -70,6 +73,13 @@ const AddFranchiseForm = ({ open, onClose }) => {
         route: franchiseDetails.route,
         remarks: franchiseDetails.remarks,
         complaints: franchiseDetails.complaint,
+        complaints: franchiseDetails.complaint,
+        tplProvider: franchiseDetails.tplProvider,
+        tplDate1: franchiseDetails.tplDate1,
+        tplDate2: franchiseDetails.tplDate2,
+        typeOfFranchise: franchiseDetails.typeofFranchise,
+        kindOfBusiness: franchiseDetails.kindofBusiness,
+        daterelease: franchiseDetails.daterelease,
       });
 
       const newFranchises = [
@@ -81,8 +91,8 @@ const AddFranchiseForm = ({ open, onClose }) => {
           response.data.FIRSTNAME,
           response.data.MI,
           response.data.ADDRESS,
-          response.data.OWNER_NO,
-          response.data.DRIVERS_NO,
+          response.data.OWNER_NO?.replace(/-/g, "").replace(/^0+/g, ""),
+          response.data.DRIVER_NO?.replace(/-/g, "").replace(/^0+/g, ""),
           response.data.TODA,
           response.data.DRIVERS_NAME,
           response.data.DRIVERS_ADDRESS,
@@ -94,14 +104,21 @@ const AddFranchiseForm = ({ open, onClose }) => {
           response.data.CHASSIS_NO,
           response.data.PLATE_NO,
           response.data.STROKE,
-          response.data.DATE_RENEWAL
-            ? new Date(response.data.DATE_RENEWAL)
-            : response.data.DATE_RENEWAL,
+          response.data.DATE_RENEWAL && new Date(response.data.DATE_RENEWAL),
           response.data.REMARKS,
-          response.data.DATE_RELEASE_OF_ST_TP
-            ? new Date(response.data.DATE_RELEASE_OF_ST_TP)
-            : response.data.DATE_RELEASE_OF_ST_TP,
-          response.data.COMPLAINT
+          response.data.DATE_RELEASE_OF_ST_TP &&
+            new Date(response.data.DATE_RELEASE_OF_ST_TP),
+          response.data.COMPLAINT,
+          response.data.DATE_ARCHIVED,
+          response.data.OWNER_SEX,
+          response.data.DRIVERS_SEX,
+          response.data.TPL_PROVIDER,
+          response.data.TPL_DATE_1,
+          response.data.TPL_DATE_2,
+          response.data.FUEL_DISP,
+          response.data.TYPE_OF_FRANCHISE,
+          response.data.KIND_OF_BUSINESS,
+          response.data.ROUTE
         ),
       ];
 
@@ -120,16 +137,19 @@ const AddFranchiseForm = ({ open, onClose }) => {
       setFranchises(newFranchises);
       setFranchiseDetails(helper.initialFranchiseDetails);
       setAlertSeverity("success");
-      setAlertMsg("Franchise added successfully");
+      setAlertMsg(
+        "Success! The franchise has been added to the system successfully"
+      );
       console.log(response.data);
     } catch (error) {
+      console.log(error);
+
       setAlertSeverity("error");
-      if (error.response.status == 400) {
+      if (error.response?.status == 400) {
         setAlertMsg("Failed to add Franchise. " + error.response.data.message);
       } else {
         setAlertMsg("Failed to add Franchise. Please try again later.");
       }
-      console.log(error);
     }
     setConfirmaionShown(false);
     onClose(false);
@@ -299,6 +319,10 @@ const AddFranchiseForm = ({ open, onClose }) => {
             />
 
             <Autocomplete
+              isOptionEqualToValue={(option, value) =>
+                option.value == value.value
+              }
+              freeSolo
               disablePortal
               clearIcon={false}
               options={spcbrgy}
@@ -307,20 +331,20 @@ const AddFranchiseForm = ({ open, onClose }) => {
               onChange={(_, v) =>
                 setFranchiseDetails((prev) => ({
                   ...prev,
-                  address: v,
+                  address: v.value,
                 }))
               }
               renderInput={(params) => (
                 <TextField
                   {...params}
+                  label="Address"
+                  required
                   onChange={(v) =>
                     setFranchiseDetails((prev) => ({
                       ...prev,
                       address: v.target.value,
                     }))
                   }
-                  label="Address"
-                  required
                 />
               )}
             />
@@ -359,8 +383,6 @@ const AddFranchiseForm = ({ open, onClose }) => {
                 <MenuItem value="female">Female</MenuItem>
               </Select>
             </FormControl>
-          </FlexRow>
-          <FlexRow>
             <OutlinedTextField
               required={true}
               label="Contact no."
@@ -378,8 +400,13 @@ const AddFranchiseForm = ({ open, onClose }) => {
               }}
               error={franchiseDetails.contact2.length > 10}
             />
-
+          </FlexRow>
+          <FlexRow>
             <Autocomplete
+              isOptionEqualToValue={(option, value) =>
+                option.value == value.value
+              }
+              freeSolo
               disablePortal
               clearIcon={false}
               options={spcbrgy}
@@ -388,7 +415,7 @@ const AddFranchiseForm = ({ open, onClose }) => {
               onChange={(_, v) =>
                 setFranchiseDetails((prev) => ({
                   ...prev,
-                  driveraddress: v,
+                  driveraddress: v.value,
                 }))
               }
               renderInput={(params) => (
@@ -404,6 +431,17 @@ const AddFranchiseForm = ({ open, onClose }) => {
                   }
                 />
               )}
+            />
+            <OutlinedTextField
+              required={true}
+              label="Driver's License no."
+              value={franchiseDetails.driverlicenseno}
+              onChange={(e) =>
+                setFranchiseDetails((prev) => ({
+                  ...prev,
+                  driverlicenseno: e.target.value,
+                }))
+              }
             />
           </FlexRow>
         </Fieldset>
@@ -423,7 +461,7 @@ const AddFranchiseForm = ({ open, onClose }) => {
             />
             <OutlinedTextField
               required={true}
-              label="Plate No."
+              label="Plate no."
               value={franchiseDetails.plateno}
               onChange={(e) =>
                 setFranchiseDetails((prev) => ({
