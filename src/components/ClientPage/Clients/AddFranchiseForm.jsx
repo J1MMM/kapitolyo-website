@@ -21,16 +21,17 @@ import OutlinedTextField from "../../common/ui/OutlinedTextField";
 import FlexRow from "../../common/ui/FlexRow";
 import Fieldset from "../../common/ui/Fieldset";
 import SnackBar from "../../common/ui/SnackBar";
-import helper from "../helper";
+
 import ConfirmationDialog from "../../common/ui/ConfirmationDialog";
 import spcbrgy from "../../common/data/spcbrgy";
+import franchiseHelper from "../../common/data/franchiseHelper";
 
 const AddFranchiseForm = ({ open, onClose }) => {
   const axiosPrivate = useAxiosPrivate();
   const { franchises, setFranchises, availableMTOP } = useData();
 
   const [franchiseDetails, setFranchiseDetails] = useState(
-    helper.initialFranchiseDetails
+    franchiseHelper.initialFranchiseDetails
   );
   const [disable, setDisable] = useState(false);
   const [alertShown, setAlertShown] = useState(false);
@@ -84,7 +85,7 @@ const AddFranchiseForm = ({ open, onClose }) => {
 
       const newFranchises = [
         ...franchises,
-        helper.createClientsData(
+        franchiseHelper.createClientsData(
           response.data._id,
           response.data.MTOP,
           response.data.LASTNAME,
@@ -113,12 +114,11 @@ const AddFranchiseForm = ({ open, onClose }) => {
           response.data.OWNER_SEX,
           response.data.DRIVERS_SEX,
           response.data.TPL_PROVIDER,
-          response.data.TPL_DATE_1,
-          response.data.TPL_DATE_2,
+          response.data.TPL_DATE_1 && new Date(response.data.TPL_DATE_1),
+          response.data.TPL_DATE_2 && new Date(response.data.TPL_DATE_2),
           response.data.FUEL_DISP,
           response.data.TYPE_OF_FRANCHISE,
-          response.data.KIND_OF_BUSINESS,
-          response.data.ROUTE
+          response.data.KIND_OF_BUSINESS
         ),
       ];
 
@@ -135,7 +135,7 @@ const AddFranchiseForm = ({ open, onClose }) => {
       });
 
       setFranchises(newFranchises);
-      setFranchiseDetails(helper.initialFranchiseDetails);
+      setFranchiseDetails(franchiseHelper.initialFranchiseDetails);
       setAlertSeverity("success");
       setAlertMsg(
         "Success! The franchise has been added to the system successfully"

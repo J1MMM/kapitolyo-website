@@ -247,7 +247,7 @@ function createClientsData(
   tplDate2,
   fuelDisp,
   typeofFranchise,
-  kindOfBusiness,
+  kindofBusiness,
   route
 ) {
   return {
@@ -282,11 +282,10 @@ function createClientsData(
     tplDate2,
     fuelDisp,
     typeofFranchise,
-    kindOfBusiness,
+    kindofBusiness,
     route,
   };
 }
-
 function countTrueValues(obj) {
   let count = 0;
   for (const key in obj) {
@@ -298,8 +297,8 @@ function countTrueValues(obj) {
 }
 
 export default {
+  createClientsData,
   clientsColumns,
   countTrueValues,
   initialFranchiseDetails,
-  createClientsData,
 };

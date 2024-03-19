@@ -5,8 +5,9 @@ import useData from "../../../hooks/useData";
 import TableLayout from "../../common/ui/TableLayout";
 import ContainedButton from "../../common/ui/ContainedButton";
 import DataTable from "../../common/ui/DataTable";
-import Helper from "./Helper";
+
 import AddViolators from "./AddViolatorForm";
+import franchiseHelper from "../../common/data/franchiseHelper";
 
 const ViolationsTable = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -53,7 +54,7 @@ const ViolationsTable = () => {
         }
       >
         <DataTable
-          columns={Helper.tableColumns}
+          columns={franchiseHelper.tableColumns}
           rows={[]}
           rowCount={totalRows}
           onCellDoubleClick={() => setClientInfo(true)}
