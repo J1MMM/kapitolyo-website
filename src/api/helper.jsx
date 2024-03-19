@@ -21,7 +21,17 @@ function createClientsData(
   date,
   remarks,
   daterelease,
-  complaint
+  complaint,
+  dateArchived,
+  ownerSex,
+  driverSex,
+  tplProvider,
+  tplDate1,
+  tplDate2,
+  fuelDisp,
+  typeofFranchise,
+  kindOfBusiness,
+  route
 ) {
   return {
     id,
@@ -47,6 +57,16 @@ function createClientsData(
     remarks,
     daterelease,
     complaint,
+    dateArchived,
+    ownerSex,
+    driverSex,
+    tplProvider,
+    tplDate1,
+    tplDate2,
+    fuelDisp,
+    typeofFranchise,
+    kindOfBusiness,
+    route,
   };
 }
 

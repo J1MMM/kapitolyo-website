@@ -42,6 +42,7 @@ function DialogForm({
       maxWidth="md"
       TransitionComponent={Transition}
       onSubmit={onSubmit}
+      sx={{ overflow: "hidden" }}
     >
       <DialogTitle
         bgcolor="primary.main"

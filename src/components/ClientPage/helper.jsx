@@ -7,12 +7,14 @@ const initialFranchiseDetails = {
   lname: "",
   fname: "",
   mi: "",
-  address: "",
+  address: null,
+  ownerSex: "",
+  driverSex: "",
   contact: "",
   contact2: "",
   toda: "",
   drivername: "",
-  driveraddress: "",
+  driveraddress: null,
   or: "",
   cr: "",
   driverlicenseno: "",
@@ -32,58 +34,6 @@ const initialFranchiseDetails = {
   tplProvider: "",
   route: "",
 };
-
-function createClientsData(
-  id,
-  mtop,
-  lname,
-  fname,
-  mi,
-  address,
-  contact,
-  contact2,
-  toda,
-  drivername,
-  driveraddress,
-  or,
-  cr,
-  driverlicenseno,
-  model,
-  motorno,
-  chassisno,
-  plateno,
-  stroke,
-  date,
-  remarks,
-  daterelease,
-  complaint
-) {
-  return {
-    id,
-    mtop,
-    lname,
-    fname,
-    mi,
-    address,
-    contact,
-    contact2,
-    toda,
-    drivername,
-    driveraddress,
-    or,
-    cr,
-    driverlicenseno,
-    model,
-    motorno,
-    chassisno,
-    plateno,
-    stroke,
-    date,
-    remarks,
-    daterelease,
-    complaint,
-  };
-}
 
 const clientsColumns = [
   {
@@ -129,10 +79,11 @@ const clientsColumns = [
   },
   {
     field: "contact",
-    headerName: "CONTACT\u00a0NO.",
+    headerName: "CONTACT NO.",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
+    valueFormatter: (params) => params.value && `+63${params.value}`,
   },
   {
     field: "contact2",
@@ -140,6 +91,7 @@ const clientsColumns = [
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
+    valueFormatter: (params) => params.value && `+63${params.value}`,
   },
   {
     field: "toda",
@@ -228,7 +180,8 @@ const clientsColumns = [
     editable: false,
     align: "center",
     headerAlign: "center",
-    valueFormatter: (params) => dayjs(params.value).format("ddd, MMM D YYYY"),
+    valueFormatter: (params) =>
+      params.value && dayjs(params.value).format("ddd, MMM D YYYY"),
   },
   {
     field: "remarks",
@@ -241,14 +194,14 @@ const clientsColumns = [
   },
   {
     field: "daterelease",
-    headerName: "DATE\u00a0RELEASE\u00a0OF\u00a0ST/TP",
+    headerName: "DATE RELEASE OF ST/TP",
     width: 200,
     headerClassName: "data-grid-header",
     editable: false,
     align: "center",
     headerAlign: "center",
     valueFormatter: (params) =>
-      params.value ? dayjs(params.value).format("ddd, MMM D YYYY") : null,
+      params.value && dayjs(params.value).format("ddd, MMM D YYYY"),
   },
   {
     field: "complaint",
@@ -262,6 +215,78 @@ const clientsColumns = [
   },
 ];
 
+function createClientsData(
+  id,
+  mtop,
+  lname,
+  fname,
+  mi,
+  address,
+  contact,
+  contact2,
+  toda,
+  drivername,
+  driveraddress,
+  or,
+  cr,
+  driverlicenseno,
+  model,
+  motorno,
+  chassisno,
+  plateno,
+  stroke,
+  date,
+  remarks,
+  daterelease,
+  complaint,
+  dateArchived,
+  ownerSex,
+  driverSex,
+  tplProvider,
+  tplDate1,
+  tplDate2,
+  fuelDisp,
+  typeofFranchise,
+  kindOfBusiness,
+  route
+) {
+  return {
+    id,
+    mtop,
+    lname,
+    fname,
+    mi,
+    address,
+    contact,
+    contact2,
+    toda,
+    drivername,
+    driveraddress,
+    or,
+    cr,
+    driverlicenseno,
+    model,
+    motorno,
+    chassisno,
+    plateno,
+    stroke,
+    date,
+    remarks,
+    daterelease,
+    complaint,
+    dateArchived,
+    ownerSex,
+    driverSex,
+    tplProvider,
+    tplDate1,
+    tplDate2,
+    fuelDisp,
+    typeofFranchise,
+    kindOfBusiness,
+    route,
+  };
+}
+
 function countTrueValues(obj) {
   let count = 0;
   for (const key in obj) {
@@ -272,25 +297,9 @@ function countTrueValues(obj) {
   return count;
 }
 
-function parseCustomDate(dateString) {
-  // Split the date string into its components
-  const [month, day, year] = dateString.split("/");
-
-  // Determine the century based on the current year
-  const currentYear = new Date().getFullYear();
-  const centuryPrefix = currentYear.toString().slice(0, 2);
-
-  // Construct a new date object with the parsed components
-  const fullYear = centuryPrefix + year;
-  const dateObject = new Date(`${month}/${day}/${fullYear}`);
-
-  return dateObject;
-}
-
 export default {
-  createClientsData,
   clientsColumns,
   countTrueValues,
-  parseCustomDate,
   initialFranchiseDetails,
+  createClientsData,
 };
