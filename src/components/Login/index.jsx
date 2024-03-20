@@ -21,6 +21,7 @@ import spc_seal_logo from "../../assets/images/logo1.png";
 import ctmo_logo from "../../assets/images/logo2.png";
 import axios from "../../api/axios";
 import "./style.scss";
+import ForgotPassModal from "../ResetPassword/ForgotPassModal";
 
 const LoginComponenet = () => {
   document.title = "LOGIN | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
@@ -290,63 +291,14 @@ const LoginComponenet = () => {
         severity={snackSev}
         position={{ horizontal: "right", vertical: "top" }}
       />
-      <Dialog open={fgpModal} onClose={() => setfgpModal(false)}>
-        <Box
-          sx={{
-            minWidth: {
-              md: "400px",
-            },
-            display: "flex",
-            flexDirection: "column",
-            p: {
-              xs: 3,
-              sm: 3,
-              md: 5,
-            },
-          }}
-        >
-          <Typography
-            component={"span"}
-            variant="h4"
-            sx={{ fontSize: { xs: 26, sm: 28, md: 30 } }}
-          >
-            Forgot Password
-          </Typography>
-          <Typography
-            component={"span"}
-            variant="body1"
-            mb={2}
-            sx={{ fontSize: { xs: 12, sm: 14 } }}
-          >
-            You will receive link for reseting your password.
-          </Typography>
-          <form onSubmit={fgpSubmit}>
-            <TextField
-              autoFocus
-              label="Email"
-              variant="outlined"
-              fullWidth
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              type="email"
-              disabled={formDisabled ? true : false}
-            />
-            <Button
-              variant="contained"
-              fullWidth
-              sx={{ mt: 3 }}
-              size="large"
-              type="submit"
-              disabled={formDisabled}
-            >
-              <Mail sx={{ mr: 1 }} />
-              Send
-            </Button>
-          </form>
-        </Box>
-      </Dialog>
+      <ForgotPassModal
+        open={fgpModal}
+        onClose={setfgpModal}
+        onSubmit={fgpSubmit}
+        email={email}
+        setEmail={setEmail}
+        formDisabled={formDisabled}
+      />
     </Box>
   );
 };

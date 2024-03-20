@@ -1,4 +1,4 @@
-const spcbrgy = [
+[
   "I-A (Sambat)",
   "I-B (City+Riverside)",
   "I-C (Bagong Bayan)",
@@ -80,5 +80,3 @@ const spcbrgy = [
   "Santo Niño (Arsum)",
   "Soledad (Macopa)",
 ];
-
-export default spcbrgy;

@@ -18,23 +18,14 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const ConfirmationDialog = ({
-  open,
-  setOpen,
-  title,
-  content,
-  confirm,
-  disabled,
-  serverity,
-  label,
-}) => {
+const AlertDialog = ({ open, setOpen, title, content, confirm, disabled }) => {
   return (
     <Dialog
+      TransitionComponent={Transition}
       open={open}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
       component={"span"}
-      TransitionComponent={Transition}
     >
       <DialogTitle
         component={"span"}
@@ -47,41 +38,21 @@ const ConfirmationDialog = ({
       <Divider />
       <DialogContent component={"span"} dividers>
         <DialogContentText component={"span"} id="alert-dialog-description">
-          <Alert
-            component={"span"}
-            sx={{ maxWidth: "500px" }}
-            severity={serverity || "warning"}
-          >
+          <Alert component={"span"} sx={{ maxWidth: "500px" }} severity="info">
             <Typography variant="body1">{content}</Typography>
           </Alert>
         </DialogContentText>
       </DialogContent>
       <DialogActions component={"span"}>
         <Box>
-          <Button
-            disabled={disabled}
-            component={"span"}
-            onClick={() => setOpen(false)}
-            autoFocus
-            sx={{ color: "grey" }}
-          >
-            Cancel
-          </Button>
-          <Button
-            disabled={disabled}
-            component={"span"}
-            color={serverity || "primary"}
-            onClick={() => {
-              confirm();
-            }}
-          >
+          <Button disabled={disabled} component={"span"} onClick={confirm}>
             {disabled ? (
               <Box display="flex" alignItems="center" gap={2}>
                 <CircularProgress size={18} color="inherit" />
                 <span>Loading...</span>
               </Box>
             ) : (
-              <span>{label || "confirm"}</span>
+              <span>Proceed</span>
             )}
           </Button>
         </Box>
@@ -90,4 +61,4 @@ const ConfirmationDialog = ({
   );
 };
 
-export default ConfirmationDialog;
+export default AlertDialog;

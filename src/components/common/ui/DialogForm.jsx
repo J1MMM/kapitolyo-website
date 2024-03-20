@@ -65,7 +65,9 @@ function DialogForm({
         </Box>
       </DialogTitle>
       <Divider />
-      <DialogContent dividers>{children}</DialogContent>
+      <DialogContent dividers id="client-info-content">
+        {children}
+      </DialogContent>
       <DialogActions>{actions}</DialogActions>
     </Dialog>
   );

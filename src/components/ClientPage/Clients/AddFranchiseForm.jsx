@@ -27,6 +27,8 @@ import spcbrgy from "../../common/data/spcbrgy";
 import franchiseHelper from "../../common/data/franchiseHelper";
 
 const AddFranchiseForm = ({ open, onClose }) => {
+  document.title =
+    "Clients Management | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
   const axiosPrivate = useAxiosPrivate();
   const { franchises, setFranchises, availableMTOP } = useData();
 
@@ -65,21 +67,15 @@ const AddFranchiseForm = ({ open, onClose }) => {
         fueldisp: franchiseDetails.fuelDisp,
         OR: franchiseDetails.or,
         CR: franchiseDetails.cr,
-        tplProvider: franchiseDetails.tplProvider,
-        tplDate1: franchiseDetails.tplDate1,
-        tplDate2: franchiseDetails.tplDate2,
-        typeOfFranchise: franchiseDetails.typeofFranchise,
         kindOfBusiness: franchiseDetails.kindofBusiness,
         toda: franchiseDetails.toda,
         route: franchiseDetails.route,
         remarks: franchiseDetails.remarks,
         complaints: franchiseDetails.complaint,
-        complaints: franchiseDetails.complaint,
         tplProvider: franchiseDetails.tplProvider,
         tplDate1: franchiseDetails.tplDate1,
         tplDate2: franchiseDetails.tplDate2,
         typeOfFranchise: franchiseDetails.typeofFranchise,
-        kindOfBusiness: franchiseDetails.kindofBusiness,
         daterelease: franchiseDetails.daterelease,
       });
 
@@ -93,7 +89,7 @@ const AddFranchiseForm = ({ open, onClose }) => {
           response.data.MI,
           response.data.ADDRESS,
           response.data.OWNER_NO?.replace(/-/g, "").replace(/^0+/g, ""),
-          response.data.DRIVER_NO?.replace(/-/g, "").replace(/^0+/g, ""),
+          response.data.DRIVERS_NO?.replace(/-/g, "").replace(/^0+/g, ""),
           response.data.TODA,
           response.data.DRIVERS_NAME,
           response.data.DRIVERS_ADDRESS,
@@ -118,7 +114,8 @@ const AddFranchiseForm = ({ open, onClose }) => {
           response.data.TPL_DATE_2 && new Date(response.data.TPL_DATE_2),
           response.data.FUEL_DISP,
           response.data.TYPE_OF_FRANCHISE,
-          response.data.KIND_OF_BUSINESS
+          response.data.KIND_OF_BUSINESS,
+          data.ROUTE
         ),
       ];
 
@@ -319,33 +316,20 @@ const AddFranchiseForm = ({ open, onClose }) => {
             />
 
             <Autocomplete
-              isOptionEqualToValue={(option, value) =>
-                option.value == value.value
-              }
               freeSolo
               disablePortal
               clearIcon={false}
               options={spcbrgy}
               fullWidth
-              value={franchiseDetails.address}
-              onChange={(_, v) =>
+              value={franchiseDetails?.address}
+              onChange={(_, value) =>
                 setFranchiseDetails((prev) => ({
                   ...prev,
-                  address: v.value,
+                  address: value || "",
                 }))
               }
               renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Address"
-                  required
-                  onChange={(v) =>
-                    setFranchiseDetails((prev) => ({
-                      ...prev,
-                      address: v.target.value,
-                    }))
-                  }
-                />
+                <TextField {...params} required label="Address" />
               )}
             />
           </FlexRow>
@@ -403,33 +387,20 @@ const AddFranchiseForm = ({ open, onClose }) => {
           </FlexRow>
           <FlexRow>
             <Autocomplete
-              isOptionEqualToValue={(option, value) =>
-                option.value == value.value
-              }
               freeSolo
               disablePortal
               clearIcon={false}
               options={spcbrgy}
               fullWidth
-              value={franchiseDetails.driveraddress}
-              onChange={(_, v) =>
+              value={franchiseDetails?.driveraddress}
+              onInputChange={(_, value) => {
                 setFranchiseDetails((prev) => ({
                   ...prev,
-                  driveraddress: v.value,
-                }))
-              }
+                  driveraddress: value || "",
+                }));
+              }}
               renderInput={(params) => (
-                <TextField
-                  {...params}
-                  required
-                  label="Address"
-                  onChange={(v) =>
-                    setFranchiseDetails((prev) => ({
-                      ...prev,
-                      driveraddress: v.target.value,
-                    }))
-                  }
-                />
+                <TextField {...params} required label="Address" />
               )}
             />
             <OutlinedTextField

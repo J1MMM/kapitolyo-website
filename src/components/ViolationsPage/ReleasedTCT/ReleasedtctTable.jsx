@@ -59,6 +59,8 @@ const columns = [
 ];
 
 const ReleasedtctTable = () => {
+  document.title = "Released TCT | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
+
   const [snack, setSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
   const [resMsg, setResMsg] = useState("");
