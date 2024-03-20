@@ -185,6 +185,7 @@ function createData(
 }
 
 const PaidTable = () => {
+  document.title = "Paid List | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
   const axiosPrivate = useAxiosPrivate();
 
   const [snack, setSnack] = useState(false);

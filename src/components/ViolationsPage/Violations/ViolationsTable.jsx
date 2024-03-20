@@ -10,6 +10,9 @@ import AddViolators from "./AddViolatorForm";
 import Helper from "./Helper";
 
 const ViolationsTable = () => {
+  document.title =
+    "Violations Management | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
+
   const axiosPrivate = useAxiosPrivate();
   const [snack, setSnack] = useState(false);
   const [severity, setSeverity] = useState("success");

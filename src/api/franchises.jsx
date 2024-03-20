@@ -51,7 +51,8 @@ const useFranchises = () => {
               data.TPL_DATE_2 && new Date(data.TPL_DATE_2),
               data.FUEL_DISP,
               data.TYPE_OF_FRANCHISE,
-              data.KIND_OF_BUSINESS
+              data.KIND_OF_BUSINESS,
+              data.ROUTE
             );
           });
         });
