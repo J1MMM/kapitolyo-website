@@ -5,8 +5,9 @@ import useData from "../../../hooks/useData";
 import TableLayout from "../../common/ui/TableLayout";
 import ContainedButton from "../../common/ui/ContainedButton";
 import DataTable from "../../common/ui/DataTable";
-import Helper from "./Helper";
+
 import AddViolators from "./AddViolatorForm";
+import Helper from "./Helper";
 
 const ViolationsTable = () => {
   const axiosPrivate = useAxiosPrivate();

@@ -4,17 +4,18 @@ import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useData from "../../../hooks/useData";
 import ClientInfo from "./ClientInfo";
 import TableLayout from "../../common/ui/TableLayout";
-import helper from "../helper";
+
 import ContainedButton from "../../common/ui/ContainedButton";
 import DataTable from "../../common/ui/DataTable";
 import AddFranchiseForm from "./AddFranchiseForm";
 import { Box, Grow } from "@mui/material";
+import franchiseHelper from "../../common/data/franchiseHelper";
 
 const ClientsTable = () => {
   const axiosPrivate = useAxiosPrivate();
   const { franchises, setFranchises, franchisesLoading } = useData();
   const [franchiseDetails, setFranchiseDetails] = useState(
-    helper.initialFranchiseDetails
+    franchiseHelper.initialFranchiseDetails
   );
   const [noResponse, setNoResponse] = useState(false);
   const [clientInfo, setClientInfo] = useState(false);
@@ -54,13 +55,16 @@ const ClientsTable = () => {
       complaint: foundFranchise.complaint,
       tplDate1: foundFranchise.tplDate1,
       tplDate2: foundFranchise.tplDate2,
-      typeofFranchise: foundFranchise.typeofFranchise,
       kindofBusiness: foundFranchise.kindofBusiness,
+      typeofFranchise: foundFranchise.typeofFranchise,
       route: foundFranchise.route,
       fuelDisp: foundFranchise.fuelDisp,
       ownerSex: foundFranchise.ownerSex,
       driverSex: foundFranchise.driverSex,
       tplProvider: foundFranchise.tplProvider,
+      tplDate1: foundFranchise.tplDate1,
+      tplDate2: foundFranchise.tplDate2,
+      route: foundFranchise.route,
     });
   };
 
@@ -78,7 +82,7 @@ const ClientsTable = () => {
         }
       >
         <DataTable
-          columns={helper.clientsColumns}
+          columns={franchiseHelper.clientsColumns}
           rows={franchises}
           rowCount={totalRows}
           page={page}
@@ -90,7 +94,7 @@ const ClientsTable = () => {
             setPageSize(e.pageSize);
           }}
           onStateChange={(e) =>
-            setTotalRows(helper.countTrueValues(e?.visibleRowsLookup))
+            setTotalRows(franchiseHelper.countTrueValues(e?.visibleRowsLookup))
           }
           loading={franchisesLoading}
         />

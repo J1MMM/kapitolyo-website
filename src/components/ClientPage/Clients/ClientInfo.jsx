@@ -19,7 +19,6 @@ import FlexRow from "../../common/ui/FlexRow";
 import Fieldset from "../../common/ui/Fieldset";
 import DialogForm from "../../common/ui/DialogForm";
 import ConfirmationDialog from "../../common/ui/ConfirmationDialog";
-import helper from "../helper";
 import SnackBar from "../../common/ui/SnackBar";
 
 const ClientInfo = ({
@@ -177,7 +176,7 @@ const ClientInfo = ({
                 required
                 fullWidth
                 value={
-                  franchiseDetails.OwnerSex ? franchiseDetails.OwnerSex : ""
+                  franchiseDetails.ownerSex ? franchiseDetails.ownerSex : ""
                 }
               >
                 <MenuItem value="male">Male</MenuItem>
@@ -245,7 +244,8 @@ const ClientInfo = ({
             <OutlinedTextField
               required={true}
               label="Driver's License no."
-              value={franchiseDetails.driverlicenseno}
+              value={franchiseDetails?.driverlicenseno}
+              readOnly={readOnly}
             />
           </FlexRow>
         </Fieldset>
@@ -283,7 +283,7 @@ const ClientInfo = ({
             />
             <OutlinedTextField
               label="Fuel DISP.(cc)"
-              value={franchiseDetails?.fueldisp}
+              value={franchiseDetails?.fuelDisp}
               readOnly={readOnly}
             />
           </FlexRow>
@@ -302,7 +302,7 @@ const ClientInfo = ({
           <FlexRow>
             <OutlinedTextField
               label="TPL Provider"
-              value={franchiseDetails?.tplprovider}
+              value={franchiseDetails?.tplProvider}
               readOnly={readOnly}
             />
 
@@ -320,6 +320,7 @@ const ClientInfo = ({
                   <DatePicker
                     slotProps={{ textField: { size: "small" } }}
                     readOnly={readOnly}
+                    value={franchiseDetails.tplDate1}
                   />
                 </LocalizationProvider>
                 <Typography variant="subtitle1" color="grey">
@@ -329,6 +330,7 @@ const ClientInfo = ({
                   <DatePicker
                     slotProps={{ textField: { size: "small" } }}
                     readOnly={readOnly}
+                    value={franchiseDetails.tplDate2}
                   />
                 </LocalizationProvider>
               </Box>
@@ -340,12 +342,12 @@ const ClientInfo = ({
           <FlexRow>
             <OutlinedTextField
               label="Type of Franchise"
-              value={franchiseDetails?.tpfrnch}
+              value={franchiseDetails?.typeofFranchise}
               readOnly={readOnly}
             />
             <OutlinedTextField
               label="Kind of Business"
-              value={franchiseDetails?.kob}
+              value={franchiseDetails?.kindofBusiness}
               readOnly={readOnly}
             />
           </FlexRow>
@@ -353,7 +355,7 @@ const ClientInfo = ({
           <FlexRow>
             <OutlinedTextField
               label="TODA"
-              value={franchiseDetails?.toc2}
+              value={franchiseDetails?.toda}
               readOnly={readOnly}
             />
             <OutlinedTextField
@@ -368,6 +370,7 @@ const ClientInfo = ({
                 <DatePicker
                   label="Date Release of ST/TP"
                   value={franchiseDetails?.daterelease}
+                  readOnly={readOnly}
                 />
               </LocalizationProvider>
             </FormControl>

@@ -4,14 +4,14 @@ import useData from "../../../hooks/useData";
 import ClientInfo from "../Clients/ClientInfo";
 import TableLayout from "../../common/ui/TableLayout";
 import DataTable from "../../common/ui/DataTable";
-import Helper from "../helper";
 import { Grow, Paper } from "@mui/material";
 import dayjs from "dayjs";
+import franchiseHelper from "../../common/data/franchiseHelper";
 
 const date_archived_column_format = {
   field: "dateArchived",
   headerName: "Date Archived",
-  width: 250,
+  width: 200,
   headerClassName: "data-grid-header",
   editable: false,
   menu: false,
@@ -32,7 +32,7 @@ const ClientArchived = () => {
     archivedFranchisesLoading,
   } = useData();
   const [franchiseDetails, setFranchiseDetails] = useState(
-    Helper.initialFranchiseDetails
+    franchiseHelper.initialFranchiseDetails
   );
 
   const [isEmpty, setIsEmpty] = useState(false);
@@ -86,10 +86,13 @@ const ClientArchived = () => {
       typeofFranchise: foundFranchise.typeofFranchise,
       kindofBusiness: foundFranchise.kindofBusiness,
       route: foundFranchise.route,
-      driverSex: foundFranchise.driverSex,
       fuelDisp: foundFranchise.fuelDisp,
       ownerSex: foundFranchise.ownerSex,
+      driverSex: foundFranchise.driverSex,
       tplProvider: foundFranchise.tplProvider,
+      tplDate1: foundFranchise.tplDate1,
+      tplDate2: foundFranchise.tplDate2,
+      route: foundFranchise.route,
     });
   };
 
@@ -100,7 +103,10 @@ const ClientArchived = () => {
         subTitle="Clients records you have archived"
       >
         <DataTable
-          columns={[...Helper.clientsColumns, date_archived_column_format]}
+          columns={[
+            date_archived_column_format,
+            ...franchiseHelper.clientsColumns,
+          ]}
           rows={archivedFranchises}
           rowCount={totalRows}
           onCellDoubleClick={(e) => handleRowDoubleClick(e)}

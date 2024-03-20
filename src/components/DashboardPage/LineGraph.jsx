@@ -12,9 +12,9 @@ export default function LineGraph() {
       width={920}
       height={400}
       series={[
-        { data: aData, label: "added", color: "#1a237e" },
-        { data: bData, label: "renewed", color: "#4E79A7" },
-        { data: cData, label: "revoked", color: "#E15759" },
+        { data: aData, label: "Added", color: "#1a237e" },
+        { data: bData, label: "Renewed", color: "#59A14F" },
+        { data: cData, label: "Revoked", color: "#E15759" },
       ]}
       xAxis={[{ scaleType: "point", data: xLabels }]}
     />

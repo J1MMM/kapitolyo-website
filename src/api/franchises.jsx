@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import useData from "../hooks/useData";
-import helper from "./helper";
+import franchiseHelper from "../components/common/data/franchiseHelper";
 
 const useFranchises = () => {
   const axiosPrivate = useAxiosPrivate(); // Use the useAxiosPrivate hook
@@ -18,7 +18,7 @@ const useFranchises = () => {
         console.log(response.data.rows);
         setFranchises(() => {
           return response.data?.rows.map((data) => {
-            return helper.createClientsData(
+            return franchiseHelper.createClientsData(
               data._id,
               data.MTOP,
               data.LASTNAME,
@@ -26,7 +26,7 @@ const useFranchises = () => {
               data.MI,
               data.ADDRESS,
               data.OWNER_NO?.replace(/-/g, "").replace(/^0+/g, ""),
-              data.DRIVER_NO?.replace(/-/g, "").replace(/^0+/g, ""),
+              data.DRIVERS_NO?.replace(/-/g, "").replace(/^0+/g, ""),
               data.TODA,
               data.DRIVERS_NAME,
               data.DRIVERS_ADDRESS,
@@ -45,7 +45,13 @@ const useFranchises = () => {
               data.COMPLAINT,
               data.DATE_ARCHIVED,
               data.OWNER_SEX,
-              data.DRIVERS_SEX
+              data.DRIVERS_SEX,
+              data.TPL_PROVIDER,
+              data.TPL_DATE_1 && new Date(data.TPL_DATE_1),
+              data.TPL_DATE_2 && new Date(data.TPL_DATE_2),
+              data.FUEL_DISP,
+              data.TYPE_OF_FRANCHISE,
+              data.KIND_OF_BUSINESS
             );
           });
         });
