@@ -79,7 +79,7 @@ export default function BarGraph() {
           dataKey: "renewed",
           label: "Renewed",
           valueFormatter,
-          color: "#76B7B2",
+          color: "#59A14F",
         },
         {
           dataKey: "revoked",

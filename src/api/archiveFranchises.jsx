@@ -30,7 +30,7 @@ const useArchivedFranchises = () => {
               data.MI,
               data.ADDRESS,
               data.OWNER_NO?.replace(/-/g, "").replace(/^0+/g, ""),
-              data.DRIVER_NO?.replace(/-/g, "").replace(/^0+/g, ""),
+              data.DRIVERS_NO?.replace(/-/g, "").replace(/^0+/g, ""),
               data.TODA,
               data.DRIVERS_NAME,
               data.DRIVERS_ADDRESS,

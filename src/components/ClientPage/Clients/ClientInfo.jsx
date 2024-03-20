@@ -245,6 +245,7 @@ const ClientInfo = ({
               required={true}
               label="Driver's License no."
               value={franchiseDetails?.driverlicenseno}
+              readOnly={readOnly}
             />
           </FlexRow>
         </Fieldset>
@@ -369,6 +370,7 @@ const ClientInfo = ({
                 <DatePicker
                   label="Date Release of ST/TP"
                   value={franchiseDetails?.daterelease}
+                  readOnly={readOnly}
                 />
               </LocalizationProvider>
             </FormControl>
