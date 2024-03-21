@@ -131,6 +131,7 @@ const LoginComponenet = () => {
       <Box className="bg-img-container" />
       <Box className="tint" />
       <Container
+        className="login-form"
         maxWidth="xs"
         sx={{
           boxSizing: "border-box",
@@ -153,9 +154,7 @@ const LoginComponenet = () => {
             sm: 0,
           },
           borderRadius: 2,
-          boxShadow: "10px 10px 25px -9px rgba(0,0,0,0.36)",
-          WebkitBoxShadow: "10px 10px 25px -9px rgba(0,0,0,0.36)",
-          MozBoxShadow: "10px 10px 25px -9px rgba(0,0,0,0.36)",
+
           display: "flex",
           justifyContent: "center",
           position: "relative",

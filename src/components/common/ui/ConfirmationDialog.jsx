@@ -39,20 +39,29 @@ const ConfirmationDialog = ({
       <DialogTitle
         component={"span"}
         id="alert-dialog-title"
-        variant="h6"
+        variant="h5"
         fontWeight="500"
       >
         {title}
       </DialogTitle>
-      <Divider />
       <DialogContent component={"span"} dividers>
         <DialogContentText component={"span"} id="alert-dialog-description">
           <Alert
             component={"span"}
-            sx={{ maxWidth: "500px" }}
+            sx={{
+              maxWidth: "450px",
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column",
+              "& .MuiAlert-icon": {
+                fontSize: 35,
+              },
+            }}
             severity={serverity || "warning"}
           >
-            <Typography variant="body1">{content}</Typography>
+            <Typography variant="body1" textAlign="center">
+              {content}
+            </Typography>
           </Alert>
         </DialogContentText>
       </DialogContent>

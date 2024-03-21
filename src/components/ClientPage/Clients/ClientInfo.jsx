@@ -26,29 +26,6 @@ import AlertDialog from "../../common/ui/AlertDialog";
 import franchiseHelper from "../../common/data/franchiseHelper";
 import spcbrgy from "../../common/data/spcbrgy";
 
-const checkedFormModified = (obj1, obj2) => {
-  const keys1 = Object.keys(obj1);
-  const keys2 = Object.keys(obj2);
-
-  if (keys1.length !== keys2.length) {
-    return true;
-  }
-  for (let key of keys1) {
-    if (!(key in obj2) || obj1[key] !== obj2[key]) {
-      return true;
-    }
-  }
-
-  return false;
-};
-
-const handleScrollToTop = () => {
-  // Scroll to the top of the dialog content
-  document
-    .getElementById("client-info-content")
-    .scrollTo({ top: 0, behavior: "smooth" });
-};
-
 const ClientInfo = ({
   open,
   onClose,
@@ -56,14 +33,15 @@ const ClientInfo = ({
   setFranchiseDetails,
   archiveMode,
   printable,
+  initialFormInfo,
 }) => {
   const axiosPrivate = useAxiosPrivate();
-
   const [disable, setDisable] = useState(false);
   const [dropConfirm, setDropConfirm] = useState(false);
   const [transferForm, setTransferForm] = useState(false);
   const [updateForm, setUpdateForm] = useState(false);
   const [transferAlertShown, setTransferAlertShown] = useState(false);
+  const [updateAlertShown, setUpdateAlertShown] = useState(false);
   const [closingAlert, setClosingAlert] = useState(false);
   const [readOnly, setReadOnly] = useState(true);
   const [formTitle, setFormTitle] = useState("Client's Information");
@@ -72,6 +50,7 @@ const ClientInfo = ({
   const [alertMsg, setAlertMsg] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("success");
   const [transferConfirmation, setTransferConfirmation] = useState(false);
+  const [updateConfirmation, setUpdateConfirmation] = useState(false);
 
   const handleFranchiseRevoke = async () => {
     setDisable(true);
@@ -100,38 +79,73 @@ const ClientInfo = ({
     setUpdateForm(false);
     setReadOnly(true);
     setClosingAlert(false);
+    setFranchiseDetails(franchiseHelper.initialFranchiseDetails);
   };
 
-  const handleCloseOnclick = () => {
-    const formIsModified = checkedFormModified(
-      {
-        ...franchiseHelper.initialFranchiseDetails,
-        mtop: franchiseDetails.mtop,
-        date: franchiseDetails.date,
-        id: franchiseDetails.id,
-      },
-      franchiseDetails
-    );
-
-    if ((transferForm && formIsModified) || (updateForm && formIsModified)) {
-      setClosingAlert(true);
-      return;
-    }
-    exit();
-  };
-
-  const handleTransferClick = () => {
-    setFormTitle("Franchise Transfer Form");
-    setReadOnly(false);
-    setTransferForm(true);
-    setTransferAlertShown(true);
-    handleScrollToTop();
+  const clearForm = () => {
     setFranchiseDetails({
       ...franchiseHelper.initialFranchiseDetails,
       mtop: franchiseDetails.mtop,
       date: franchiseDetails.date,
       id: franchiseDetails.id,
     });
+  };
+
+  const handleCloseOnclick = () => {
+    if (transferForm || updateForm) {
+      let formIsModified;
+
+      if (transferForm) {
+        formIsModified = franchiseHelper.checkedFormModified(
+          {
+            ...franchiseHelper.initialFranchiseDetails,
+            mtop: franchiseDetails.mtop,
+            date: franchiseDetails.date,
+            id: franchiseDetails.id,
+          },
+          franchiseDetails
+        );
+      }
+
+      if (updateForm) {
+        formIsModified = franchiseHelper.checkedFormModified(
+          initialFormInfo,
+          franchiseDetails
+        );
+
+        console.log(initialFormInfo);
+        console.log(franchiseDetails);
+      }
+
+      if (formIsModified) {
+        setClosingAlert(true);
+        return;
+      }
+    }
+
+    exit();
+  };
+
+  const handleTransferClick = () => {
+    setFormTitle("Transfer Franchise");
+    setReadOnly(false);
+    setTransferForm(true);
+    setTransferAlertShown(true);
+    franchiseHelper.handleScrollToTop();
+    clearForm();
+  };
+
+  const handleUpdateClick = () => {
+    setFormTitle("Update Franchise");
+    setReadOnly(false);
+    setUpdateForm(true);
+    setUpdateAlertShown(true);
+    franchiseHelper.handleScrollToTop();
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    transferForm ? setTransferConfirmation(true) : setUpdateConfirmation(true);
   };
 
   const handleTransferSubmit = async () => {
@@ -141,80 +155,24 @@ const ClientInfo = ({
         "/franchise/transfer",
         franchiseDetails
       );
-
-      const newFranchises = [
-        ...franchises,
-        franchiseHelper.createClientsData(
-          response.data.newFranchise._id,
-          response.data.newFranchise.MTOP,
-          response.data.newFranchise.LASTNAME,
-          response.data.newFranchise.FIRSTNAME,
-          response.data.newFranchise.MI,
-          response.data.newFranchise.ADDRESS,
-          response.data.newFranchise.OWNER_NO?.replace(/-/g, "").replace(
-            /^0+/g,
-            ""
-          ),
-          response.data.newFranchise.DRIVERS_NO?.replace(/-/g, "").replace(
-            /^0+/g,
-            ""
-          ),
-          response.data.newFranchise.TODA,
-          response.data.newFranchise.DRIVERS_NAME,
-          response.data.newFranchise.DRIVERS_ADDRESS,
-          response.data.newFranchise.OR,
-          response.data.newFranchise.CR,
-          response.data.newFranchise.DRIVERS_LICENSE_NO,
-          response.data.newFranchise.MODEL,
-          response.data.newFranchise.MOTOR_NO,
-          response.data.newFranchise.CHASSIS_NO,
-          response.data.newFranchise.PLATE_NO,
-          response.data.newFranchise.STROKE,
-          response.data.newFranchise.DATE_RENEWAL &&
-            new Date(response.data.newFranchise.DATE_RENEWAL),
-          response.data.newFranchise.REMARKS,
-          response.data.newFranchise.DATE_RELEASE_OF_ST_TP &&
-            new Date(response.data.newFranchise.DATE_RELEASE_OF_ST_TP),
-          response.data.newFranchise.COMPLAINT,
-          response.data.newFranchise.DATE_ARCHIVED,
-          response.data.newFranchise.OWNER_SEX,
-          response.data.newFranchise.DRIVERS_SEX,
-          response.data.newFranchise.TPL_PROVIDER,
-          response.data.newFranchise.TPL_DATE_1 &&
-            new Date(response.data.newFranchise.TPL_DATE_1),
-          response.data.newFranchise.TPL_DATE_2 &&
-            new Date(response.data.newFranchise.TPL_DATE_2),
-          response.data.newFranchise.FUEL_DISP,
-          response.data.newFranchise.TYPE_OF_FRANCHISE,
-          response.data.newFranchise.KIND_OF_BUSINESS,
-          response.data.newFranchise.ROUTE
-        ),
-      ];
-
-      newFranchises.sort((a, b) => {
-        const mtopA = parseInt(a.mtop);
-        const mtopB = parseInt(b.mtop);
-        if (mtopA < mtopB) {
-          return -1; // 'a' comes before 'b'
-        }
-        if (mtopA > mtopB) {
-          return 1; // 'b' comes before 'a'
-        }
-        return 0; // 'a' and 'b' are equal
+      console.log(response.data);
+      setFranchises((prev) => {
+        const newFranchises = prev.map((franchise) => {
+          if (franchise.mtop == response.data?.newFranchise.MTOP) {
+            return franchiseHelper.formatFranchise(response.data.newFranchise);
+          } else {
+            return franchise;
+          }
+        });
+        return franchiseHelper.sortByMTOP(newFranchises);
       });
-
-      setFranchises(
-        newFranchises.filter((frnhs) => frnhs.id !== franchiseDetails.id)
-      );
-      setFranchiseDetails(franchiseHelper.initialFranchiseDetails);
       setAlertSeverity("success");
       setAlertMsg(
-        "Success! The franchise has been added to the system successfully"
+        "Franchise successfully transferred to the new owner, franchise information has been added to the system."
       );
-      console.log(response.data);
+      exit();
     } catch (error) {
       console.log(error);
-
       setAlertSeverity("error");
       if (error.response?.status == 400) {
         setAlertMsg(
@@ -225,8 +183,45 @@ const ClientInfo = ({
       }
     }
     setTransferConfirmation(false);
-    onClose(false);
-    setTransferForm(false);
+    setAlertShown(true);
+    setDisable(false);
+  };
+
+  const handleUpdateSubmit = async () => {
+    setDisable(true);
+    try {
+      const response = await axiosPrivate.post(
+        "/franchise/update",
+        franchiseDetails
+      );
+
+      setFranchises((prev) => {
+        const newFranchises = prev.map((franchise) => {
+          if (franchise.mtop == response.data.MTOP) {
+            return franchiseHelper.formatFranchise(response.data);
+          } else {
+            return franchise;
+          }
+        });
+        return franchiseHelper.sortByMTOP(newFranchises);
+      });
+      setAlertSeverity("success");
+      setAlertMsg(
+        "Franchise information updated successfully. Your changes have been saved and are now reflected in the system."
+      );
+      exit();
+    } catch (error) {
+      console.log(error);
+      setAlertSeverity("error");
+      if (error.response?.status == 400) {
+        setAlertMsg(
+          "Updating franchise failed. " + error.response.data.message
+        );
+      } else {
+        setAlertMsg("Updating franchise failed. Please try again later.");
+      }
+    }
+    setUpdateConfirmation(false);
     setAlertShown(true);
     setDisable(false);
   };
@@ -234,10 +229,7 @@ const ClientInfo = ({
   return (
     <>
       <DialogForm
-        onSubmit={(e) => {
-          e.preventDefault();
-          setTransferConfirmation(true);
-        }}
+        onSubmit={handleSubmit}
         printable={printable}
         title={formTitle}
         open={open}
@@ -261,11 +253,13 @@ const ClientInfo = ({
               )}
               {updateForm && (
                 <>
-                  <Button disabled={disable}>Submit</Button>
+                  <Button disabled={disable} type="submit">
+                    Submit
+                  </Button>
                   <Button
                     sx={{ color: "InactiveCaptionText" }}
                     disabled={disable}
-                    onClick={() => setUpdateForm(false)}
+                    onClick={handleCloseOnclick}
                   >
                     Cancel
                   </Button>
@@ -283,10 +277,7 @@ const ClientInfo = ({
                   <Button disabled={disable} onClick={handleTransferClick}>
                     Transfer
                   </Button>
-                  <Button
-                    disabled={disable}
-                    onClick={() => setUpdateForm(true)}
-                  >
+                  <Button disabled={disable} onClick={handleUpdateClick}>
                     Update
                   </Button>
                 </>
@@ -405,12 +396,12 @@ const ClientInfo = ({
               options={spcbrgy}
               fullWidth
               value={franchiseDetails?.address}
-              onChange={(_, value) =>
+              onInputChange={(_, value) => {
                 setFranchiseDetails((prev) => ({
                   ...prev,
                   address: value || "",
-                }))
-              }
+                }));
+              }}
               renderInput={(params) => (
                 <TextField {...params} required label="Address" />
               )}
@@ -481,7 +472,7 @@ const ClientInfo = ({
               options={spcbrgy}
               fullWidth
               value={franchiseDetails?.driveraddress}
-              onChange={(_, value) =>
+              onInputChange={(_, value) =>
                 setFranchiseDetails((prev) => ({
                   ...prev,
                   driveraddress: value || "",
@@ -746,19 +737,20 @@ const ClientInfo = ({
             />
           </FlexRow>
 
-          {!transferForm && (
-            <OutlinedTextField
-              label="Complaints"
-              value={franchiseDetails?.complaint}
-              readOnly={readOnly}
-              onChange={(e) =>
-                setFranchiseDetails((prev) => ({
-                  ...prev,
-                  complaint: e.target.value,
-                }))
-              }
-            />
-          )}
+          {!transferForm ||
+            (!updateForm && (
+              <OutlinedTextField
+                label="Complaints"
+                value={franchiseDetails?.complaint}
+                readOnly={readOnly}
+                onChange={(e) =>
+                  setFranchiseDetails((prev) => ({
+                    ...prev,
+                    complaint: e.target.value,
+                  }))
+                }
+              />
+            ))}
         </Fieldset>
       </DialogForm>
 
@@ -767,6 +759,21 @@ const ClientInfo = ({
         onClose={setAlertShown}
         msg={alertMsg}
         severity={alertSeverity}
+      />
+
+      <SnackBar
+        open={transferAlertShown}
+        onClose={setTransferAlertShown}
+        msg="Please fill out the following details to transfer the franchise to another client. Ensure all information is accurate before submitting"
+        severity={"info"}
+        position={{ horizontal: "center", vertical: "top" }}
+      />
+      <SnackBar
+        open={updateAlertShown}
+        onClose={setUpdateAlertShown}
+        msg="This form is for updating franchise information and renewal. Please ensure that the data you enter is accurate before submitting, as changes will be saved to the system."
+        severity={"info"}
+        position={{ horizontal: "center", vertical: "top" }}
       />
 
       <ConfirmationDialog
@@ -788,20 +795,21 @@ const ClientInfo = ({
         label="Yes, close it"
       />
 
-      <AlertDialog
-        open={transferAlertShown}
-        setOpen={setTransferAlertShown}
-        confirm={() => setTransferAlertShown(false)}
-        title="Franchise Transfer Initiated"
-        content="Please fill out the following details to transfer the franchise to another client. Ensure all information is accurate before submitting"
-      />
-
       <ConfirmationDialog
         open={transferConfirmation}
         setOpen={setTransferConfirmation}
         confirm={handleTransferSubmit}
         title="Transfer Franchise Confirmation"
         content="Please confirm the transfer of the franchise. Once confirmed, the new franchise will be added to the system, and the current franchise data will be moved to the archive."
+        disabled={disable}
+      />
+
+      <ConfirmationDialog
+        open={updateConfirmation}
+        setOpen={setUpdateConfirmation}
+        confirm={handleUpdateSubmit}
+        title="Update Franchise Confirmation"
+        content="Before proceeding, kindly confirm the update of franchise information. Your changes will be saved upon submission."
         disabled={disable}
       />
     </>

@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 
 const initialFranchiseDetails = {
   id: "",
-  date: new Date(),
+  date: null,
   mtop: "",
   lname: "",
   fname: "",
@@ -296,9 +296,88 @@ function countTrueValues(obj) {
   return count;
 }
 
+const checkedFormModified = (obj1, obj2) => {
+  const keys1 = Object.keys(obj1);
+  const keys2 = Object.keys(obj2);
+
+  if (keys1.length !== keys2.length) {
+    return true;
+  }
+  for (let key of keys1) {
+    if (!(key in obj2) || obj1[key] !== obj2[key]) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+const handleScrollToTop = () => {
+  document
+    .getElementById("client-info-content")
+    .scrollTo({ top: 0, behavior: "smooth" });
+};
+
+const sortByMTOP = (array) => {
+  return array.sort((a, b) => {
+    const mtopA = parseInt(a.mtop);
+    const mtopB = parseInt(b.mtop);
+    if (mtopA < mtopB) {
+      return -1; // 'a' comes before 'b'
+    }
+    if (mtopA > mtopB) {
+      return 1; // 'b' comes before 'a'
+    }
+    return 0; // 'a' and 'b' are equal
+  });
+};
+
+const formatFranchise = (franchise) => {
+  return createClientsData(
+    franchise._id,
+    franchise.MTOP,
+    franchise.LASTNAME,
+    franchise.FIRSTNAME,
+    franchise.MI,
+    franchise.ADDRESS,
+    franchise.OWNER_NO?.replace(/-/g, "").replace(/^0+/g, ""),
+    franchise.DRIVERS_NO?.replace(/-/g, "").replace(/^0+/g, ""),
+    franchise.TODA,
+    franchise.DRIVERS_NAME,
+    franchise.DRIVERS_ADDRESS,
+    franchise.OR,
+    franchise.CR,
+    franchise.DRIVERS_LICENSE_NO,
+    franchise.MODEL,
+    franchise.MOTOR_NO,
+    franchise.CHASSIS_NO,
+    franchise.PLATE_NO,
+    franchise.STROKE,
+    franchise.DATE_RENEWAL && new Date(franchise.DATE_RENEWAL),
+    franchise.REMARKS,
+    franchise.DATE_RELEASE_OF_ST_TP &&
+      new Date(franchise.DATE_RELEASE_OF_ST_TP),
+    franchise.COMPLAINT,
+    franchise.DATE_ARCHIVED,
+    franchise.OWNER_SEX,
+    franchise.DRIVERS_SEX,
+    franchise.TPL_PROVIDER,
+    franchise.TPL_DATE_1 && new Date(franchise.TPL_DATE_1),
+    franchise.TPL_DATE_2 && new Date(franchise.TPL_DATE_2),
+    franchise.FUEL_DISP,
+    franchise.TYPE_OF_FRANCHISE,
+    franchise.KIND_OF_BUSINESS,
+    franchise.ROUTE
+  );
+};
+
 export default {
   createClientsData,
   clientsColumns,
   countTrueValues,
   initialFranchiseDetails,
+  checkedFormModified,
+  handleScrollToTop,
+  sortByMTOP,
+  formatFranchise,
 };

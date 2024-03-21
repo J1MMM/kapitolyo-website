@@ -26,7 +26,7 @@ import { PiUserList } from "react-icons/pi";
 import { RiFolderWarningLine } from "react-icons/ri";
 import "./style.scss";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import useFranchises from "../../api/franchises";
+import useFranchises from "../../api/useFranchises";
 import useMTOP from "../../api/mtop";
 import useArchivedFranchises from "../../api/archiveFranchises";
 import useData from "../../hooks/useData";

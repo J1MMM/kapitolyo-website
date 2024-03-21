@@ -53,7 +53,7 @@ import BarGraph from "./BarGraph";
 import { RiEjectLine, RiUserAddLine } from "react-icons/ri";
 import Users from "../UsersAccountPage/Users";
 import { BsList, BsTicket, BsTicketDetailedFill } from "react-icons/bs";
-import useFranchises from "../../api/franchises";
+
 import PageContainer from "../common/ui/PageContainer";
 import TableLayout from "../common/ui/TableLayout";
 import { FiList } from "react-icons/fi";
