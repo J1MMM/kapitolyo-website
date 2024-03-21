@@ -16,6 +16,7 @@ const useMTOP = () => {
 
   useEffect(() => {
     const fetchMTOP = async () => {
+      setAvailableMTOPLoading(true);
       console.log("get MTOP");
       try {
         const response = await axiosPrivate.get("/franchise/available");

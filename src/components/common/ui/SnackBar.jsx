@@ -6,7 +6,7 @@ const SnackBar = ({ open, onClose, severity, msg, position }) => {
     <div>
       <Snackbar
         open={open}
-        autoHideDuration={5000}
+        autoHideDuration={7000}
         onClose={() => onClose(false)}
         anchorOrigin={position || { horizontal: "right", vertical: "bottom" }}
         sx={{
@@ -17,6 +17,7 @@ const SnackBar = ({ open, onClose, severity, msg, position }) => {
           onClose={() => onClose(false)}
           severity={severity}
           variant="filled"
+          icon={false}
           sx={{ width: "100%" }}
         >
           {msg}

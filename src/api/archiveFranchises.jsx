@@ -16,6 +16,7 @@ const useArchivedFranchises = () => {
 
   useEffect(() => {
     const fetchArchived = async () => {
+      setArchivedFranchisesLoading(true);
       console.log("get arch9ve");
       try {
         const response = await axiosPrivate.get("/franchise/archive");

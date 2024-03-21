@@ -17,6 +17,7 @@ const ClientsTable = () => {
   const [franchiseDetails, setFranchiseDetails] = useState(
     franchiseHelper.initialFranchiseDetails
   );
+  const [initialFormInfo, setinitialFormInfo] = useState({});
   const [noResponse, setNoResponse] = useState(false);
   const [clientInfo, setClientInfo] = useState(false);
   const [addclient, setAddclient] = useState(false);
@@ -27,42 +28,10 @@ const ClientsTable = () => {
 
   const handleRowDoubleClick = (e) => {
     setClientInfo(true);
-    const foundFranchise = franchises.find((v) => v.id == e.id);
-    console.log(foundFranchise);
-    setFranchiseDetails({
-      id: foundFranchise.id || "",
-      mtop: foundFranchise.mtop || "",
-      lname: foundFranchise.lname || "",
-      fname: foundFranchise.fname || "",
-      mi: foundFranchise.mi || "",
-      address: foundFranchise.address || "",
-      contact: foundFranchise.contact || "",
-      contact2: foundFranchise.contact2 || "",
-      toda: foundFranchise.toda || "",
-      drivername: foundFranchise.drivername || "",
-      driveraddress: foundFranchise.driveraddress || "",
-      or: foundFranchise.or || "",
-      cr: foundFranchise.cr || "",
-      driverlicenseno: foundFranchise.driverlicenseno || "",
-      model: foundFranchise.model || "",
-      motorno: foundFranchise.motorno || "",
-      chassisno: foundFranchise.chassisno || "",
-      plateno: foundFranchise.plateno || "",
-      stroke: foundFranchise.stroke || "",
-      date: foundFranchise.date || null,
-      remarks: foundFranchise.remarks || "",
-      daterelease: foundFranchise.daterelease || null,
-      complaint: foundFranchise.complaint || "",
-      tplDate1: foundFranchise.tplDate1 || null,
-      tplDate2: foundFranchise.tplDate2 || null,
-      kindofBusiness: foundFranchise.kindofBusiness || "",
-      typeofFranchise: foundFranchise.typeofFranchise || "",
-      route: foundFranchise.route || "",
-      fuelDisp: foundFranchise.fuelDisp || "",
-      ownerSex: foundFranchise.ownerSex || "",
-      driverSex: foundFranchise.driverSex || "",
-      tplProvider: foundFranchise.tplProvider || "",
-    });
+    let foundFranchise = franchises.find((v) => v.id == e.id);
+
+    setFranchiseDetails(foundFranchise);
+    setinitialFormInfo(foundFranchise);
   };
 
   return (
@@ -102,6 +71,7 @@ const ClientsTable = () => {
         onClose={setClientInfo}
         franchiseDetails={franchiseDetails}
         setFranchiseDetails={setFranchiseDetails}
+        initialFormInfo={initialFormInfo}
         printable
       />
 

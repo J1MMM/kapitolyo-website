@@ -45,102 +45,22 @@ const AddFranchiseForm = ({ open, onClose }) => {
   const handleAddFranchise = async () => {
     setDisable(true);
     try {
-      const response = await axiosPrivate.post("/franchise", {
-        mtop: franchiseDetails.mtop,
-        dateRenewal: franchiseDetails.date,
-        ownerFname: franchiseDetails.fname,
-        ownerLname: franchiseDetails.lname,
-        ownerMI: franchiseDetails.mi,
-        ownerAddress: franchiseDetails.address,
-        ownerContact: franchiseDetails.contact,
-        ownerSex: franchiseDetails.ownerSex,
-        driverFullname: franchiseDetails.drivername,
-        driverAddress: franchiseDetails.driveraddress,
-        driverContact: franchiseDetails.contact2,
-        driverSex: franchiseDetails.driverSex,
-        driverlicenseno: franchiseDetails.driverlicenseno,
-        model: franchiseDetails.model,
-        plateno: franchiseDetails.plateno,
-        motorno: franchiseDetails.motorno,
-        stroke: franchiseDetails.stroke,
-        chasisno: franchiseDetails.chassisno,
-        fueldisp: franchiseDetails.fuelDisp,
-        OR: franchiseDetails.or,
-        CR: franchiseDetails.cr,
-        kindOfBusiness: franchiseDetails.kindofBusiness,
-        toda: franchiseDetails.toda,
-        route: franchiseDetails.route,
-        remarks: franchiseDetails.remarks,
-        complaints: franchiseDetails.complaint,
-        tplProvider: franchiseDetails.tplProvider,
-        tplDate1: franchiseDetails.tplDate1,
-        tplDate2: franchiseDetails.tplDate2,
-        typeOfFranchise: franchiseDetails.typeofFranchise,
-        daterelease: franchiseDetails.daterelease,
+      const response = await axiosPrivate.post("/franchise", franchiseDetails);
+      setFranchises((prev) => {
+        const newFranchises = [
+          ...prev,
+          franchiseHelper.formatFranchise(response.data),
+        ];
+        return franchiseHelper.sortByMTOP(newFranchises);
       });
-
-      const newFranchises = [
-        ...franchises,
-        franchiseHelper.createClientsData(
-          response.data._id,
-          response.data.MTOP,
-          response.data.LASTNAME,
-          response.data.FIRSTNAME,
-          response.data.MI,
-          response.data.ADDRESS,
-          response.data.OWNER_NO?.replace(/-/g, "").replace(/^0+/g, ""),
-          response.data.DRIVERS_NO?.replace(/-/g, "").replace(/^0+/g, ""),
-          response.data.TODA,
-          response.data.DRIVERS_NAME,
-          response.data.DRIVERS_ADDRESS,
-          response.data.OR,
-          response.data.CR,
-          response.data.DRIVERS_LICENSE_NO,
-          response.data.MODEL,
-          response.data.MOTOR_NO,
-          response.data.CHASSIS_NO,
-          response.data.PLATE_NO,
-          response.data.STROKE,
-          response.data.DATE_RENEWAL && new Date(response.data.DATE_RENEWAL),
-          response.data.REMARKS,
-          response.data.DATE_RELEASE_OF_ST_TP &&
-            new Date(response.data.DATE_RELEASE_OF_ST_TP),
-          response.data.COMPLAINT,
-          response.data.DATE_ARCHIVED,
-          response.data.OWNER_SEX,
-          response.data.DRIVERS_SEX,
-          response.data.TPL_PROVIDER,
-          response.data.TPL_DATE_1 && new Date(response.data.TPL_DATE_1),
-          response.data.TPL_DATE_2 && new Date(response.data.TPL_DATE_2),
-          response.data.FUEL_DISP,
-          response.data.TYPE_OF_FRANCHISE,
-          response.data.KIND_OF_BUSINESS,
-          data.ROUTE
-        ),
-      ];
-
-      newFranchises.sort((a, b) => {
-        const mtopA = parseInt(a.mtop);
-        const mtopB = parseInt(b.mtop);
-        if (mtopA < mtopB) {
-          return -1; // 'a' comes before 'b'
-        }
-        if (mtopA > mtopB) {
-          return 1; // 'b' comes before 'a'
-        }
-        return 0; // 'a' and 'b' are equal
-      });
-
-      setFranchises(newFranchises);
       setFranchiseDetails(franchiseHelper.initialFranchiseDetails);
       setAlertSeverity("success");
       setAlertMsg(
         "Success! The franchise has been added to the system successfully"
       );
-      console.log(response.data);
+      onClose(false);
     } catch (error) {
       console.log(error);
-
       setAlertSeverity("error");
       if (error.response?.status == 400) {
         setAlertMsg("Failed to add Franchise. " + error.response.data.message);
@@ -149,7 +69,6 @@ const AddFranchiseForm = ({ open, onClose }) => {
       }
     }
     setConfirmaionShown(false);
-    onClose(false);
     setAlertShown(true);
     setDisable(false);
   };
@@ -197,7 +116,7 @@ const AddFranchiseForm = ({ open, onClose }) => {
       >
         <FlexRow>
           <FormControl fullWidth margin="dense" sx={{ maxWidth: 250 }}>
-            <InputLabel id="gender">
+            <InputLabel required>
               {availableMTOP.length == 0 ? "no available MTOP" : "MTOP"}
             </InputLabel>
             <Select
@@ -322,7 +241,7 @@ const AddFranchiseForm = ({ open, onClose }) => {
               options={spcbrgy}
               fullWidth
               value={franchiseDetails?.address}
-              onChange={(_, value) =>
+              onInputChange={(_, value) =>
                 setFranchiseDetails((prev) => ({
                   ...prev,
                   address: value || "",

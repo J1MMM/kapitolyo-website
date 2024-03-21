@@ -128,6 +128,7 @@ const ClientArchived = () => {
 
       <ClientInfo
         open={clientInfo}
+        setFranchiseDetails={setFranchiseDetails}
         onClose={setClientInfo}
         franchiseDetails={franchiseDetails}
         archiveMode={true}
