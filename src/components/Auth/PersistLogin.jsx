@@ -70,20 +70,28 @@ const PersistLogin = () => {
             width={"100%"}
             display={"flex"}
             flexDirection={"column"}
-            justifyContent={"space-around"}
+            justifyContent={"space-between"}
             alignItems={"center"}
             p={2}
             boxSizing="border-box"
             zIndex={2}
           >
             <Typography
-              variant="h3"
               color="secondary"
-              letterSpacing="3px"
               textAlign="center"
               fontWeight={600}
-              mb={-10}
-              maxWidth={900}
+              maxWidth={800}
+              sx={{
+                fontSize: {
+                  xs: 24,
+                  sm: 26,
+                  md: 38,
+                  lg: 40,
+                },
+                letterSpacing: {
+                  md: "3px",
+                },
+              }}
             >
               TRICYCLE FRANCHISING AND RENEWAL SYSTEM
             </Typography>
@@ -92,8 +100,8 @@ const PersistLogin = () => {
                 position: "relative",
                 width: "100%",
                 height: "100%",
-                maxHeight: 250,
-                maxWidth: 250,
+                maxHeight: 200,
+                maxWidth: 200,
               }}
             >
               <img
@@ -103,28 +111,34 @@ const PersistLogin = () => {
                   width: "100%",
                   height: "100%",
                   objectFit: "cover",
+                  marginTop: -30,
                 }}
               />
             </Box>
             <Box
               display="flex"
               flexDirection="column"
-              gap={3}
               alignItems="center"
               width="100%"
+              gap={1}
             >
               <Typography
-                variant="h5"
                 color="secondary"
                 fontWeight="500"
-                letterSpacing="1px"
+                sx={{
+                  fontSize: {
+                    xs: 18,
+                    sm: 20,
+                    md: 22,
+                  },
+                }}
               >
                 Loading please wait...
               </Typography>
               <LinearProgress
                 sx={{
                   width: "100%",
-                  maxWidth: 450,
+                  maxWidth: 380,
                   bgcolor: "InactiveCaptionText",
                 }}
               />

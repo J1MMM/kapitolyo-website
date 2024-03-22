@@ -58,44 +58,7 @@ const ClientArchived = () => {
   const handleRowDoubleClick = (e) => {
     setClientInfo(true);
     const foundFranchise = archivedFranchises.find((v) => v.id == e.id);
-    console.log(foundFranchise);
-    setFranchiseDetails({
-      id: foundFranchise.id,
-      mtop: foundFranchise.mtop,
-      lname: foundFranchise.lname,
-      fname: foundFranchise.fname,
-      mi: foundFranchise.mi,
-      address: foundFranchise.address,
-      contact: foundFranchise.contact,
-      contact2: foundFranchise.contact2,
-      toda: foundFranchise.toda,
-      drivername: foundFranchise.drivername,
-      driveraddress: foundFranchise.driveraddress,
-      or: foundFranchise.or,
-      cr: foundFranchise.cr,
-      driverlicenseno: foundFranchise.driverlicenseno,
-      model: foundFranchise.model,
-      motorno: foundFranchise.motorno,
-      chassisno: foundFranchise.chassisno,
-      plateno: foundFranchise.plateno,
-      stroke: foundFranchise.stroke,
-      date: foundFranchise.date,
-      remarks: foundFranchise.remarks,
-      daterelease: foundFranchise.daterelease,
-      complaint: foundFranchise.complaint,
-      tplDate1: foundFranchise.tplDate1,
-      tplDate2: foundFranchise.tplDate2,
-      typeofFranchise: foundFranchise.typeofFranchise,
-      kindofBusiness: foundFranchise.kindofBusiness,
-      route: foundFranchise.route,
-      fuelDisp: foundFranchise.fuelDisp,
-      ownerSex: foundFranchise.ownerSex,
-      driverSex: foundFranchise.driverSex,
-      tplProvider: foundFranchise.tplProvider,
-      tplDate1: foundFranchise.tplDate1,
-      tplDate2: foundFranchise.tplDate2,
-      route: foundFranchise.route,
-    });
+    setFranchiseDetails(foundFranchise);
   };
 
   return (

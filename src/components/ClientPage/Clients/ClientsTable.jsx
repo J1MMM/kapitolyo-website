@@ -24,7 +24,6 @@ const ClientsTable = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(50);
   const [totalRows, setTotalRows] = useState(0);
-  const [isEmpty, setIsEmpty] = useState(false);
 
   const handleRowDoubleClick = (e) => {
     setClientInfo(true);
