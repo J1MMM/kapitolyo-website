@@ -73,13 +73,104 @@ const ClientInfo = ({
     setDisable(false);
   };
 
-  const exit = () => {
-    onClose(false);
-    setTransferForm(false);
-    setUpdateForm(false);
-    setReadOnly(true);
+  const handleTransferSubmit = async () => {
+    setDisable(true);
+    try {
+      const response = await axiosPrivate.post(
+        "/franchise/transfer",
+        franchiseDetails
+      );
+      console.log(response.data);
+      const newFranchise = franchiseHelper.formatFranchise(
+        response.data.newFranchise
+      );
+      setFranchises((prev) => {
+        const newFranchises = prev.map((franchise) => {
+          if (franchise.mtop == response.data?.newFranchise.MTOP) {
+            return newFranchise;
+          } else {
+            return franchise;
+          }
+        });
+        return franchiseHelper.sortByMTOP(newFranchises);
+      });
+      setFranchiseDetails(newFranchise);
+      setTransferForm(false);
+      setReadOnly(true);
+      franchiseHelper.handleScrollToTop();
+      setAlertSeverity("success");
+      setAlertMsg(
+        "Franchise successfully transferred to the new owner, franchise information has been added to the system."
+      );
+    } catch (error) {
+      console.log(error);
+      setAlertSeverity("error");
+      if (error.response?.status == 400) {
+        setAlertMsg(
+          "Failed to transfer Franchise. " + error.response.data.message
+        );
+      } else {
+        setAlertMsg("Failed to transfer Franchise. Please try again later.");
+      }
+    }
+    setTransferConfirmation(false);
+    setAlertShown(true);
+    setDisable(false);
+  };
+
+  const handleUpdateSubmit = async () => {
+    setDisable(true);
+    try {
+      const response = await axiosPrivate.post(
+        "/franchise/update",
+        franchiseDetails
+      );
+      const newFranchise = franchiseHelper.formatFranchise(response.data);
+      setFranchises((prev) => {
+        const newFranchises = prev.map((franchise) => {
+          if (franchise.mtop == response.data.MTOP) {
+            return newFranchise;
+          } else {
+            return franchise;
+          }
+        });
+        return franchiseHelper.sortByMTOP(newFranchises);
+      });
+      setFranchiseDetails(newFranchise);
+      setUpdateForm(false);
+      setReadOnly(true);
+      franchiseHelper.handleScrollToTop();
+      setAlertSeverity("success");
+      setAlertMsg(
+        "Franchise information updated successfully. Your changes have been saved and are now reflected in the system."
+      );
+    } catch (error) {
+      console.log(error);
+      setAlertSeverity("error");
+      if (error.response?.status == 400) {
+        setAlertMsg(
+          "Updating franchise failed. " + error.response.data.message
+        );
+      } else {
+        setAlertMsg("Updating franchise failed. Please try again later.");
+      }
+    }
+    setUpdateConfirmation(false);
+    setAlertShown(true);
+    setDisable(false);
+  };
+
+  const goBack = () => {
+    if (transferForm || updateForm) {
+      setFranchiseDetails(initialFormInfo);
+    } else {
+      onClose(false);
+      setFranchiseDetails(franchiseHelper.initialFranchiseDetails);
+    }
     setClosingAlert(false);
-    setFranchiseDetails(franchiseHelper.initialFranchiseDetails);
+    setUpdateForm(false);
+    setTransferForm(false);
+    setReadOnly(true);
   };
 
   const clearForm = () => {
@@ -112,9 +203,6 @@ const ClientInfo = ({
           initialFormInfo,
           franchiseDetails
         );
-
-        console.log(initialFormInfo);
-        console.log(franchiseDetails);
       }
 
       if (formIsModified) {
@@ -123,7 +211,7 @@ const ClientInfo = ({
       }
     }
 
-    exit();
+    goBack();
   };
 
   const handleTransferClick = () => {
@@ -148,84 +236,6 @@ const ClientInfo = ({
     transferForm ? setTransferConfirmation(true) : setUpdateConfirmation(true);
   };
 
-  const handleTransferSubmit = async () => {
-    setDisable(true);
-    try {
-      const response = await axiosPrivate.post(
-        "/franchise/transfer",
-        franchiseDetails
-      );
-      console.log(response.data);
-      setFranchises((prev) => {
-        const newFranchises = prev.map((franchise) => {
-          if (franchise.mtop == response.data?.newFranchise.MTOP) {
-            return franchiseHelper.formatFranchise(response.data.newFranchise);
-          } else {
-            return franchise;
-          }
-        });
-        return franchiseHelper.sortByMTOP(newFranchises);
-      });
-      setAlertSeverity("success");
-      setAlertMsg(
-        "Franchise successfully transferred to the new owner, franchise information has been added to the system."
-      );
-      exit();
-    } catch (error) {
-      console.log(error);
-      setAlertSeverity("error");
-      if (error.response?.status == 400) {
-        setAlertMsg(
-          "Failed to transfer Franchise. " + error.response.data.message
-        );
-      } else {
-        setAlertMsg("Failed to transfer Franchise. Please try again later.");
-      }
-    }
-    setTransferConfirmation(false);
-    setAlertShown(true);
-    setDisable(false);
-  };
-
-  const handleUpdateSubmit = async () => {
-    setDisable(true);
-    try {
-      const response = await axiosPrivate.post(
-        "/franchise/update",
-        franchiseDetails
-      );
-
-      setFranchises((prev) => {
-        const newFranchises = prev.map((franchise) => {
-          if (franchise.mtop == response.data.MTOP) {
-            return franchiseHelper.formatFranchise(response.data);
-          } else {
-            return franchise;
-          }
-        });
-        return franchiseHelper.sortByMTOP(newFranchises);
-      });
-      setAlertSeverity("success");
-      setAlertMsg(
-        "Franchise information updated successfully. Your changes have been saved and are now reflected in the system."
-      );
-      exit();
-    } catch (error) {
-      console.log(error);
-      setAlertSeverity("error");
-      if (error.response?.status == 400) {
-        setAlertMsg(
-          "Updating franchise failed. " + error.response.data.message
-        );
-      } else {
-        setAlertMsg("Updating franchise failed. Please try again later.");
-      }
-    }
-    setUpdateConfirmation(false);
-    setAlertShown(true);
-    setDisable(false);
-  };
-
   return (
     <>
       <DialogForm
@@ -239,45 +249,69 @@ const ClientInfo = ({
             <>
               {transferForm && (
                 <>
-                  <Button disabled={disable} type="submit">
-                    Submit
-                  </Button>
                   <Button
-                    sx={{ color: "InactiveCaptionText" }}
                     disabled={disable}
+                    variant="outlined"
+                    size="small"
                     onClick={handleCloseOnclick}
                   >
                     Cancel
+                  </Button>
+                  <Button
+                    disabled={disable}
+                    variant="contained"
+                    size="small"
+                    type="submit"
+                  >
+                    Submit
                   </Button>
                 </>
               )}
               {updateForm && (
                 <>
-                  <Button disabled={disable} type="submit">
-                    Submit
-                  </Button>
                   <Button
-                    sx={{ color: "InactiveCaptionText" }}
                     disabled={disable}
+                    variant="outlined"
+                    size="small"
                     onClick={handleCloseOnclick}
                   >
                     Cancel
+                  </Button>
+                  <Button
+                    disabled={disable}
+                    variant="contained"
+                    size="small"
+                    type="submit"
+                  >
+                    Submit
                   </Button>
                 </>
               )}
               {!transferForm && !updateForm && (
                 <>
                   <Button
-                    color="error"
                     disabled={disable}
+                    variant="contained"
+                    size="small"
+                    color="error"
                     onClick={() => setDropConfirm(true)}
                   >
                     DROP
                   </Button>
-                  <Button disabled={disable} onClick={handleTransferClick}>
+                  <Button
+                    disabled={disable}
+                    variant="contained"
+                    size="small"
+                    onClick={handleTransferClick}
+                  >
                     Transfer
                   </Button>
-                  <Button disabled={disable} onClick={handleUpdateClick}>
+                  <Button
+                    disabled={disable}
+                    variant="contained"
+                    size="small"
+                    onClick={handleUpdateClick}
+                  >
                     Update
                   </Button>
                 </>
@@ -737,20 +771,19 @@ const ClientInfo = ({
             />
           </FlexRow>
 
-          {!transferForm ||
-            (!updateForm && (
-              <OutlinedTextField
-                label="Complaints"
-                value={franchiseDetails?.complaint}
-                readOnly={readOnly}
-                onChange={(e) =>
-                  setFranchiseDetails((prev) => ({
-                    ...prev,
-                    complaint: e.target.value,
-                  }))
-                }
-              />
-            ))}
+          {!transferForm && !updateForm && (
+            <OutlinedTextField
+              label="Complaints"
+              value={franchiseDetails?.complaint}
+              readOnly={readOnly}
+              onChange={(e) =>
+                setFranchiseDetails((prev) => ({
+                  ...prev,
+                  complaint: e.target.value,
+                }))
+              }
+            />
+          )}
         </Fieldset>
       </DialogForm>
 
@@ -789,7 +822,7 @@ const ClientInfo = ({
       <ConfirmationDialog
         open={closingAlert}
         setOpen={setClosingAlert}
-        confirm={exit}
+        confirm={goBack}
         title="Confirmation"
         content="Closing this form will discard all the data you have entered into the input fields. Are you sure you want to close it?"
         label="Yes, close it"

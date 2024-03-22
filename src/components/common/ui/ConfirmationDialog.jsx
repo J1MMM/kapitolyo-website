@@ -66,25 +66,26 @@ const ConfirmationDialog = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions component={"span"}>
-        <Box>
+        <>
           <Button
-            disabled={disabled}
-            component={"span"}
+            disabled={!!disabled}
+            variant="outlined"
+            size="small"
             onClick={() => setOpen(false)}
-            autoFocus
-            sx={{ color: "grey" }}
           >
             Cancel
           </Button>
           <Button
-            disabled={disabled}
-            component={"span"}
+            autoFocus
+            disabled={!!disabled}
+            variant="contained"
+            size="small"
             color={serverity || "primary"}
             onClick={() => {
               confirm();
             }}
           >
-            {disabled ? (
+            {!!disabled ? (
               <Box display="flex" alignItems="center" gap={2}>
                 <CircularProgress size={18} color="inherit" />
                 <span>Loading...</span>
@@ -93,7 +94,7 @@ const ConfirmationDialog = ({
               <span>{label || "confirm"}</span>
             )}
           </Button>
-        </Box>
+        </>
       </DialogActions>
     </Dialog>
   );

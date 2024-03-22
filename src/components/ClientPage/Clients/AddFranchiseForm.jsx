@@ -95,14 +95,17 @@ const AddFranchiseForm = ({ open, onClose }) => {
         actions={
           <>
             <Button
+              variant="outlined"
+              size="small"
               disabled={disable}
               onClick={() => onClose(false)}
-              sx={{ color: "grey" }}
             >
               Cancel
             </Button>
             <Button
               type="submit"
+              size="small"
+              variant="contained"
               disabled={
                 disable ||
                 availableMTOP.length == 0 ||

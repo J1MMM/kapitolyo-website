@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, LinearProgress, Typography } from "@mui/material";
 import { DataGrid, GridOverlay } from "@mui/x-data-grid";
 import React from "react";
 import emptyImg from "../../../assets/images/empty.svg";
@@ -14,6 +14,21 @@ const EmptyRowsOverlay = () => (
     >
       <img src={emptyImg} alt="" style={{ width: "100%", maxWidth: 100 }} />
       <Typography color="gray">No data found</Typography>
+    </Box>
+  </GridOverlay>
+);
+
+const LoadingComp = () => (
+  <GridOverlay sx={{ bgcolor: "#f5f5f5" }}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      gap={2}
+    >
+      <Typography color="primary">Loading...</Typography>
+      <LinearProgress sx={{ width: 200 }} />
     </Box>
   </GridOverlay>
 );
@@ -74,6 +89,7 @@ const DataTable = ({
       }}
       slots={{
         noRowsOverlay: EmptyRowsOverlay,
+        loadingOverlay: LoadingComp,
       }}
     />
   );

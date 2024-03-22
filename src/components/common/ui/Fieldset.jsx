@@ -1,7 +1,7 @@
 import { Box } from "@mui/material";
 import React from "react";
 
-function Fieldset({ children, legend }) {
+function Fieldset({ legend, children }) {
   return (
     <Box
       component={"fieldset"}
