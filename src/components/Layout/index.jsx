@@ -104,6 +104,7 @@ const Layout = () => {
                   xs: "medium",
                   sm: "medium",
                   md: "larger",
+                  lg: "x-large",
                 },
               }}
             >

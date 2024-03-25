@@ -5,13 +5,12 @@ import useData from "../../../hooks/useData";
 import TableLayout from "../../common/ui/TableLayout";
 import ContainedButton from "../../common/ui/ContainedButton";
 import DataTable from "../../common/ui/DataTable";
-
 import AddViolators from "./AddViolatorForm";
-import Helper from "./Helper";
+import violationsHelper from "../../common/data/violationsHelper";
 
 const ViolationsTable = () => {
   document.title =
-    "Violations Management | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
+    "Violators Management | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
 
   const axiosPrivate = useAxiosPrivate();
   const [snack, setSnack] = useState(false);
@@ -26,28 +25,11 @@ const ViolationsTable = () => {
   const [totalRows, setTotalRows] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    setIsLoading(true);
-    const fetchData = async () => {};
-    fetchData();
-    setIsLoading(false);
-  }, []);
-
-  function countTrueValues(obj) {
-    let count = 0;
-    for (const key in obj) {
-      if (obj[key] === true) {
-        count++;
-      }
-    }
-    return count;
-  }
-
   return (
     <>
       <TableLayout
         title="Violators"
-        subTitle="Manage all violators efficiently"
+        subTitle="Record of violations committed"
         button={
           <ContainedButton
             title="add violator"
@@ -57,7 +39,7 @@ const ViolationsTable = () => {
         }
       >
         <DataTable
-          columns={Helper.tableColumns}
+          columns={violationsHelper.tableColumns}
           rows={[]}
           rowCount={totalRows}
           onCellDoubleClick={() => setClientInfo(true)}
@@ -67,7 +49,7 @@ const ViolationsTable = () => {
             setPageSize(e.pageSize);
           }}
           onStateChange={(e) =>
-            setTotalRows(countTrueValues(e?.visibleRowsLookup))
+            setTotalRows(violationsHelper.countTrueValues(e?.visibleRowsLookup))
           }
           loading={false}
           page={page}
@@ -75,13 +57,7 @@ const ViolationsTable = () => {
         />
       </TableLayout>
 
-      <AddViolators
-        open={addViolatorOpen}
-        onClose={setAddViolatorOpen}
-        setResMsg={setResMsg}
-        setSeverity={setSeverity}
-        setSnack={setSnack}
-      />
+      <AddViolators open={addViolatorOpen} onClose={setAddViolatorOpen} />
     </>
   );
 };

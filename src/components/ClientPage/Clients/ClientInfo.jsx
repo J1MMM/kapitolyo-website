@@ -437,7 +437,12 @@ const ClientInfo = ({
                 }));
               }}
               renderInput={(params) => (
-                <TextField {...params} required label="Address" />
+                <TextField
+                  {...params}
+                  margin="dense"
+                  required
+                  label="Address"
+                />
               )}
             />
           </FlexRow>
@@ -513,7 +518,12 @@ const ClientInfo = ({
                 }))
               }
               renderInput={(params) => (
-                <TextField {...params} required label="Address" />
+                <TextField
+                  {...params}
+                  margin="dense"
+                  required
+                  label="Address"
+                />
               )}
             />
             <OutlinedTextField

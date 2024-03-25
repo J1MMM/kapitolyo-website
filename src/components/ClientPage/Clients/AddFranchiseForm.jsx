@@ -100,7 +100,7 @@ const AddFranchiseForm = ({ open, onClose }) => {
               disabled={disable}
               onClick={() => onClose(false)}
             >
-              Cancel
+              close
             </Button>
             <Button
               type="submit"
@@ -251,7 +251,12 @@ const AddFranchiseForm = ({ open, onClose }) => {
                 }))
               }
               renderInput={(params) => (
-                <TextField {...params} required label="Address" />
+                <TextField
+                  {...params}
+                  margin="dense"
+                  required
+                  label="Address"
+                />
               )}
             />
           </FlexRow>
@@ -322,7 +327,12 @@ const AddFranchiseForm = ({ open, onClose }) => {
                 }));
               }}
               renderInput={(params) => (
-                <TextField {...params} required label="Address" />
+                <TextField
+                  {...params}
+                  margin="dense"
+                  required
+                  label="Address"
+                />
               )}
             />
             <OutlinedTextField
