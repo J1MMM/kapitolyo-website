@@ -1,19 +1,11 @@
 import {
+  Autocomplete,
   Box,
   Button,
-  CircularProgress,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Divider,
+  Checkbox,
   FormControl,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
+  FormControlLabel,
   TextField,
-  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
@@ -21,303 +13,139 @@ import useData from "../../../hooks/useData";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import FlexRow from "../../common/ui/FlexRow";
+import DialogForm from "../../common/ui/DialogForm";
+import OutlinedTextField from "../../common/ui/OutlinedTextField";
+import mtops from "../../common/data/mtop";
+import franchiseHelper from "../../common/data/franchiseHelper";
+import violationsList from "../../common/data/violationsList";
 
-const AddViolators = ({
-  open,
-  onClose,
-  schoolYear,
-  setSchoolYear,
-  gradeLevel,
-  setGradeLevel,
-  section,
-  setSection,
-  setSnack,
-  setSeverity,
-  setResMsg,
-}) => {
+const AddViolators = ({ open, onClose }) => {
   const axiosPrivate = useAxiosPrivate();
   const { franchises } = useData();
   const [disable, setDisable] = useState(false);
-
-  const handleSubmit = () => {};
+  const [franchiseDetails, setFranchiseDetails] = useState(
+    franchiseHelper.initialFranchiseDetails
+  );
 
   return (
-    <Dialog
+    <DialogForm
       open={open}
+      title="Add Violator"
       onClose={() => onClose(false)}
-      disableAutoFocus
-      maxWidth="md"
-    >
-      <form onSubmit={handleSubmit}>
-        <DialogTitle variant="h5" bgcolor="primary.main" color="#FFF">
-          Add Violator
-        </DialogTitle>
-        <Divider />
-        <DialogContent>
-          <FlexRow>
-            <TextField
-              disabled={disable}
-              margin="dense"
-              label="Ticket No."
-              type="text"
-              variant="outlined"
-            />
-            <FormControl margin="dense">
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker label="Date of Appehension" />
-              </LocalizationProvider>
-            </FormControl>
-          </FlexRow>
-
-          <Box
-            display="flex"
-            gap={2}
-            sx={{
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-            }}
-          >
-            <TextField
-              disabled={disable}
-              margin="dense"
-              label="Apprehending Officer"
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-            />
-          </Box>
-
-          <Box
-            display="flex"
-            gap={2}
-            sx={{
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-            }}
-          >
-            <TextField
-              disabled={disable}
-              margin="dense"
-              label="Confiscated D.L"
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-            />
-            <TextField
-              disabled={true}
-              margin="dense"
-              label="OR No."
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-            />
-          </Box>
-
-          <Box
-            display="flex"
-            gap={2}
-            sx={{
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-            }}
-          >
-            <TextField
-              disabled={disable}
-              margin="dense"
-              label="Name Of Violator"
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-            />
-            <TextField
-              disabled={true}
-              margin="dense"
-              label="OR Date"
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-            />
-          </Box>
-
-          <Box
-            display="flex"
-            gap={2}
-            sx={{
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-            }}
-          >
-            <TextField
-              disabled={disable}
-              margin="dense"
-              label="Address"
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-            />
-            <TextField
-              disabled={true}
-              margin="dense"
-              label="Amount"
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-            />
-          </Box>
-          <Box
-            display="flex"
-            gap={2}
-            sx={{
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-            }}
-          >
-            <TextField
-              disabled={disable}
-              margin="dense"
-              label="Type of Vehicle"
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-            />
-            <TextField
-              disabled={disable}
-              margin="dense"
-              label="Remarks"
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-            />
-          </Box>
-          <Box
-            display="flex"
-            gap={2}
-            sx={{
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-            }}
-          >
-            <TextField
-              disabled={disable}
-              margin="dense"
-              label="Tricycle Franchise No."
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-            />
-          </Box>
-          <Box
-            display="flex"
-            gap={2}
-            sx={{
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-            }}
-          >
-            <TextField
-              disabled={disable}
-              margin="dense"
-              label="Plate No."
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-            />
-          </Box>
-          <Box
-            display="flex"
-            gap={2}
-            sx={{
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-            }}
-          >
-            <TextField
-              disabled={disable}
-              margin="dense"
-              label="Time of Violation"
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-            />
-          </Box>
-          <Box
-            display="flex"
-            gap={2}
-            sx={{
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-            }}
-          >
-            <TextField
-              disabled={disable}
-              margin="dense"
-              label="Place of Violation"
-              type="text"
-              fullWidth
-              variant="outlined"
-              required
-            />
-          </Box>
-          <Box
-            display="flex"
-            gap={2}
-            sx={{
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-            }}
-          ></Box>
-          {/* </Box> */}
-        </DialogContent>
-        <DialogActions>
+      actions={
+        <>
           <Button
             disabled={disable}
+            variant="outlined"
+            size="small"
             onClick={() => onClose(false)}
-            color="inherit"
-            sx={{ mb: 1 }}
           >
-            <Typography>Cancel</Typography>
+            close
           </Button>
-          <Button type="submit" disabled={disable} sx={{ mr: 1, mb: 1 }}>
-            {disable && <CircularProgress size={16} color="inherit" />}{" "}
-            <Typography component={"span"} ml={1}>
-              {disable ? "Loading..." : "Submit"}
-            </Typography>
+          <Button
+            disabled={disable}
+            variant="contained"
+            size="small"
+            type="submit"
+          >
+            Submit
           </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
+        </>
+      }
+    >
+      <FlexRow>
+        <OutlinedTextField required disabled={disable} label="Ticket No." />
+        <FormControl margin="dense" fullWidth required>
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <DatePicker label="Date of Apprehension" />
+          </LocalizationProvider>
+        </FormControl>
+      </FlexRow>
+      <FormControlLabel
+        sx={{ color: "gray", userSelect: "none" }}
+        control={<Checkbox />}
+        label="Confiscated D.L."
+      />
+      <FlexRow>
+        <OutlinedTextField
+          disabled={disable}
+          label="Name of Violator"
+          required
+        />
+        <OutlinedTextField disabled={disable} label="Address" required />
+      </FlexRow>
+
+      <FlexRow>
+        <OutlinedTextField
+          disabled={disable}
+          label="Type of Vehicle"
+          required
+        />
+
+        <Autocomplete
+          disablePortal
+          clearIcon={false}
+          options={mtops}
+          fullWidth
+          value={franchiseDetails?.mtop}
+          onInputChange={(_, value) =>
+            setFranchiseDetails((prev) => ({
+              ...prev,
+              mtop: value || "",
+            }))
+          }
+          renderInput={(params) => (
+            <TextField {...params} margin="dense" label="Franchise No." />
+          )}
+        />
+
+        <OutlinedTextField disabled={disable} label="Plate No." required />
+      </FlexRow>
+      <FlexRow>
+        <OutlinedTextField
+          disabled={disable}
+          label="Time of Violation"
+          required
+        />
+        <OutlinedTextField
+          disabled={disable}
+          label="Place of Violation"
+          required
+        />
+      </FlexRow>
+
+      <Autocomplete
+        disablePortal
+        clearIcon={false}
+        options={mtops}
+        fullWidth
+        value={franchiseDetails?.officer}
+        onInputChange={(_, value) =>
+          setFranchiseDetails((prev) => ({
+            ...prev,
+            officer: value || "",
+          }))
+        }
+        renderInput={(params) => (
+          <TextField {...params} margin="dense" label="Apprehending Officer" />
+        )}
+      />
+      <FormControlLabel
+        disabled={true}
+        sx={{ color: "gray", userSelect: "none" }}
+        control={<Checkbox />}
+        label="Mark as Paid"
+      />
+      <FlexRow>
+        <OutlinedTextField disabled={disable} label="Remarks" required />
+        <OutlinedTextField disabled={true} label="Amount Paid" required />
+      </FlexRow>
+
+      <FlexRow>
+        <OutlinedTextField disabled={true} label="OR Number" required />
+        <OutlinedTextField disabled={true} label="OR Date" required />
+      </FlexRow>
+    </DialogForm>
   );
 };
 

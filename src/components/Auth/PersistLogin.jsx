@@ -26,14 +26,10 @@ const PersistLogin = () => {
         setIsLoading(false);
       }
     };
-
-    !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
+    setTimeout(() => {
+      !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
+    }, 1000);
   }, []);
-
-  useEffect(() => {
-    // console.log(`isLoading: ${isLoading}`);
-    // console.log(`AcessToken:  ${JSON.stringify(auth?.accessToken)}`);
-  }, [isLoading]);
 
   return (
     <>
@@ -81,12 +77,13 @@ const PersistLogin = () => {
               textAlign="center"
               fontWeight={600}
               maxWidth={800}
+              lineHeight={1.2}
               sx={{
                 fontSize: {
-                  xs: 24,
-                  sm: 26,
-                  md: 38,
-                  lg: 40,
+                  xs: 30,
+                  sm: 35,
+                  md: 40,
+                  lg: 48,
                 },
                 letterSpacing: {
                   md: "3px",
@@ -100,8 +97,8 @@ const PersistLogin = () => {
                 position: "relative",
                 width: "100%",
                 height: "100%",
-                maxHeight: 200,
-                maxWidth: 200,
+                maxHeight: 230,
+                maxWidth: 230,
               }}
             >
               <img

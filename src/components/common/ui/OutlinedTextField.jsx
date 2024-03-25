@@ -11,9 +11,11 @@ function OutlinedTextField({
   InputProps,
   error,
   helperText,
+  disabled,
 }) {
   return (
     <TextField
+      disabled={disabled}
       error={error}
       margin="dense"
       type="text"
