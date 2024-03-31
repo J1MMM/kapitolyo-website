@@ -70,7 +70,7 @@ const DataTable = ({
       sx={{
         boxSizing: "border-box",
         maxHeight: "70vh",
-        height: "80vh",
+        height: "100vh",
         width: "100%",
         ".data-grid-header": {
           bgcolor: "#1A237E",

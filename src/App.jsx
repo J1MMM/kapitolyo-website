@@ -19,10 +19,13 @@ import ViolationsPageLayout from "./components/ViolationsPage/Layout";
 import UserArchive from "./components/UsersAccountPage/UserArchive";
 import Users from "./components/UsersAccountPage/Users";
 import useAuth from "./hooks/useAuth";
+import OfficersList from "./components/ViolationsPage/Officers/OfficersList";
 
 function App() {
   const { auth } = useAuth();
-  const isSuperAdmin = Boolean(auth.roles?.find(v => v == ROLES_LIST.SuperAdmin))
+  const isSuperAdmin = Boolean(
+    auth.roles?.find((v) => v == ROLES_LIST.SuperAdmin)
+  );
 
   return (
     <Routes>
@@ -31,20 +34,34 @@ function App() {
 
         <Route path="/" element={<Layout />}>
           <Route path="" element={isSuperAdmin ? <Users /> : <Dashboard />} />
-          <Route element={<RequireAuth allowedRoles={[ROLES_LIST.SuperAdmin]} />}>
+          <Route
+            element={<RequireAuth allowedRoles={[ROLES_LIST.SuperAdmin]} />}
+          >
             <Route path="user-archive" element={<UserArchive />} />
           </Route>
 
-          <Route element={<RequireAuth allowedRoles={[ROLES_LIST.Admin, ROLES_LIST.CTMO1, ROLES_LIST.CTMO2, ROLES_LIST.CTMO3]} />}>
-            <Route path='clients' element={<ClientsPageLayout />}>
-              <Route path='' element={<ClientsTable />} />
-              <Route path='archive' element={<ClientArchived />} />
+          <Route
+            element={
+              <RequireAuth
+                allowedRoles={[
+                  ROLES_LIST.Admin,
+                  ROLES_LIST.CTMO1,
+                  ROLES_LIST.CTMO2,
+                  ROLES_LIST.CTMO3,
+                ]}
+              />
+            }
+          >
+            <Route path="clients" element={<ClientsPageLayout />}>
+              <Route path="" element={<ClientsTable />} />
+              <Route path="archive" element={<ClientArchived />} />
             </Route>
 
-            <Route path="violations" element={<ViolationsPageLayout />} >
+            <Route path="violations" element={<ViolationsPageLayout />}>
               <Route path="" element={<ViolationsTable />} />
               <Route path="paid" element={<PaidTable />} />
               <Route path="released-tct" element={<ReleasedtctTable />} />
+              <Route path="officers" element={<OfficersList />} />
             </Route>
           </Route>
         </Route>

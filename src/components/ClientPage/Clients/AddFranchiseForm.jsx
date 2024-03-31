@@ -2,7 +2,6 @@ import {
   Autocomplete,
   Box,
   Button,
-  CircularProgress,
   FormControl,
   InputAdornment,
   InputLabel,
@@ -21,10 +20,9 @@ import OutlinedTextField from "../../common/ui/OutlinedTextField";
 import FlexRow from "../../common/ui/FlexRow";
 import Fieldset from "../../common/ui/Fieldset";
 import SnackBar from "../../common/ui/SnackBar";
-
 import ConfirmationDialog from "../../common/ui/ConfirmationDialog";
 import spcbrgy from "../../common/data/spcbrgy";
-import franchiseHelper from "../../common/data/franchiseHelper";
+import helper from "../../common/data/helper";
 
 const AddFranchiseForm = ({ open, onClose }) => {
   document.title =
@@ -33,12 +31,11 @@ const AddFranchiseForm = ({ open, onClose }) => {
   const { franchises, setFranchises, availableMTOP } = useData();
 
   const [franchiseDetails, setFranchiseDetails] = useState(
-    franchiseHelper.initialFranchiseDetails
+    helper.initialFranchiseDetails
   );
   const [disable, setDisable] = useState(false);
   const [alertShown, setAlertShown] = useState(false);
-  const [confirmaionShown, setConfirmaionShown] = useState(false);
-  const [confirm, setConfirmaion] = useState(false);
+  const [confirmationShown, setConfirmaionShown] = useState(false);
   const [alertMsg, setAlertMsg] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("success");
 
@@ -47,13 +44,10 @@ const AddFranchiseForm = ({ open, onClose }) => {
     try {
       const response = await axiosPrivate.post("/franchise", franchiseDetails);
       setFranchises((prev) => {
-        const newFranchises = [
-          ...prev,
-          franchiseHelper.formatFranchise(response.data),
-        ];
-        return franchiseHelper.sortByMTOP(newFranchises);
+        const newFranchises = [...prev, helper.formatFranchise(response.data)];
+        return helper.sortData(newFranchises, "mtop");
       });
-      setFranchiseDetails(franchiseHelper.initialFranchiseDetails);
+      setFranchiseDetails(helper.initialFranchiseDetails);
       setAlertSeverity("success");
       setAlertMsg(
         "Success! The franchise has been added to the system successfully"
@@ -100,7 +94,7 @@ const AddFranchiseForm = ({ open, onClose }) => {
               disabled={disable}
               onClick={() => onClose(false)}
             >
-              close
+              cancel
             </Button>
             <Button
               type="submit"
@@ -139,7 +133,7 @@ const AddFranchiseForm = ({ open, onClose }) => {
             </Select>
           </FormControl>
 
-          <FormControl margin="dense" focused required>
+          <FormControl margin="dense" required>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Date Renewal"
@@ -147,6 +141,7 @@ const AddFranchiseForm = ({ open, onClose }) => {
                 onChange={(date) =>
                   setFranchiseDetails((prev) => ({ ...prev, date: date }))
                 }
+                slotProps={{ textField: { required: true } }}
               />
             </LocalizationProvider>
           </FormControl>
@@ -239,7 +234,6 @@ const AddFranchiseForm = ({ open, onClose }) => {
 
             <Autocomplete
               freeSolo
-              disablePortal
               clearIcon={false}
               options={spcbrgy}
               fullWidth
@@ -315,7 +309,6 @@ const AddFranchiseForm = ({ open, onClose }) => {
           <FlexRow>
             <Autocomplete
               freeSolo
-              disablePortal
               clearIcon={false}
               options={spcbrgy}
               fullWidth
@@ -596,7 +589,7 @@ const AddFranchiseForm = ({ open, onClose }) => {
       />
 
       <ConfirmationDialog
-        open={confirmaionShown}
+        open={confirmationShown}
         setOpen={setConfirmaionShown}
         confirm={handleAddFranchise}
         title="New Franchise Confirmation"

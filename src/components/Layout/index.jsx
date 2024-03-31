@@ -30,6 +30,8 @@ import useFranchises from "../../api/useFranchises";
 import useMTOP from "../../api/mtop";
 import useArchivedFranchises from "../../api/archiveFranchises";
 import useData from "../../hooks/useData";
+import useOfficers from "../../api/useOfficers";
+import useViolations from "../../api/useViolations";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -37,9 +39,11 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 const Layout = () => {
   const axiosPrivate = useAxiosPrivate();
-  const { franchises } = useFranchises();
-  const { availableMTOP } = useMTOP();
-  const { archivedFanchises } = useArchivedFranchises();
+  useFranchises();
+  useMTOP();
+  useArchivedFranchises();
+  useOfficers();
+  useViolations();
   const { headerShadow } = useData();
   const { auth } = useAuth();
   const [navOpen, setNavOpen] = useState(true);

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import useData from "../hooks/useData";
-import franchiseHelper from "../components/common/data/franchiseHelper";
+import helper from "../components/common/data/helper";
 
 const useArchivedFranchises = () => {
   const axiosPrivate = useAxiosPrivate(); // Use the useAxiosPrivate hook
@@ -20,10 +20,9 @@ const useArchivedFranchises = () => {
       console.log("get arch9ve");
       try {
         const response = await axiosPrivate.get("/franchise/archive");
-        console.log(response.data);
         setArchivedFranchises(() => {
           return response.data?.rows.map((data) => {
-            return franchiseHelper.createClientsData(
+            return helper.createClientsData(
               data._id,
               data.MTOP,
               data.LASTNAME,

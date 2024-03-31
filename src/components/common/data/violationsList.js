@@ -16,7 +16,9 @@ const violationsList = [
   "NO OR/CR",
   "STUDENT LICENSE",
   "NO HELMET",
-  "ARROGANT DRIVER,OTHERS",
+  "ARROGANT DRIVER",
+  "OVER PRICING",
+  "OTHERS",
 ];
 
 export default violationsList;

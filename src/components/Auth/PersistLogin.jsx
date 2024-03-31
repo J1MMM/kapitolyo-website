@@ -97,8 +97,8 @@ const PersistLogin = () => {
                 position: "relative",
                 width: "100%",
                 height: "100%",
-                maxHeight: 230,
-                maxWidth: 230,
+                maxHeight: 250,
+                maxWidth: 250,
               }}
             >
               <img
