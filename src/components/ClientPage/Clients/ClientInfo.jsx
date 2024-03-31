@@ -2,14 +2,19 @@ import {
   Autocomplete,
   Box,
   Button,
+  Collapse,
+  Fade,
   FormControl,
+  Grow,
   InputAdornment,
   InputLabel,
   MenuItem,
   Select,
+  Slide,
   Snackbar,
   TextField,
   Typography,
+  Zoom,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
@@ -23,8 +28,9 @@ import DialogForm from "../../common/ui/DialogForm";
 import ConfirmationDialog from "../../common/ui/ConfirmationDialog";
 import SnackBar from "../../common/ui/SnackBar";
 import AlertDialog from "../../common/ui/AlertDialog";
-import franchiseHelper from "../../common/data/franchiseHelper";
 import spcbrgy from "../../common/data/spcbrgy";
+import helper from "../../common/data/helper";
+import { QrCode, QrCode2, QrCodeOutlined } from "@mui/icons-material";
 
 const ClientInfo = ({
   open,
@@ -81,9 +87,7 @@ const ClientInfo = ({
         franchiseDetails
       );
       console.log(response.data);
-      const newFranchise = franchiseHelper.formatFranchise(
-        response.data.newFranchise
-      );
+      const newFranchise = helper.formatFranchise(response.data.newFranchise);
       setFranchises((prev) => {
         const newFranchises = prev.map((franchise) => {
           if (franchise.mtop == response.data?.newFranchise.MTOP) {
@@ -92,12 +96,12 @@ const ClientInfo = ({
             return franchise;
           }
         });
-        return franchiseHelper.sortByMTOP(newFranchises);
+        return helper.sortData(newFranchises, "mtop");
       });
       setFranchiseDetails(newFranchise);
       setTransferForm(false);
       setReadOnly(true);
-      franchiseHelper.handleScrollToTop();
+      helper.handleScrollToTop();
       setAlertSeverity("success");
       setAlertMsg(
         "Franchise successfully transferred to the new owner, franchise information has been added to the system."
@@ -125,7 +129,7 @@ const ClientInfo = ({
         "/franchise/update",
         franchiseDetails
       );
-      const newFranchise = franchiseHelper.formatFranchise(response.data);
+      const newFranchise = helper.formatFranchise(response.data);
       setFranchises((prev) => {
         const newFranchises = prev.map((franchise) => {
           if (franchise.mtop == response.data.MTOP) {
@@ -134,12 +138,12 @@ const ClientInfo = ({
             return franchise;
           }
         });
-        return franchiseHelper.sortByMTOP(newFranchises);
+        return helper.sortData(newFranchises, "mtop");
       });
       setFranchiseDetails(newFranchise);
       setUpdateForm(false);
       setReadOnly(true);
-      franchiseHelper.handleScrollToTop();
+      helper.handleScrollToTop();
       setAlertSeverity("success");
       setAlertMsg(
         "Franchise information updated successfully. Your changes have been saved and are now reflected in the system."
@@ -165,7 +169,7 @@ const ClientInfo = ({
       setFranchiseDetails(initialFormInfo);
     } else {
       onClose(false);
-      setFranchiseDetails(franchiseHelper.initialFranchiseDetails);
+      setFranchiseDetails(helper.initialFranchiseDetails);
     }
     setClosingAlert(false);
     setUpdateForm(false);
@@ -175,7 +179,7 @@ const ClientInfo = ({
 
   const clearForm = () => {
     setFranchiseDetails({
-      ...franchiseHelper.initialFranchiseDetails,
+      ...helper.initialFranchiseDetails,
       mtop: franchiseDetails.mtop,
       date: franchiseDetails.date,
       id: franchiseDetails.id,
@@ -187,9 +191,9 @@ const ClientInfo = ({
       let formIsModified;
 
       if (transferForm) {
-        formIsModified = franchiseHelper.checkedFormModified(
+        formIsModified = helper.checkedFormModified(
           {
-            ...franchiseHelper.initialFranchiseDetails,
+            ...helper.initialFranchiseDetails,
             mtop: franchiseDetails.mtop,
             date: franchiseDetails.date,
             id: franchiseDetails.id,
@@ -199,7 +203,7 @@ const ClientInfo = ({
       }
 
       if (updateForm) {
-        formIsModified = franchiseHelper.checkedFormModified(
+        formIsModified = helper.checkedFormModified(
           initialFormInfo,
           franchiseDetails
         );
@@ -219,7 +223,7 @@ const ClientInfo = ({
     setReadOnly(false);
     setTransferForm(true);
     setTransferAlertShown(true);
-    franchiseHelper.handleScrollToTop();
+    helper.handleScrollToTop();
     clearForm();
   };
 
@@ -228,7 +232,7 @@ const ClientInfo = ({
     setReadOnly(false);
     setUpdateForm(true);
     setUpdateAlertShown(true);
-    franchiseHelper.handleScrollToTop();
+    helper.handleScrollToTop();
   };
 
   const handleSubmit = (e) => {
@@ -240,15 +244,19 @@ const ClientInfo = ({
     <>
       <DialogForm
         onSubmit={handleSubmit}
-        printable={printable}
         title={formTitle}
         open={open}
         onClose={handleCloseOnclick}
         actions={
           !archiveMode && (
             <>
-              {transferForm && (
-                <>
+              <Collapse
+                in={transferForm}
+                mountOnEnter
+                unmountOnExit
+                timeout={transferForm ? 300 : 0}
+              >
+                <Box display="flex" gap={1}>
                   <Button
                     disabled={disable}
                     variant="outlined"
@@ -265,10 +273,15 @@ const ClientInfo = ({
                   >
                     Submit
                   </Button>
-                </>
-              )}
-              {updateForm && (
-                <>
+                </Box>
+              </Collapse>
+              <Collapse
+                in={updateForm}
+                mountOnEnter
+                unmountOnExit
+                timeout={updateForm ? 300 : 0}
+              >
+                <Box display="flex" gap={1}>
                   <Button
                     disabled={disable}
                     variant="outlined"
@@ -285,10 +298,16 @@ const ClientInfo = ({
                   >
                     Submit
                   </Button>
-                </>
-              )}
-              {!transferForm && !updateForm && (
-                <>
+                </Box>
+              </Collapse>
+
+              <Collapse
+                in={!transferForm && !updateForm}
+                mountOnEnter
+                unmountOnExit
+                timeout={!transferForm && !updateForm ? 300 : 0}
+              >
+                <Box display="flex" gap={1}>
                   <Button
                     disabled={disable}
                     variant="contained"
@@ -314,12 +333,23 @@ const ClientInfo = ({
                   >
                     Update
                   </Button>
-                </>
-              )}
+                </Box>
+              </Collapse>
             </>
           )
         }
       >
+        <Collapse in={printable && !updateForm && !transferForm}>
+          <Button
+            variant="outlined"
+            sx={{ mb: 2 }}
+            startIcon={<QrCode />}
+            size="small"
+          >
+            generate report
+          </Button>
+        </Collapse>
+
         <FlexRow>
           <OutlinedTextField
             required={true}
@@ -338,6 +368,7 @@ const ClientInfo = ({
                 onChange={(date) =>
                   setFranchiseDetails((prev) => ({ ...prev, date: date }))
                 }
+                slotProps={{ textField: { required: true } }}
               />
             </LocalizationProvider>
           </FormControl>
@@ -425,7 +456,6 @@ const ClientInfo = ({
             <Autocomplete
               readOnly={readOnly}
               freeSolo
-              disablePortal
               clearIcon={false}
               options={spcbrgy}
               fullWidth
@@ -506,7 +536,6 @@ const ClientInfo = ({
             <Autocomplete
               readOnly={readOnly}
               freeSolo
-              disablePortal
               clearIcon={false}
               options={spcbrgy}
               fullWidth

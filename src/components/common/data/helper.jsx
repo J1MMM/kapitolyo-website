@@ -318,20 +318,6 @@ const handleScrollToTop = () => {
     .scrollTo({ top: 0, behavior: "smooth" });
 };
 
-const sortByMTOP = (array) => {
-  return array.sort((a, b) => {
-    const mtopA = parseInt(a.mtop);
-    const mtopB = parseInt(b.mtop);
-    if (mtopA < mtopB) {
-      return -1; // 'a' comes before 'b'
-    }
-    if (mtopA > mtopB) {
-      return 1; // 'b' comes before 'a'
-    }
-    return 0; // 'a' and 'b' are equal
-  });
-};
-
 const formatFranchise = (franchise) => {
   return createClientsData(
     franchise._id,
@@ -371,6 +357,207 @@ const formatFranchise = (franchise) => {
   );
 };
 
+const violationsTableColumns = [
+  {
+    field: "ticketNo",
+    headerName: "TICKET NO.",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+    menu: false,
+    option: false,
+    sort: false,
+    align: "center",
+    headerAlign: "center",
+    headerClassName: "data-grid-header",
+  },
+  {
+    field: "dateApprehension",
+    headerName: "DATE OF APPREHENSION",
+    width: 250,
+    headerClassName: "data-grid-header",
+    editable: false,
+    valueFormatter: (params) =>
+      params.value && dayjs(params.value).format("ddd, MMM D YYYY"),
+  },
+  // {
+  //   field: "confiscatedDL",
+  //   headerName: "CONFISCATED D.L",
+  //   width: 200,
+  //   headerClassName: "data-grid-header",
+  //   editable: false,
+  // },
+  {
+    field: "name",
+    headerName: "VIOLATOR'S NAME",
+    width: 250,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "address",
+    headerName: "ADDRESS",
+    width: 250,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "typeVehicle",
+    headerName: "TYPE OF VEHICLE",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "franchiseNo",
+    headerName: "TRICYCLE FRANCHISE NO.",
+    width: 100,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "plateNo",
+    headerName: "PLATE NO.",
+    width: 150,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "timeViolation",
+    headerName: "TIME OF VIOLATION",
+    width: 150,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "placeViolation",
+    headerName: "PLACE OF VIOLATION",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+
+  {
+    field: "officer",
+    headerName: "APPREHENDING OFFICER",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "or",
+    headerName: "O.R.",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "orDate",
+    headerName: "O.R DATE",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  // {
+  //   field: "amount",
+  //   headerName: "AMOUNT",
+  //   width: 150,
+  //   headerClassName: "data-grid-header",
+  //   editable: false,
+  // },
+  {
+    field: "remarks",
+    headerName: "REMARKS",
+    width: 250,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "violations",
+    headerName: "VIOLATIONS COMMITTED",
+    width: 250,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+];
+
+const officersTableColumn = [
+  {
+    field: "callsign",
+    headerName: "CALL SIGN",
+    headerClassName: "data-grid-header",
+    editable: false,
+    menu: false,
+    option: false,
+    sort: false,
+    align: "center",
+    headerAlign: "center",
+    headerClassName: "data-grid-header",
+    flex: 1,
+  },
+
+  {
+    field: "firstname",
+    headerName: "FIRSTNAME",
+    headerClassName: "data-grid-header",
+    editable: false,
+    flex: 1,
+  },
+  {
+    field: "lastname",
+    headerName: "LASTNAME",
+    headerClassName: "data-grid-header",
+    editable: false,
+    flex: 1,
+  },
+  {
+    field: "mi",
+    headerName: "M.I.",
+    headerClassName: "data-grid-header",
+    editable: false,
+    flex: 1,
+  },
+  {
+    field: "apprehended",
+    headerName: "NO. OF APPREHENDED",
+    headerClassName: "data-grid-header",
+    editable: false,
+    flex: 1,
+  },
+];
+
+function createOfficersData(
+  id,
+  callsign,
+  firstname,
+  lastname,
+  mi,
+  apprehended
+) {
+  return {
+    id,
+    callsign,
+    firstname,
+    lastname,
+    mi,
+    apprehended,
+  };
+}
+
+const sortData = (array, field) => {
+  return array.sort((a, b) => {
+    const fieldA = parseInt(a[field]);
+    const fieldB = parseInt(b[field]);
+    if (fieldA < fieldB) {
+      return -1;
+    }
+    if (fieldA > fieldB) {
+      return 1;
+    }
+    return 0;
+  });
+};
+
 export default {
   createClientsData,
   clientsColumns,
@@ -378,6 +565,9 @@ export default {
   initialFranchiseDetails,
   checkedFormModified,
   handleScrollToTop,
-  sortByMTOP,
   formatFranchise,
+  officersTableColumn,
+  violationsTableColumns,
+  sortData,
+  createOfficersData,
 };

@@ -6,7 +6,7 @@ import TableLayout from "../../common/ui/TableLayout";
 import DataTable from "../../common/ui/DataTable";
 import { Grow, Paper } from "@mui/material";
 import dayjs from "dayjs";
-import franchiseHelper from "../../common/data/franchiseHelper";
+import helper from "../../common/data/helper";
 
 const date_archived_column_format = {
   field: "dateArchived",
@@ -34,7 +34,7 @@ const ClientArchived = () => {
     archivedFranchisesLoading,
   } = useData();
   const [franchiseDetails, setFranchiseDetails] = useState(
-    franchiseHelper.initialFranchiseDetails
+    helper.initialFranchiseDetails
   );
 
   const [isEmpty, setIsEmpty] = useState(false);
@@ -68,10 +68,7 @@ const ClientArchived = () => {
         subTitle="Clients records you have archived"
       >
         <DataTable
-          columns={[
-            date_archived_column_format,
-            ...franchiseHelper.clientsColumns,
-          ]}
+          columns={[date_archived_column_format, ...helper.clientsColumns]}
           rows={archivedFranchises}
           rowCount={totalRows}
           onCellDoubleClick={(e) => handleRowDoubleClick(e)}

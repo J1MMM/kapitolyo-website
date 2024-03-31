@@ -4,20 +4,24 @@ import PageContainer from "../common/ui/PageContainer";
 import PageNav from "../common/ui/PageNav";
 
 const ViolationsPageLayout = () => {
-
-  const navlinks = [{
-    title: "Violations",
-    path: ""
-  }, {
-    title: "Paid",
-    path: "paid"
-  },
-  {
-    title: "Released TCT",
-    path: "released-tct"
-  },
-
-  ]
+  const navlinks = [
+    {
+      title: "Violations",
+      path: "",
+    },
+    {
+      title: "Paid",
+      path: "paid",
+    },
+    {
+      title: "Released TCT",
+      path: "released-tct",
+    },
+    {
+      title: "Officers List",
+      path: "officers",
+    },
+  ];
 
   return (
     <PageContainer>

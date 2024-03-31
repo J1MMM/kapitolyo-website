@@ -25,15 +25,7 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function DialogForm({
-  open,
-  onClose,
-  title,
-  actions,
-  children,
-  printable,
-  onSubmit,
-}) {
+function DialogForm({ open, onClose, title, actions, children, onSubmit }) {
   return (
     <Dialog
       component={"form"}
@@ -55,16 +47,9 @@ function DialogForm({
         alignItems="center"
       >
         {title}
-        <Box>
-          {printable && (
-            <IconButton>
-              <PrintOutlined color="secondary" fontSize="medium" />
-            </IconButton>
-          )}
-          <IconButton onClick={onClose}>
-            <CloseRounded color="secondary" fontSize="medium" />
-          </IconButton>
-        </Box>
+        <IconButton onClick={onClose}>
+          <CloseRounded color="secondary" fontSize="medium" />
+        </IconButton>
       </DialogTitle>
       <Divider />
       <DialogContent dividers id="client-info-content">

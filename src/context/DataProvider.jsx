@@ -16,6 +16,15 @@ export const DataProvider = ({ children }) => {
   const [archivedFranchisesLoading, setArchivedFranchisesLoading] =
     useState(true);
 
+  const [officersNames, setOfficersNames] = useState([]);
+  const [officers, setOfficers] = useState([]);
+  const [officersLoading, setOfficersLoading] = useState(true);
+
+  const [violationsList, setViolationsList] = useState([]);
+  const [violationsListLoading, setViolationsListLoading] = useState(true);
+  const [violations, setViolations] = useState([]);
+  const [violationsLoading, setViolationsLoading] = useState(true);
+
   const [headerShadow, setHeaderShadow] = useState(false);
 
   return (
@@ -37,8 +46,22 @@ export const DataProvider = ({ children }) => {
         setFranchisesLoading,
         archivedFranchisesLoading,
         setArchivedFranchisesLoading,
+        officers,
+        setOfficers,
+        officersLoading,
+        setOfficersLoading,
+        officersNames,
+        setOfficersNames,
         headerShadow,
         setHeaderShadow,
+        violationsListLoading,
+        setViolationsListLoading,
+        violationsList,
+        setViolationsList,
+        violationsLoading,
+        setViolationsLoading,
+        violations,
+        setViolations,
       }}
     >
       {children}

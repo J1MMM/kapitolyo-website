@@ -6,25 +6,18 @@ import TableLayout from "../../common/ui/TableLayout";
 import ContainedButton from "../../common/ui/ContainedButton";
 import DataTable from "../../common/ui/DataTable";
 import AddViolators from "./AddViolatorForm";
-import violationsHelper from "../../common/data/violationsHelper";
+import helper from "../../common/data/helper";
 
 const ViolationsTable = () => {
   document.title =
     "Violators Management | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
 
   const axiosPrivate = useAxiosPrivate();
-  const [snack, setSnack] = useState(false);
-  const [severity, setSeverity] = useState("success");
-  const [resMsg, setResMsg] = useState("");
-  const [empty, setEmpty] = useState(false);
-  const [noResponse, setNoResponse] = useState(false);
-  const [clientInfo, setClientInfo] = useState(false);
+  const { violations, violationsLoading } = useData();
   const [addViolatorOpen, setAddViolatorOpen] = useState(false);
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [totalRows, setTotalRows] = useState(0);
-  const [isLoading, setIsLoading] = useState(true);
-
   return (
     <>
       <TableLayout
@@ -39,19 +32,18 @@ const ViolationsTable = () => {
         }
       >
         <DataTable
-          columns={violationsHelper.tableColumns}
-          rows={[]}
+          columns={helper.violationsTableColumns}
+          rows={violations.map((data) => ({ ...data, id: data._id }))}
           rowCount={totalRows}
-          onCellDoubleClick={() => setClientInfo(true)}
           onFilterModelChange={() => setPage(0)}
           onPaginationModelChange={(e) => {
             setPage(e.page);
             setPageSize(e.pageSize);
           }}
           onStateChange={(e) =>
-            setTotalRows(violationsHelper.countTrueValues(e?.visibleRowsLookup))
+            setTotalRows(helper.countTrueValues(e?.visibleRowsLookup))
           }
-          loading={false}
+          loading={violationsLoading}
           page={page}
           pageSize={pageSize}
         />

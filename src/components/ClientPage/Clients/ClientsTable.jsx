@@ -9,13 +9,13 @@ import ContainedButton from "../../common/ui/ContainedButton";
 import DataTable from "../../common/ui/DataTable";
 import AddFranchiseForm from "./AddFranchiseForm";
 import { Box, Grow } from "@mui/material";
-import franchiseHelper from "../../common/data/franchiseHelper";
+import helper from "../../common/data/helper";
 
 const ClientsTable = () => {
   const axiosPrivate = useAxiosPrivate();
   const { franchises, setFranchises, franchisesLoading } = useData();
   const [franchiseDetails, setFranchiseDetails] = useState(
-    franchiseHelper.initialFranchiseDetails
+    helper.initialFranchiseDetails
   );
   const [initialFormInfo, setinitialFormInfo] = useState({});
   const [noResponse, setNoResponse] = useState(false);
@@ -47,7 +47,7 @@ const ClientsTable = () => {
         }
       >
         <DataTable
-          columns={franchiseHelper.clientsColumns}
+          columns={helper.clientsColumns}
           rows={franchises}
           rowCount={totalRows}
           page={page}
@@ -59,7 +59,7 @@ const ClientsTable = () => {
             setPageSize(e.pageSize);
           }}
           onStateChange={(e) =>
-            setTotalRows(franchiseHelper.countTrueValues(e?.visibleRowsLookup))
+            setTotalRows(helper.countTrueValues(e?.visibleRowsLookup))
           }
           loading={franchisesLoading}
         />
