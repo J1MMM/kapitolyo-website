@@ -1,3 +1,4 @@
+import { Chip, Stack } from "@mui/material";
 import dayjs from "dayjs";
 
 const initialFranchiseDetails = {
@@ -25,7 +26,7 @@ const initialFranchiseDetails = {
   stroke: "",
   remarks: "",
   daterelease: null,
-  complaint: "",
+  complaint: null,
   tplDate1: null,
   tplDate2: null,
   typeofFranchise: "",
@@ -212,6 +213,31 @@ const clientsColumns = [
     align: "center",
     headerAlign: "center",
     headerColor: "red",
+    renderCell: (params, i) => {
+      if (!params.value[0]) {
+        return null;
+      }
+      if (typeof params.value[0] == "object") {
+        return (
+          params.value && (
+            <Stack key={i} direction="row" gap={1}>
+              {params.value.map((v, i) => (
+                <Chip key={i} label={v.violation} />
+              ))}
+            </Stack>
+          )
+        );
+      }
+      if (typeof params.value[0] == "string") {
+        return (
+          <Stack key={i} direction="row" gap={1}>
+            {params.value.map((v, j) => (
+              <Chip key={j} label={v} />
+            ))}
+          </Stack>
+        );
+      }
+    },
   },
 ];
 
@@ -380,13 +406,7 @@ const violationsTableColumns = [
     valueFormatter: (params) =>
       params.value && dayjs(params.value).format("ddd, MMM D YYYY"),
   },
-  // {
-  //   field: "confiscatedDL",
-  //   headerName: "CONFISCATED D.L",
-  //   width: 200,
-  //   headerClassName: "data-grid-header",
-  //   editable: false,
-  // },
+
   {
     field: "name",
     headerName: "VIOLATOR'S NAME",
@@ -411,7 +431,7 @@ const violationsTableColumns = [
   {
     field: "franchiseNo",
     headerName: "TRICYCLE FRANCHISE NO.",
-    width: 100,
+    width: 200,
     headerClassName: "data-grid-header",
     editable: false,
   },
@@ -428,6 +448,8 @@ const violationsTableColumns = [
     width: 150,
     headerClassName: "data-grid-header",
     editable: false,
+    valueFormatter: (params) =>
+      params.value && dayjs(params.value).format("hh:mm A"),
   },
   {
     field: "placeViolation",
@@ -440,14 +462,14 @@ const violationsTableColumns = [
   {
     field: "officer",
     headerName: "APPREHENDING OFFICER",
-    width: 200,
+    width: 250,
     headerClassName: "data-grid-header",
     editable: false,
   },
   {
     field: "or",
     headerName: "O.R.",
-    width: 200,
+    width: 250,
     headerClassName: "data-grid-header",
     editable: false,
   },
@@ -458,13 +480,7 @@ const violationsTableColumns = [
     headerClassName: "data-grid-header",
     editable: false,
   },
-  // {
-  //   field: "amount",
-  //   headerName: "AMOUNT",
-  //   width: 150,
-  //   headerClassName: "data-grid-header",
-  //   editable: false,
-  // },
+
   {
     field: "remarks",
     headerName: "REMARKS",
@@ -473,11 +489,26 @@ const violationsTableColumns = [
     editable: false,
   },
   {
-    field: "violations",
+    field: "violation",
     headerName: "VIOLATIONS COMMITTED",
-    width: 250,
+    width: 500,
     headerClassName: "data-grid-header",
     editable: false,
+    renderCell: (params, i) => {
+      console.log(params.value);
+      if (!params.value[0]) {
+        return null;
+      }
+      return (
+        params.value && (
+          <Stack key={i} direction="row" gap={1}>
+            {params.value.map((v, i) => (
+              <Chip key={i} label={v.violation} />
+            ))}
+          </Stack>
+        )
+      );
+    },
   },
 ];
 
@@ -525,7 +556,189 @@ const officersTableColumn = [
     flex: 1,
   },
 ];
-
+const releasedTCTColumn = [
+  {
+    field: "ticket",
+    headerName: "TICKET NO.",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+    menu: false,
+    option: false,
+    sort: false,
+    align: "center",
+    headerAlign: "center",
+    headerClassName: "data-grid-header",
+  },
+  {
+    field: "tctno",
+    headerName: "TCT NO. REALEASE",
+    width: 300,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "lastname",
+    headerName: "LAST NAME",
+    width: 250,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "firstname",
+    headerName: "FIRST NAME",
+    width: 250,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "m.i",
+    headerName: "M.I",
+    width: 150,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "daterelease",
+    headerName: "DATE OF RELEASE",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+];
+const paidListColumn = [
+  {
+    field: "receiptno",
+    headerName: "RECEIPT NO.",
+    width: 150,
+    headerClassName: "data-grid-header",
+    editable: false,
+    menu: false,
+    option: false,
+    sort: false,
+    align: "center",
+    headerAlign: "center",
+    headerClassName: "data-grid-header",
+  },
+  {
+    field: "ticket",
+    headerName: "TICKET NO.",
+    width: 150,
+    headerClassName: "data-grid-header",
+    editable: false,
+    menu: false,
+    option: false,
+    sort: false,
+    align: "center",
+    headerAlign: "center",
+    headerClassName: "data-grid-header",
+  },
+  {
+    field: "doa",
+    headerName: "DATE OF APPREHENSION",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "cdl",
+    headerName: "CONFISCATED D.L",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "vname",
+    headerName: "VIOLATOR'S NAME",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "addressS",
+    headerName: "ADDRESS",
+    width: 100,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "typev",
+    headerName: "TYPE OF VEHICLE",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "tfn",
+    headerName: "TRICYCLE FRANCHISE NO.",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "platenoO",
+    headerName: "PLATE NO.",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "tov",
+    headerName: "TIME OF VIOLATION",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "pov",
+    headerName: "PLACE OF VIOLATION",
+    width: 280,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "vc",
+    headerName: "VIOLATIONS COMMITTED",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "ao",
+    headerName: "APPREHENDING OFFICER",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "orR",
+    headerName: "O.R.",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "ord",
+    headerName: "O.R DATE",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "amount",
+    headerName: "AMOUNT",
+    width: 150,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+  {
+    field: "remarksS",
+    headerName: "REMARKS",
+    width: 200,
+    headerClassName: "data-grid-header",
+    editable: false,
+  },
+];
 function createOfficersData(
   id,
   callsign,
@@ -570,4 +783,6 @@ export default {
   violationsTableColumns,
   sortData,
   createOfficersData,
+  releasedTCTColumn,
+  paidListColumn,
 };

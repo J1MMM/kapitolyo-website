@@ -6,8 +6,13 @@ import helper from "../components/common/data/helper";
 const useFranchises = () => {
   const axiosPrivate = useAxiosPrivate(); // Use the useAxiosPrivate hook
 
-  const { franchises, setFranchises, franchisesLoading, setFranchisesLoading } =
-    useData();
+  const {
+    franchises,
+    setFranchises,
+    franchisesLoading,
+    setFranchisesLoading,
+    violations,
+  } = useData();
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -42,7 +47,7 @@ const useFranchises = () => {
               data.REMARKS || "",
               data.DATE_RELEASE_OF_ST_TP &&
                 new Date(data.DATE_RELEASE_OF_ST_TP),
-              data.COMPLAINT || "",
+              data.COMPLAINT,
               data.DATE_ARCHIVED || "",
               data.OWNER_SEX || "",
               data.DRIVERS_SEX || "",
@@ -64,8 +69,7 @@ const useFranchises = () => {
     };
 
     fetchFranchises();
-  }, [axiosPrivate]); // Ensure axiosPrivate is included as a dependency
-
+  }, [axiosPrivate, violations]); // Ensure axiosPrivate is included as a dependency
   return { franchises, franchisesLoading, error };
 };
 

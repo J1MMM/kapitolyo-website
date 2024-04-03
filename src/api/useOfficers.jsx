@@ -13,6 +13,7 @@ const useOfficers = () => {
     officersLoading,
     setOfficersLoading,
     setOfficersNames,
+    violations,
   } = useData();
   const [error, setError] = useState(null);
 
@@ -44,13 +45,16 @@ const useOfficers = () => {
     };
 
     fetchOfficers();
-  }, [axiosPrivate]);
+  }, [axiosPrivate, violations]);
 
   useEffect(() => {
     const getOfficersNames = () => {
       setOfficersNames(() => {
         return officers.map((data) => {
-          return `${data.firstname} ${data.mi} ${data.lastname}`;
+          return {
+            id: data.id,
+            fullname: `${data.firstname} ${data.mi} ${data.lastname}`,
+          };
         });
       });
     };
