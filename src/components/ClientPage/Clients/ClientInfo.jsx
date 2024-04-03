@@ -2,13 +2,16 @@ import {
   Autocomplete,
   Box,
   Button,
+  Chip,
   Collapse,
   Fade,
   FormControl,
+  FormHelperText,
   Grow,
   InputAdornment,
   InputLabel,
   MenuItem,
+  OutlinedInput,
   Select,
   Slide,
   Snackbar,
@@ -363,7 +366,7 @@ const ClientInfo = ({
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Date Renewal"
-                value={franchiseDetails?.date || null}
+                value={franchiseDetails.date}
                 readOnly={readOnly}
                 onChange={(date) =>
                   setFranchiseDetails((prev) => ({ ...prev, date: date }))
@@ -811,17 +814,40 @@ const ClientInfo = ({
           </FlexRow>
 
           {!transferForm && !updateForm && (
-            <OutlinedTextField
-              label="Complaints"
-              value={franchiseDetails?.complaint}
-              readOnly={readOnly}
-              onChange={(e) =>
-                setFranchiseDetails((prev) => ({
-                  ...prev,
-                  complaint: e.target.value,
-                }))
-              }
-            />
+            <FormControl fullWidth margin="dense">
+              <InputLabel>Complaints</InputLabel>
+              <Select
+                readOnly
+                multiple
+                value={franchiseDetails.complaint}
+                input={<OutlinedInput label="Complaints" />}
+                renderValue={(selected) => (
+                  <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
+                    {selected.map((data, i) => {
+                      return (
+                        <Chip
+                          color={"warning"}
+                          key={i}
+                          label={data.violation ? data.violation : data}
+                        />
+                      );
+                    })}
+                  </Box>
+                )}
+              ></Select>
+              <FormHelperText
+                sx={{
+                  color: "error.main",
+                  textAlign: "end",
+                  fontSize: "medium",
+                }}
+              >
+                {`Total Amount: ${franchiseDetails.complaint?.reduce(
+                  (total, obj) => total + obj["price"],
+                  0
+                )}.00`}
+              </FormHelperText>
+            </FormControl>
           )}
         </Fieldset>
       </DialogForm>
