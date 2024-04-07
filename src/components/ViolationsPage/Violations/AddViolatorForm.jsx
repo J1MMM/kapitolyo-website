@@ -34,6 +34,7 @@ import SnackBar from "../../common/ui/SnackBar";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import Vhelper from "./Vhelper";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -47,33 +48,15 @@ const MenuProps = {
   },
 };
 
-const initialDetails = {
-  ticketNo: "",
-  dateApprehension: null,
-  confiscatedDL: "",
-  name: "",
-  address: "",
-  typeVehicle: "",
-  franchiseNo: "",
-  plateNo: "",
-  timeViolation: null,
-  placeViolation: "",
-  officer: null,
-  violation: [],
-  paid: false,
-  remarks: "",
-  amount: "",
-  or: "",
-  orDate: "",
-};
 const AddViolators = ({ open, onClose }) => {
   const axiosPrivate = useAxiosPrivate();
   const { officersNames, violationsList, setViolations } = useData();
 
   const [disable, setDisable] = useState(false);
-  const [violationDetails, setViolationDetails] = useState(initialDetails);
+  const [violationDetails, setViolationDetails] = useState(
+    Vhelper.initialDetails
+  );
   const [confirmationShown, setConfirmationShown] = useState(false);
-  const [confiscated, setConfiscated] = useState(false);
   const [alertShown, setAlertShown] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState("success");
   const [alertMsg, setAlertMsg] = useState("");
@@ -98,13 +81,16 @@ const AddViolators = ({ open, onClose }) => {
       console.log(response.data);
 
       setViolations((prev) => {
-        return [...prev, response.data];
+        const oldArr = [...prev];
+        const newObj = response.data;
+        oldArr.unshift(newObj); // Modify the original array
+        return oldArr; // Return the modified array
       });
 
       setAlertSeverity("success");
       setAlertMsg("Violations Added Successfully");
       onClose(false);
-      setViolationDetails(initialDetails);
+      setViolationDetails(Vhelper.initialDetails);
     } catch (error) {
       setAlertSeverity("error");
       setAlertMsg("Error Adding Violations.");
@@ -247,30 +233,11 @@ const AddViolators = ({ open, onClose }) => {
               }
             />
           </FlexRow>
-          <FormControlLabel
-            sx={{ color: "gray", userSelect: "none" }}
-            control={
-              <Checkbox
-                value={confiscated}
-                onChange={(e) => {
-                  setViolationDetails((prev) => {
-                    return {
-                      ...prev,
-                      confiscatedDL: e.target.checked ? prev.confiscatedDL : "",
-                    };
-                  });
-                  setConfiscated(e.target.checked);
-                }}
-              />
-            }
-            label="Confiscated D.L."
-          />
+
           <FlexRow>
             <FormControl fullWidth margin="dense">
-              <InputLabel>Type of D.L.</InputLabel>
+              <InputLabel>Confiscated D.L.</InputLabel>
               <Select
-                disabled={!!!confiscated}
-                required
                 label="Type of Vehicle"
                 value={violationDetails.confiscatedDL}
                 onChange={(e) =>
@@ -319,7 +286,6 @@ const AddViolators = ({ open, onClose }) => {
 
           <Autocomplete
             options={officersNames}
-            getOptionLabel={(option) => option.fullname}
             fullWidth
             value={violationDetails.officer}
             onChange={(_, value) =>

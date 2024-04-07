@@ -7,7 +7,7 @@ import { AuthProvider } from "./context/AuthProvider.jsx";
 import { ThemeProvider, createTheme } from "@mui/material";
 import { DataProvider } from "./context/DataProvider.jsx";
 import logs from "./components/common/data/logs.js";
-console.log(logs.name, logs.style);
+// console.log(logs.name, logs.style);
 const theme = createTheme({
   typography: {
     allVariants: {

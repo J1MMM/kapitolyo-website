@@ -342,7 +342,7 @@ const ClientInfo = ({
           )
         }
       >
-        <Collapse in={printable && !updateForm && !transferForm}>
+        {/* <Collapse in={printable && !updateForm && !transferForm}>
           <Button
             variant="outlined"
             sx={{ mb: 2 }}
@@ -351,7 +351,7 @@ const ClientInfo = ({
           >
             generate report
           </Button>
-        </Collapse>
+        </Collapse> */}
 
         <FlexRow>
           <OutlinedTextField
@@ -819,34 +819,20 @@ const ClientInfo = ({
               <Select
                 readOnly
                 multiple
+                IconComponent={() => null}
                 value={franchiseDetails.complaint}
                 input={<OutlinedInput label="Complaints" />}
                 renderValue={(selected) => (
                   <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                    {selected.map((data, i) => {
-                      return (
-                        <Chip
-                          color={"warning"}
-                          key={i}
-                          label={data.violation ? data.violation : data}
-                        />
-                      );
+                    {franchiseDetails.complaint.map((v, i) => {
+                      if (v != "")
+                        return (
+                          <Chip sx={{ maxWidth: 750 }} key={i} label={v} />
+                        );
                     })}
                   </Box>
                 )}
               ></Select>
-              <FormHelperText
-                sx={{
-                  color: "error.main",
-                  textAlign: "end",
-                  fontSize: "medium",
-                }}
-              >
-                {`Total Amount: ${franchiseDetails.complaint?.reduce(
-                  (total, obj) => total + obj["price"],
-                  0
-                )}.00`}
-              </FormHelperText>
             </FormControl>
           )}
         </Fieldset>

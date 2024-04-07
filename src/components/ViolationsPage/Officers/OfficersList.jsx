@@ -48,7 +48,7 @@ const OfficersTable = () => {
       >
         <DataTable
           columns={helper.officersTableColumn}
-          rows={officers}
+          rows={officers.map((data) => ({ ...data, id: data._id }))}
           rowCount={totalRows}
           onFilterModelChange={() => setPage(0)}
           onPaginationModelChange={(e) => {
