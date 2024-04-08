@@ -32,6 +32,7 @@ import { useTheme } from "@mui/material/styles";
 import useViolations from "../../../api/useViolations";
 import ConfirmationDialog from "../../common/ui/ConfirmationDialog";
 import SnackBar from "../../common/ui/SnackBar";
+import Vhelper from "./Vhelper";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -43,26 +44,6 @@ const MenuProps = {
       width: 250,
     },
   },
-};
-
-const initialDetails = {
-  ticketNo: "",
-  dateApprehension: null,
-  confiscatedDL: "",
-  name: "",
-  address: "",
-  typeVehicle: "",
-  franchiseNo: "",
-  plateNo: "",
-  timeViolation: null,
-  placeViolation: "",
-  officer: null,
-  violation: [],
-  paid: false,
-  remarks: "",
-  amount: "",
-  or: "",
-  orDate: "",
 };
 
 const ViolationsInfo = ({
@@ -83,6 +64,7 @@ const ViolationsInfo = ({
   const [editAlertShown, setEditAlertShown] = useState(false);
   const [closingAlert, setClosingAlert] = useState(false);
   const [updateConfirmation, setUpdateConfirmation] = useState(false);
+
   const theme = useTheme();
 
   const handleChange = (event) => {
@@ -92,7 +74,34 @@ const ViolationsInfo = ({
     setViolationDetails((prev) => ({ ...prev, violation: value }));
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = async () => {
+    setDisable(true);
+    try {
+      const response = await axiosPrivate.put("/violation", violationDetails);
+      console.log(response.data);
+      setViolations((prev) => {
+        return prev?.map((obj) => {
+          if (obj._id == violationDetails._id) {
+            return response.data;
+          } else {
+            return obj;
+          }
+        });
+      });
+      setReadOnly(true);
+      setAlertSeverity("success");
+      setAlertMsg("Violations Updated Successfully");
+      onClose(false);
+      setViolationDetails(Vhelper.initialDetails);
+    } catch (error) {
+      setAlertSeverity("error");
+      setAlertMsg("Update Violations Error.");
+      console.log(error);
+    }
+    setAlertShown(true);
+    setUpdateConfirmation(false);
+    setDisable(false);
+  };
 
   const handleClose = () => {
     if (!readOnly && initialViolationDetails != violationDetails) {
@@ -101,14 +110,14 @@ const ViolationsInfo = ({
     }
     onClose(false);
     setReadOnly(true);
-    setViolationDetails(initialDetails);
+    setViolationDetails(Vhelper.initialDetails);
   };
 
   return (
     <>
       <DialogForm
         open={open}
-        title="Violations Info"
+        title={readOnly ? "Violations Info" : "Update Violation"}
         onClose={handleClose}
         onSubmit={(e) => {
           e.preventDefault();
@@ -285,13 +294,15 @@ const ViolationsInfo = ({
               }
             />
           </FlexRow>
+
           <FlexRow>
             <FormControl fullWidth margin="dense">
-              <InputLabel>Confiscated D.L</InputLabel>
+              <InputLabel>Confiscated D.L.</InputLabel>
               <Select
+                disabled={disable}
+                readOnly={readOnly}
                 label="Type of Vehicle"
                 value={violationDetails.confiscatedDL}
-                readOnly={readOnly}
                 onChange={(e) =>
                   setViolationDetails((prev) => ({
                     ...prev,
@@ -341,7 +352,7 @@ const ViolationsInfo = ({
             readOnly={readOnly}
             options={officersNames}
             fullWidth
-            value={violationDetails?.officer}
+            value={violationDetails?.officer || null}
             onChange={(_, value) =>
               setViolationDetails((prev) => ({
                 ...prev,
@@ -363,28 +374,24 @@ const ViolationsInfo = ({
             </InputLabel>
             <Select
               readOnly={readOnly}
-              value={violationDetails.violation}
-              onChange={handleChange}
               labelId="violations-committed"
               multiple
+              value={violationDetails.violation}
+              onChange={handleChange}
               input={<OutlinedInput label="Violations Committed" />}
               renderValue={(selected) => (
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {selected.map((data) => (
-                    <Chip key={data._id} label={data.violation} />
+                  {selected.map((data, i) => (
+                    <Chip key={i} label={data.violation} />
                   ))}
                 </Box>
               )}
               MenuProps={MenuProps}
             >
-              {violationsList.map((data) => (
-                <MenuItem key={data._id} value={data}>
+              {violationsList.map((data, i) => (
+                <MenuItem key={i} value={data}>
                   <Checkbox
-                    checked={Boolean(
-                      violationDetails.violation.find(
-                        (violation) => violation.violation == data.violation
-                      )
-                    )}
+                    checked={violationDetails.violation.indexOf(data) > -1}
                   />
                   {data.violation}
                 </MenuItem>
@@ -456,14 +463,6 @@ const ViolationsInfo = ({
           </FlexRow>
         </Box>
       </DialogForm>
-
-      <ConfirmationDialog
-        open={confirmationShown}
-        setOpen={setConfirmationShown}
-        title="Add Violation Confirmation"
-        content="Are you sure you want to add this violation? Once confirmed, the data will be added to the system. Please note that if the franchise number already exists, the violation will be shown in the complaints field."
-        disabled={disable}
-      />
 
       <ConfirmationDialog
         open={closingAlert}

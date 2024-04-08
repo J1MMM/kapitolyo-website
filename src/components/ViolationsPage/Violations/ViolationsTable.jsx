@@ -8,26 +8,7 @@ import DataTable from "../../common/ui/DataTable";
 import AddViolators from "./AddViolatorForm";
 import helper from "../../common/data/helper";
 import ViolationInfo from "./ViolationInfo";
-
-const initialDetails = {
-  ticketNo: "",
-  dateApprehension: null,
-  confiscatedDL: "",
-  name: "",
-  address: "",
-  typeVehicle: "",
-  franchiseNo: "",
-  plateNo: "",
-  timeViolation: null,
-  placeViolation: "",
-  officer: null,
-  violation: [],
-  paid: false,
-  remarks: "",
-  amount: "",
-  or: "",
-  orDate: "",
-};
+import Vhelper from "./Vhelper";
 
 const ViolationsTable = () => {
   document.title =
@@ -37,11 +18,14 @@ const ViolationsTable = () => {
   const { violations, violationsLoading } = useData();
   const [addViolatorOpen, setAddViolatorOpen] = useState(false);
   const [violationsInfoOpen, setViolationsInfoOpen] = useState(false);
-  const [violationDetails, setViolationsDetails] = useState(initialDetails);
-  const [initialViolationDetails, setInitialViolationsDetails] =
-    useState(initialDetails);
+  const [violationDetails, setViolationsDetails] = useState(
+    Vhelper.initialDetails
+  );
+  const [initialViolationDetails, setInitialViolationsDetails] = useState(
+    Vhelper.initialDetails
+  );
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(10);
+  const [pageSize, setPageSize] = useState(100);
   const [totalRows, setTotalRows] = useState(0);
 
   const handleDoubleClick = (e) => {

@@ -26,7 +26,7 @@ const initialFranchiseDetails = {
   stroke: "",
   remarks: "",
   daterelease: null,
-  complaint: null,
+  complaint: "",
   tplDate1: null,
   tplDate2: null,
   typeofFranchise: "",
@@ -212,30 +212,17 @@ const clientsColumns = [
     editable: false,
     align: "center",
     headerAlign: "center",
-    headerColor: "red",
     renderCell: (params, i) => {
-      if (!params.value[0]) {
-        return null;
-      }
-      if (typeof params.value[0] == "object") {
-        return (
-          params.value && (
-            <Stack key={i} direction="row" gap={1}>
-              {params.value.map((v, i) => (
-                <Chip key={i} label={v.violation} />
-              ))}
-            </Stack>
-          )
-        );
-      }
       if (typeof params.value[0] == "string") {
         return (
           <Stack key={i} direction="row" gap={1}>
-            {params.value.map((v, j) => (
-              <Chip key={j} label={v} />
-            ))}
+            {params.value.map((v, j) => {
+              if (v != "" && v != null) return <Chip key={j} label={v} />;
+            })}
           </Stack>
         );
+      } else {
+        return null;
       }
     },
   },
@@ -370,7 +357,7 @@ const formatFranchise = (franchise) => {
     franchise.DATE_RELEASE_OF_ST_TP &&
       new Date(franchise.DATE_RELEASE_OF_ST_TP),
     franchise.COMPLAINT,
-    franchise.DATE_ARCHIVED,
+    franchise.DATE_ARCHIVED && new Date(DATE_ARCHIVED),
     franchise.OWNER_SEX,
     franchise.DRIVERS_SEX,
     franchise.TPL_PROVIDER,
@@ -495,16 +482,12 @@ const violationsTableColumns = [
     headerClassName: "data-grid-header",
     editable: false,
     renderCell: (params, i) => {
-      console.log(params.value);
-      if (!params.value[0]) {
-        return null;
-      }
       return (
         params.value && (
           <Stack key={i} direction="row" gap={1}>
-            {params.value.map((v, i) => (
-              <Chip key={i} label={v.violation} />
-            ))}
+            {params.value.map(
+              (v, i) => v?.violation && <Chip key={i} label={v.violation} />
+            )}
           </Stack>
         )
       );
@@ -771,6 +754,22 @@ const sortData = (array, field) => {
   });
 };
 
+const sortDesc = (array, field) => {
+  return array.sort((a, b) => {
+    const fieldA = parseInt(a[field]);
+    const fieldB = parseInt(b[field]);
+    if (fieldA > fieldB) {
+      // Changed to >
+      return -1; // Reversed the comparison
+    }
+    if (fieldA < fieldB) {
+      // Changed to <
+      return 1; // Reversed the comparison
+    }
+    return 0;
+  });
+};
+
 export default {
   createClientsData,
   clientsColumns,
@@ -782,6 +781,7 @@ export default {
   officersTableColumn,
   violationsTableColumns,
   sortData,
+  sortDesc,
   createOfficersData,
   releasedTCTColumn,
   paidListColumn,

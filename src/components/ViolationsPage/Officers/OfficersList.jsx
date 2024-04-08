@@ -29,6 +29,7 @@ const OfficersTable = () => {
 
   const handleDoubleClick = (e) => {
     const foundOfficer = officers.find((v) => v.id == e.id);
+    console.log(foundOfficer);
     setOfficerInfo(foundOfficer);
     setOfficerInfoShown(true);
   };
@@ -48,7 +49,7 @@ const OfficersTable = () => {
       >
         <DataTable
           columns={helper.officersTableColumn}
-          rows={officers}
+          rows={officers.map((data) => ({ ...data, id: data._id }))}
           rowCount={totalRows}
           onFilterModelChange={() => setPage(0)}
           onPaginationModelChange={(e) => {

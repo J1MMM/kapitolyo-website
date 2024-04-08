@@ -23,19 +23,7 @@ const useOfficers = () => {
       console.log("get officers");
       try {
         const response = await axiosPrivate.get("/officers");
-
-        setOfficers(() => {
-          return response.data?.map((data) => {
-            return helper.createOfficersData(
-              data._id,
-              data.callsign,
-              data.firstname,
-              data.lastname,
-              data.mi,
-              data.apprehended
-            );
-          });
-        });
+        setOfficers(response.data);
       } catch (error) {
         console.log(error);
         setError(error);
@@ -51,10 +39,7 @@ const useOfficers = () => {
     const getOfficersNames = () => {
       setOfficersNames(() => {
         return officers.map((data) => {
-          return {
-            id: data.id,
-            fullname: `${data.firstname} ${data.mi} ${data.lastname}`,
-          };
+          return data?.fullname || "";
         });
       });
     };
