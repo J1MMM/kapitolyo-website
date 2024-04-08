@@ -44,6 +44,7 @@ const DataTable = ({
   onPaginationModelChange,
   onStateChange,
   loading,
+  getRowClassName,
 }) => {
   return (
     <DataGrid
@@ -67,6 +68,7 @@ const DataTable = ({
       loading={loading}
       disableRowSelectionOnClick
       showCellVerticalBorder
+      getRowClassName={getRowClassName}
       sx={{
         boxSizing: "border-box",
         maxHeight: "70vh",

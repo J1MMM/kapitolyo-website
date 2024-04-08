@@ -35,6 +35,7 @@ const ViolationsTable = () => {
     setInitialViolationsDetails(foundviolations);
     setViolationsInfoOpen(true);
   };
+
   return (
     <>
       <TableLayout

@@ -1,3 +1,4 @@
+import { Error } from "@mui/icons-material";
 import { Chip, Stack } from "@mui/material";
 import dayjs from "dayjs";
 
@@ -49,6 +50,19 @@ const clientsColumns = [
     align: "center",
     headerAlign: "center",
     headerClassName: "data-grid-header",
+    renderCell: (params) => {
+      const forRevoke =
+        params.row?.complaint.filter((str) => str.trim() !== "").length >= 4;
+
+      return (
+        <Stack direction="row" gap={1}>
+          <span>
+            {forRevoke && <Error fontSize="small" sx={{ color: "#D74141" }} />}{" "}
+          </span>{" "}
+          <span>{params.row?.mtop}</span>
+        </Stack>
+      );
+    },
   },
   {
     field: "lname",

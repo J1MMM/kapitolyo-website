@@ -28,7 +28,7 @@ const OfficersTable = () => {
   const [addOfficerFormShown, setAddOfficerFormShown] = useState(false);
 
   const handleDoubleClick = (e) => {
-    const foundOfficer = officers.find((v) => v.id == e.id);
+    const foundOfficer = officers.find((v) => v._id == e.id);
     console.log(foundOfficer);
     setOfficerInfo(foundOfficer);
     setOfficerInfoShown(true);

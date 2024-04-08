@@ -65,15 +65,8 @@ const OfficerInfo = ({ open, onClose, officerInfo, setOfficerInfo }) => {
       console.log(response.data);
       setOfficers((prev) => {
         const updatedOfficers = prev.map((data) => {
-          if (data.id == response.data._id) {
-            return helper.createOfficersData(
-              response.data._id,
-              response.data.callsign,
-              response.data.firstname,
-              response.data.lastname,
-              response.data.mi,
-              response.data.apprehended
-            );
+          if (data._id == response.data?._id) {
+            return response.data;
           } else {
             return data;
           }

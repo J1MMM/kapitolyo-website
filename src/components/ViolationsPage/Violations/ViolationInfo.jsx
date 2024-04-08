@@ -8,6 +8,7 @@ import {
   FormControl,
   FormControlLabel,
   FormHelperText,
+  IconButton,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -33,6 +34,7 @@ import useViolations from "../../../api/useViolations";
 import ConfirmationDialog from "../../common/ui/ConfirmationDialog";
 import SnackBar from "../../common/ui/SnackBar";
 import Vhelper from "./Vhelper";
+import { Clear } from "@mui/icons-material";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -148,6 +150,7 @@ const ViolationsInfo = ({
                     helper.handleScrollToTop();
                     setReadOnly(false);
                     setEditAlertShown(true);
+                    setViolationDetails((prev) => ({ ...prev, violation: [] }));
                   }}
                 >
                   Edit
@@ -252,6 +255,24 @@ const ViolationsInfo = ({
               <Select
                 readOnly={readOnly}
                 label="Type of Vehicle"
+                IconComponent={
+                  violationDetails.typeVehicle.length > 1
+                    ? () => (
+                        <IconButton
+                          size="small"
+                          sx={{ mr: 1 }}
+                          onClick={(e) => {
+                            setViolationDetails((prev) => ({
+                              ...prev,
+                              typeVehicle: "",
+                            }));
+                          }}
+                        >
+                          <Clear fontSize="small" />
+                        </IconButton>
+                      )
+                    : undefined
+                }
                 value={violationDetails?.typeVehicle}
                 onChange={(e) =>
                   setViolationDetails((prev) => ({
@@ -301,7 +322,25 @@ const ViolationsInfo = ({
               <Select
                 disabled={disable}
                 readOnly={readOnly}
-                label="Type of Vehicle"
+                label="Confiscated D.L."
+                IconComponent={
+                  violationDetails.confiscatedDL.length > 1
+                    ? () => (
+                        <IconButton
+                          size="small"
+                          sx={{ mr: 1 }}
+                          onClick={(e) => {
+                            setViolationDetails((prev) => ({
+                              ...prev,
+                              confiscatedDL: "",
+                            }));
+                          }}
+                        >
+                          <Clear fontSize="small" />
+                        </IconButton>
+                      )
+                    : undefined
+                }
                 value={violationDetails.confiscatedDL}
                 onChange={(e) =>
                   setViolationDetails((prev) => ({

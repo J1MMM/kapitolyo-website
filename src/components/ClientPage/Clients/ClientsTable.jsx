@@ -10,6 +10,16 @@ import DataTable from "../../common/ui/DataTable";
 import AddFranchiseForm from "./AddFranchiseForm";
 import { Box, Grow } from "@mui/material";
 import helper from "../../common/data/helper";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles({
+  highlightedRow: {
+    backgroundColor: "#FFCCCC", // Change this to the desired color
+    "&:hover": {
+      backgroundColor: "#FFB2B2 !important", // Change this to the desired hover color
+    },
+  },
+});
 
 const ClientsTable = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -32,7 +42,17 @@ const ClientsTable = () => {
     setFranchiseDetails(foundFranchise);
     setinitialFormInfo(foundFranchise);
   };
+  const classes = useStyles();
 
+  const getRowClassName = (params) => {
+    const nonEmptyLength = params.row.complaint.filter(
+      (str) => str.trim() !== ""
+    ).length;
+    if (nonEmptyLength >= 4) {
+      return classes.highlightedRow;
+    }
+    return ""; // Return an empty string for rows without highlighting
+  };
   return (
     <Box>
       <TableLayout
@@ -62,6 +82,7 @@ const ClientsTable = () => {
             setTotalRows(helper.countTrueValues(e?.visibleRowsLookup))
           }
           loading={franchisesLoading}
+          getRowClassName={getRowClassName}
         />
       </TableLayout>
 
