@@ -148,7 +148,6 @@ const ViolationsInfo = ({
                     helper.handleScrollToTop();
                     setReadOnly(false);
                     setEditAlertShown(true);
-                    setViolationDetails((prev) => ({ ...prev, violation: [] }));
                   }}
                 >
                   Edit

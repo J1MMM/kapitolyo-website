@@ -29,6 +29,7 @@ const OfficersTable = () => {
 
   const handleDoubleClick = (e) => {
     const foundOfficer = officers.find((v) => v.id == e.id);
+    console.log(foundOfficer);
     setOfficerInfo(foundOfficer);
     setOfficerInfoShown(true);
   };
