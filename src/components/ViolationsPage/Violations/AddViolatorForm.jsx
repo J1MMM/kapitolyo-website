@@ -198,6 +198,7 @@ const AddViolators = ({ open, onClose }) => {
                   violationDetails.typeVehicle.length > 1
                     ? () => (
                         <IconButton
+                          disabled={disable}
                           size="small"
                           sx={{ mr: 1 }}
                           onClick={(e) => {

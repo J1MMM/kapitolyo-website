@@ -258,6 +258,19 @@ input:-webkit-autofill,
   background-color: #e8f0fe;
 }
 
+.MuiDataGrid-main {
+  border: 1px solid $mono;
+  border-bottom: none;
+  border-radius: 5px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.MuiDataGrid-footerContainer {
+  border: 1px solid $mono;
+  border-top: none;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
 @media (max-width: 900px) {
   nav.menu-nav {
     display: block !important;
@@ -271,4 +284,7 @@ input:-webkit-autofill,
     padding: 8px 16px;
     font-size: small;
   }
+}
+.MuiDataGrid-toolbar {
+  border: none;
 }

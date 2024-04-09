@@ -259,6 +259,7 @@ const ViolationsInfo = ({
                   violationDetails.typeVehicle.length > 1
                     ? () => (
                         <IconButton
+                          disabled={readOnly}
                           size="small"
                           sx={{ mr: 1 }}
                           onClick={(e) => {
@@ -327,6 +328,7 @@ const ViolationsInfo = ({
                   violationDetails.confiscatedDL.length > 1
                     ? () => (
                         <IconButton
+                          disabled={readOnly}
                           size="small"
                           sx={{ mr: 1 }}
                           onClick={(e) => {
@@ -388,6 +390,7 @@ const ViolationsInfo = ({
           </FlexRow>
 
           <Autocomplete
+            clearIcon={false}
             readOnly={readOnly}
             options={officersNames}
             fullWidth

@@ -170,7 +170,6 @@ const AddFranchiseForm = ({ open, onClose }) => {
               }
             />
             <OutlinedTextField
-              required={true}
               label="Middlename"
               value={franchiseDetails.mi}
               onChange={(e) =>

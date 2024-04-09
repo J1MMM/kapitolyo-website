@@ -1,5 +1,5 @@
 import { Error } from "@mui/icons-material";
-import { Chip, Stack } from "@mui/material";
+import { Chip, Stack, Tooltip } from "@mui/material";
 import dayjs from "dayjs";
 
 const initialFranchiseDetails = {
@@ -57,8 +57,8 @@ const clientsColumns = [
       return (
         <Stack direction="row" gap={1}>
           <span>
-            {forRevoke && <Error fontSize="small" sx={{ color: "#D74141" }} />}{" "}
-          </span>{" "}
+            {forRevoke && <Error fontSize="small" sx={{ color: "#D74141" }} />}
+          </span>
           <span>{params.row?.mtop}</span>
         </Stack>
       );
