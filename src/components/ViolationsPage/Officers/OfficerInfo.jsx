@@ -43,8 +43,8 @@ const OfficerInfo = ({ open, onClose, officerInfo, setOfficerInfo }) => {
   const handleDelete = async () => {
     setDisable(true);
     try {
-      await axiosPrivate.delete("/officers", { data: { id: officerInfo.id } });
-      setOfficers((prev) => prev.filter((v) => v.id != officerInfo.id));
+      await axiosPrivate.delete("/officers", { data: { id: officerInfo._id } });
+      setOfficers((prev) => prev.filter((v) => v._id != officerInfo._id));
       setAlertSeverity("success");
       setAlertMsg("Officer Deleted Successfully");
       onClose(false);
@@ -65,15 +65,8 @@ const OfficerInfo = ({ open, onClose, officerInfo, setOfficerInfo }) => {
       console.log(response.data);
       setOfficers((prev) => {
         const updatedOfficers = prev.map((data) => {
-          if (data.id == response.data._id) {
-            return helper.createOfficersData(
-              response.data._id,
-              response.data.callsign,
-              response.data.firstname,
-              response.data.lastname,
-              response.data.mi,
-              response.data.apprehended
-            );
+          if (data._id == response.data?._id) {
+            return response.data;
           } else {
             return data;
           }

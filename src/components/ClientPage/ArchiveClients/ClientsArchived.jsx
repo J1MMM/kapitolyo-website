@@ -7,6 +7,9 @@ import DataTable from "../../common/ui/DataTable";
 import { Grow, Paper } from "@mui/material";
 import dayjs from "dayjs";
 import helper from "../../common/data/helper";
+import FilterButton from "../../common/ui/FilterButton";
+import ContainedButton from "../../common/ui/ContainedButton";
+import TableToolbar from "../../common/ui/TableToolbar";
 
 const date_archived_column_format = {
   field: "dateArchived",
@@ -42,7 +45,7 @@ const ClientArchived = () => {
   const [clientInfo, setClientInfo] = useState(false);
 
   const [page, setPage] = useState(0);
-  const [pageSize, setPageSize] = useState(50);
+  const [pageSize, setPageSize] = useState(100);
   const [totalRows, setTotalRows] = useState(0);
 
   function countTrueValues(obj) {
@@ -63,28 +66,34 @@ const ClientArchived = () => {
 
   return (
     <>
-      <TableLayout
-        title="Archived Clients"
-        subTitle="Clients records you have archived"
-      >
-        <DataTable
-          columns={[date_archived_column_format, ...helper.clientsColumns]}
-          rows={archivedFranchises}
-          rowCount={totalRows}
-          onCellDoubleClick={(e) => handleRowDoubleClick(e)}
-          onFilterModelChange={() => setPage(0)}
-          onPaginationModelChange={(e) => {
-            setPage(e.page);
-            setPageSize(e.pageSize);
-          }}
-          onStateChange={(e) =>
-            setTotalRows(countTrueValues(e?.visibleRowsLookup))
-          }
-          loading={archivedFranchisesLoading}
-          page={page}
-          pageSize={pageSize}
-        />
-      </TableLayout>
+      <DataTable
+        Toolbar={() => (
+          <TableToolbar
+            title="Archived Clients"
+            description="franchises' records have been revoked"
+            actionButtons={
+              <>
+                <FilterButton />
+              </>
+            }
+          />
+        )}
+        columns={[date_archived_column_format, ...helper.clientsColumns]}
+        rows={archivedFranchises}
+        rowCount={totalRows}
+        onCellDoubleClick={(e) => handleRowDoubleClick(e)}
+        onFilterModelChange={() => setPage(0)}
+        onPaginationModelChange={(e) => {
+          setPage(e.page);
+          setPageSize(e.pageSize);
+        }}
+        onStateChange={(e) =>
+          setTotalRows(countTrueValues(e?.visibleRowsLookup))
+        }
+        loading={archivedFranchisesLoading}
+        page={page}
+        pageSize={pageSize}
+      />
 
       <ClientInfo
         open={clientInfo}

@@ -9,6 +9,8 @@ import AddViolators from "./AddViolatorForm";
 import helper from "../../common/data/helper";
 import ViolationInfo from "./ViolationInfo";
 import Vhelper from "./Vhelper";
+import TableToolbar from "../../common/ui/TableToolbar";
+import FilterButton from "../../common/ui/FilterButton";
 
 const ViolationsTable = () => {
   document.title =
@@ -35,37 +37,42 @@ const ViolationsTable = () => {
     setInitialViolationsDetails(foundviolations);
     setViolationsInfoOpen(true);
   };
+
   return (
     <>
-      <TableLayout
-        title="Violators"
-        subTitle="Record of violations committed"
-        button={
-          <ContainedButton
-            title="add violator"
-            icon={<Add sx={{ color: "#FFF" }} />}
-            onClick={() => setAddViolatorOpen(true)}
+      <DataTable
+        Toolbar={() => (
+          <TableToolbar
+            title="Violators"
+            description="Record of violations committed"
+            actionButtons={
+              <>
+                <FilterButton />
+                <ContainedButton
+                  title="add violator"
+                  icon={<Add sx={{ color: "#FFF" }} />}
+                  onClick={() => setAddViolatorOpen(true)}
+                />
+              </>
+            }
           />
+        )}
+        columns={helper.violationsTableColumns}
+        rows={violations.map((data) => ({ ...data, id: data._id }))}
+        rowCount={totalRows}
+        onFilterModelChange={() => setPage(0)}
+        onPaginationModelChange={(e) => {
+          setPage(e.page);
+          setPageSize(e.pageSize);
+        }}
+        onCellDoubleClick={handleDoubleClick}
+        onStateChange={(e) =>
+          setTotalRows(helper.countTrueValues(e?.visibleRowsLookup))
         }
-      >
-        <DataTable
-          columns={helper.violationsTableColumns}
-          rows={violations.map((data) => ({ ...data, id: data._id }))}
-          rowCount={totalRows}
-          onFilterModelChange={() => setPage(0)}
-          onPaginationModelChange={(e) => {
-            setPage(e.page);
-            setPageSize(e.pageSize);
-          }}
-          onCellDoubleClick={handleDoubleClick}
-          onStateChange={(e) =>
-            setTotalRows(helper.countTrueValues(e?.visibleRowsLookup))
-          }
-          loading={violationsLoading}
-          page={page}
-          pageSize={pageSize}
-        />
-      </TableLayout>
+        loading={violationsLoading}
+        page={page}
+        pageSize={pageSize}
+      />
 
       <AddViolators open={addViolatorOpen} onClose={setAddViolatorOpen} />
       <ViolationInfo

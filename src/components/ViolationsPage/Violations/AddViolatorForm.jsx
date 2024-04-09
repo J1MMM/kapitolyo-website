@@ -7,6 +7,7 @@ import {
   FormControl,
   FormControlLabel,
   FormHelperText,
+  IconButton,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -35,6 +36,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import Vhelper from "./Vhelper";
+import { Clear } from "@mui/icons-material";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -192,6 +194,25 @@ const AddViolators = ({ open, onClose }) => {
               <InputLabel>Type of Vehicle</InputLabel>
               <Select
                 label="Type of Vehicle"
+                IconComponent={
+                  violationDetails.typeVehicle.length > 1
+                    ? () => (
+                        <IconButton
+                          disabled={disable}
+                          size="small"
+                          sx={{ mr: 1 }}
+                          onClick={(e) => {
+                            setViolationDetails((prev) => ({
+                              ...prev,
+                              typeVehicle: "",
+                            }));
+                          }}
+                        >
+                          <Clear fontSize="small" />
+                        </IconButton>
+                      )
+                    : undefined
+                }
                 value={violationDetails.typeVehicle}
                 onChange={(e) =>
                   setViolationDetails((prev) => ({
@@ -238,6 +259,24 @@ const AddViolators = ({ open, onClose }) => {
             <FormControl fullWidth margin="dense">
               <InputLabel>Confiscated D.L.</InputLabel>
               <Select
+                IconComponent={
+                  violationDetails.confiscatedDL.length > 1
+                    ? () => (
+                        <IconButton
+                          size="small"
+                          sx={{ mr: 1 }}
+                          onClick={(e) => {
+                            setViolationDetails((prev) => ({
+                              ...prev,
+                              confiscatedDL: "",
+                            }));
+                          }}
+                        >
+                          <Clear fontSize="small" />
+                        </IconButton>
+                      )
+                    : undefined
+                }
                 label="Type of Vehicle"
                 value={violationDetails.confiscatedDL}
                 onChange={(e) =>
@@ -251,6 +290,7 @@ const AddViolators = ({ open, onClose }) => {
                 <MenuItem value={"Non Pro"}>Non Pro</MenuItem>
                 <MenuItem value={"Pro"}>Pro</MenuItem>
                 <MenuItem value={"Temporary DL"}>Temporary DL</MenuItem>
+                <MenuItem value={"Ticket"}>Ticket</MenuItem>
               </Select>
             </FormControl>
 

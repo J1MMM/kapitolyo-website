@@ -44,6 +44,8 @@ const DataTable = ({
   onPaginationModelChange,
   onStateChange,
   loading,
+  getRowClassName,
+  Toolbar,
 }) => {
   return (
     <DataGrid
@@ -67,9 +69,11 @@ const DataTable = ({
       loading={loading}
       disableRowSelectionOnClick
       showCellVerticalBorder
+      getRowClassName={getRowClassName}
       sx={{
         boxSizing: "border-box",
-        maxHeight: "70vh",
+        maxHeight: "75vh",
+        minHeight: "75vh",
         height: "100vh",
         width: "100%",
         ".data-grid-header": {
@@ -86,10 +90,15 @@ const DataTable = ({
             color: "#FFF",
           },
         },
+        border: "none",
       }}
       slots={{
         noRowsOverlay: EmptyRowsOverlay,
         loadingOverlay: LoadingComp,
+        toolbar: Toolbar,
+      }}
+      slotProps={{
+        panel: { placement: "bottom-end" },
       }}
     />
   );
