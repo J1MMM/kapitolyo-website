@@ -57,9 +57,9 @@ const ClientsTable = memo(() => {
   };
 
   const getRowClassName = (params) => {
-    const nonEmptyLength = params.row.complaint.filter(
-      (str) => str.trim() !== ""
-    ).length;
+    const nonEmptyLength = params.row.complaint?.filter(
+      (str) => str?.trim() !== ""
+    )?.length;
     if (nonEmptyLength >= 4) {
       return classes.highlightedRow;
     }

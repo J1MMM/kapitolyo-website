@@ -4,6 +4,7 @@ import {
   Button,
   Checkbox,
   Chip,
+  Collapse,
   FormControl,
   FormControlLabel,
   FormHelperText,
@@ -62,12 +63,12 @@ const AddViolators = ({ open, onClose }) => {
   const [alertShown, setAlertShown] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState("success");
   const [alertMsg, setAlertMsg] = useState("");
-  const theme = useTheme();
 
   const handleChange = (event) => {
     const {
       target: { value },
     } = event;
+
     setViolationDetails((prev) => ({ ...prev, violation: value }));
   };
 
@@ -102,6 +103,10 @@ const AddViolators = ({ open, onClose }) => {
     setAlertShown(true);
     setDisable(false);
   };
+
+  const optionOthersSelected = Boolean(
+    violationDetails.violation.find((v) => v.violation == "OTHERS")
+  );
 
   return (
     <>
@@ -372,6 +377,20 @@ const AddViolators = ({ open, onClose }) => {
                 </MenuItem>
               ))}
             </Select>
+            <Collapse in={optionOthersSelected} unmountOnExit mountOnEnter>
+              <OutlinedTextField
+                required
+                disabled={disable}
+                label="Specify the violation committed"
+                value={violationDetails?.others}
+                onChange={(e) =>
+                  setViolationDetails((prev) => ({
+                    ...prev,
+                    others: e.target.value,
+                  }))
+                }
+              />
+            </Collapse>
             <FormHelperText
               sx={{
                 color: "error.main",
@@ -386,35 +405,38 @@ const AddViolators = ({ open, onClose }) => {
             </FormHelperText>
           </FormControl>
 
-          <FlexRow>
-            <OutlinedTextField
-              disabled={disable}
-              label="Remarks"
-              value={violationDetails.remarks}
-              onChange={(e) =>
-                setViolationDetails((prev) => ({
-                  ...prev,
-                  remarks: e.target.value,
-                }))
-              }
-            />
-            <OutlinedTextField
-              disabled={true}
-              label="Amount Paid"
-              required
-              value={violationDetails.amount}
-              onChange={(e) =>
-                setViolationDetails((prev) => ({
-                  ...prev,
-                  amount: e.target.value,
-                }))
-              }
-            />
-          </FlexRow>
+          <OutlinedTextField
+            disabled={disable}
+            label="Remarks"
+            value={violationDetails.remarks}
+            onChange={(e) =>
+              setViolationDetails((prev) => ({
+                ...prev,
+                remarks: e.target.value,
+              }))
+            }
+          />
 
           <FlexRow>
-            <OutlinedTextField disabled={true} label="OR Number" required />
-            <OutlinedTextField disabled={true} label="OR Date" required />
+            <OutlinedTextField disabled={true} label="OR Number" />
+            <FormControl margin="dense" fullWidth required>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  disabled
+                  label="OR Date"
+                  value={
+                    violationDetails?.orDate &&
+                    new Date(violationDetails?.orDate)
+                  }
+                  onChange={(date) =>
+                    setViolationDetails((prev) => ({
+                      ...prev,
+                      orDate: date,
+                    }))
+                  }
+                />
+              </LocalizationProvider>
+            </FormControl>
           </FlexRow>
         </Box>
       </DialogForm>

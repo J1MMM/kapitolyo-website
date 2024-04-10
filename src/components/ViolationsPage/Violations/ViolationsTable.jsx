@@ -17,7 +17,7 @@ const ViolationsTable = () => {
     "Violators Management | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
 
   const axiosPrivate = useAxiosPrivate();
-  const { violations, violationsLoading } = useData();
+  const { violations, violationsLoading, violationsList } = useData();
   const [addViolatorOpen, setAddViolatorOpen] = useState(false);
   const [violationsInfoOpen, setViolationsInfoOpen] = useState(false);
   const [violationDetails, setViolationsDetails] = useState(
@@ -31,11 +31,21 @@ const ViolationsTable = () => {
   const [totalRows, setTotalRows] = useState(0);
 
   const handleDoubleClick = (e) => {
-    const foundviolations = violations.find((v) => v._id == e.id);
-    console.log(foundviolations);
+    let foundviolations = violations.find((v) => v._id == e.id);
+
+    if (violationsList.length > 0) {
+      foundviolations.violation = foundviolations.violation?.map((item1) => {
+        const foundObject = violationsList?.find(
+          (item2) => item2?._id === item1?._id
+        );
+        return foundObject;
+      });
+    }
+
     setViolationsDetails(foundviolations);
     setInitialViolationsDetails(foundviolations);
     setViolationsInfoOpen(true);
+    console.log(foundviolations);
   };
 
   return (

@@ -52,7 +52,7 @@ const clientsColumns = [
     headerClassName: "data-grid-header",
     renderCell: (params) => {
       const forRevoke =
-        params.row?.complaint.filter((str) => str.trim() !== "").length >= 4;
+        params.row?.complaint?.filter((str) => str?.trim() !== "").length >= 4;
 
       return (
         <Stack direction="row" gap={1}>

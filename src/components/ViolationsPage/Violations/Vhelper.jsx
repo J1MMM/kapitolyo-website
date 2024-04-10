@@ -15,7 +15,8 @@ const initialDetails = {
   remarks: "",
   amount: "",
   or: "",
-  orDate: "",
+  orDate: null,
+  others: "",
 };
 
 export default { initialDetails };

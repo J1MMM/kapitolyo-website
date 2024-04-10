@@ -115,6 +115,10 @@ const ViolationsInfo = ({
     setViolationDetails(Vhelper.initialDetails);
   };
 
+  const optionOthersSelected = Boolean(
+    violationDetails.violation.find((v) => v.violation == "OTHERS")
+  );
+
   return (
     <>
       <DialogForm
@@ -150,7 +154,7 @@ const ViolationsInfo = ({
                     helper.handleScrollToTop();
                     setReadOnly(false);
                     setEditAlertShown(true);
-                    setViolationDetails((prev) => ({ ...prev, violation: [] }));
+                    // setViolationDetails((prev) => ({ ...prev, violation: [] }));
                   }}
                 >
                   Edit
@@ -256,7 +260,7 @@ const ViolationsInfo = ({
                 readOnly={readOnly}
                 label="Type of Vehicle"
                 IconComponent={
-                  violationDetails.typeVehicle.length > 1
+                  violationDetails.typeVehicle?.length > 1
                     ? () => (
                         <IconButton
                           disabled={readOnly}
@@ -325,7 +329,7 @@ const ViolationsInfo = ({
                 readOnly={readOnly}
                 label="Confiscated D.L."
                 IconComponent={
-                  violationDetails.confiscatedDL.length > 1
+                  violationDetails.confiscatedDL?.length > 1
                     ? () => (
                         <IconButton
                           disabled={readOnly}
@@ -418,7 +422,7 @@ const ViolationsInfo = ({
               readOnly={readOnly}
               labelId="violations-committed"
               multiple
-              value={violationDetails.violation}
+              value={violationDetails?.violation}
               onChange={handleChange}
               input={<OutlinedInput label="Violations Committed" />}
               renderValue={(selected) => (
@@ -439,6 +443,21 @@ const ViolationsInfo = ({
                 </MenuItem>
               ))}
             </Select>
+            <Collapse in={optionOthersSelected} unmountOnExit mountOnEnter>
+              <OutlinedTextField
+                readOnly={readOnly}
+                required
+                disabled={disable}
+                label="Specify the violation committed"
+                value={violationDetails.others}
+                onChange={(e) =>
+                  setViolationDetails((prev) => ({
+                    ...prev,
+                    others: e.target.value,
+                  }))
+                }
+              />
+            </Collapse>
             <FormHelperText
               sx={{
                 color: "error.main",
@@ -446,39 +465,25 @@ const ViolationsInfo = ({
                 fontSize: "medium",
               }}
             >
-              {`Total Amount: ${violationDetails.violation?.reduce(
-                (total, obj) => total + obj["price"],
+              {`Total Amount: ${violationDetails?.violation?.reduce(
+                (total, obj) => total + obj?.price,
                 0
               )}.00`}
             </FormHelperText>
           </FormControl>
 
-          <FlexRow>
-            <OutlinedTextField
-              disabled={disable}
-              label="Remarks"
-              value={violationDetails?.remarks}
-              onChange={(e) =>
-                setViolationDetails((prev) => ({
-                  ...prev,
-                  remarks: e.target.value,
-                }))
-              }
-              readOnly={readOnly}
-            />
-            <OutlinedTextField
-              disabled={true}
-              label="Amount Paid"
-              readOnly={readOnly}
-              value={violationDetails?.amount}
-              onChange={(e) =>
-                setViolationDetails((prev) => ({
-                  ...prev,
-                  amount: e.target.value,
-                }))
-              }
-            />
-          </FlexRow>
+          <OutlinedTextField
+            disabled={disable}
+            label="Remarks"
+            value={violationDetails?.remarks}
+            onChange={(e) =>
+              setViolationDetails((prev) => ({
+                ...prev,
+                remarks: e.target.value,
+              }))
+            }
+            readOnly={readOnly}
+          />
 
           <FlexRow>
             <OutlinedTextField
@@ -490,18 +495,26 @@ const ViolationsInfo = ({
                 setViolationDetails((prev) => ({ ...prev, or: e.target.value }))
               }
             />
-            <OutlinedTextField
-              disabled={true}
-              label="OR Date"
-              readOnly={readOnly}
-              value={violationDetails?.orDate}
-              onChange={(e) =>
-                setViolationDetails((prev) => ({
-                  ...prev,
-                  orDate: e.target.value,
-                }))
-              }
-            />
+            <FormControl margin="dense" fullWidth required>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  disabled
+                  readOnly={readOnly}
+                  label="OR Date"
+                  slotProps={{ textField: { required: true } }}
+                  value={
+                    violationDetails?.orDate &&
+                    new Date(violationDetails?.orDate)
+                  }
+                  onChange={(date) =>
+                    setViolationDetails((prev) => ({
+                      ...prev,
+                      orDate: date,
+                    }))
+                  }
+                />
+              </LocalizationProvider>
+            </FormControl>
           </FlexRow>
         </Box>
       </DialogForm>
