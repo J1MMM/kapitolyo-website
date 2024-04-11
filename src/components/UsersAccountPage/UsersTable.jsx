@@ -71,6 +71,8 @@ const UsersTable = ({
     }
   };
 
+  console.log(users);
+
   return (
     <>
       {noResponse ? (
@@ -86,6 +88,8 @@ const UsersTable = ({
                 boxSizing: "border-box",
                 borderRadius: 3,
                 zIndex: 10,
+                height: "100vh",
+                maxHeight: "80vh",
               }}
             >
               <Box
@@ -112,8 +116,9 @@ const UsersTable = ({
                       Users Management
                     </Typography>
                     <Chip
-                      label={`${users?.length} ${users.length <= 1 ? "User" : "Users"
-                        }`}
+                      label={`${users?.length} ${
+                        users.length <= 1 ? "User" : "Users"
+                      }`}
                       sx={{
                         fontFamily: "Poppins, sans-serif",
                         color: "primary.main",
@@ -136,12 +141,10 @@ const UsersTable = ({
                     variant="contained"
                     size="small"
                     onClick={() => setAddUserModal(true)}
-                    sx={{ mb: 2 }}
+                    sx={{ mb: 2, py: 1, px: 2 }}
+                    startIcon={<Add />}
                   >
-                    <Add />
-                    <Typography component={"span"} pr={1} variant="button">
-                      create account
-                    </Typography>
+                    create account
                   </Button>
                 </Box>
               </Box>
@@ -240,12 +243,12 @@ const UsersTable = ({
                             selectedRows.length === users.length - 1
                               ? []
                               : users
-                                .map((user) =>
-                                  Boolean(user.roles.SuperAdmin)
-                                    ? null
-                                    : user._id
-                                )
-                                .filter((user) => user)
+                                  .map((user) =>
+                                    Boolean(user.roles.SuperAdmin)
+                                      ? null
+                                      : user._id
+                                  )
+                                  .filter((user) => user)
                           )
                         }
                         size={mobileView ? "small" : "medium"}
@@ -312,7 +315,8 @@ const UsersTable = ({
                 <TableBody>
                   {users?.map((user, index) => {
                     let isAdmin = Boolean(user.roles.SuperAdmin);
-                    const fullname = `${user.firstname} ${user.lastname}`;
+                    const avatar = `${user.firstname} ${user.lastname}`;
+                    const fullname = `${user.firstname} ${user.middlename} ${user.lastname}`;
 
                     return (
                       <TableRow
@@ -353,7 +357,7 @@ const UsersTable = ({
                             variant="inherit"
                             mr={1}
                           >
-                            {user.lastname}, {user.firstname} {user.middlename}
+                            {`${fullname} `}
                           </Typography>
                           {user.gender == "male" ? (
                             <PiGenderMaleBold color="rgb(2,170,232)" />
@@ -373,7 +377,7 @@ const UsersTable = ({
                         >
                           <Box display="flex" alignItems="center" gap={1}>
                             <UserAvatar
-                              fullname={fullname}
+                              fullname={avatar}
                               height={"35px"}
                               width={"35px"}
                               fontSize="70%"

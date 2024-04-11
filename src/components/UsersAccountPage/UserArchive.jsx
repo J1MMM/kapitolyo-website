@@ -153,6 +153,8 @@ const UserArchive = () => {
             boxSizing: "border-box",
             borderRadius: 3,
             zIndex: 10,
+            height: "100vh",
+            maxHeight: "80vh",
           }}
         >
           <Box
@@ -204,19 +206,13 @@ const UserArchive = () => {
               size="small"
               sx={{
                 height: "fit-content",
+                py: 1,
+                px: 2,
               }}
               onClick={() => setRestoreConfirmation(true)}
+              startIcon={<BsArrowCounterclockwise />}
             >
-              <BsArrowCounterclockwise color={"#FFF"} size={20} />
-              <Typography
-                ml={1}
-                component={"span"}
-                pr={1}
-                variant="caption"
-                color="#FFF"
-              >
-                restore
-              </Typography>
+              restore
             </Button>
           </Box>
 
@@ -398,7 +394,7 @@ const UserArchive = () => {
                         onClick={() => handleRowClick(user._id)}
                       />
                       <Typography component={"span"} variant="inherit" mr={1}>
-                        {user.lastname}, {user.firstname} {user.middlename}
+                        {user.firstname} {user.middlename} {user.lastname}
                       </Typography>
                       {user.gender == "male" ? (
                         <PiGenderMaleBold color="rgb(2,170,232)" />

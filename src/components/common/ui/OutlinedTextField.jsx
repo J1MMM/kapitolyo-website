@@ -12,13 +12,14 @@ function OutlinedTextField({
   error,
   helperText,
   disabled,
+  type,
 }) {
   return (
     <TextField
       disabled={disabled}
       error={error}
       margin="dense"
-      type="text"
+      type={type || "text"}
       variant="outlined"
       label={label}
       value={value}

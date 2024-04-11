@@ -148,17 +148,13 @@ const Layout = () => {
         >
           {auth?.fullname && (
             <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-              <Box
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                borderRadius={50}
-                bgcolor={"#FFF"}
+              <UserAvatar
+                border="2px solid #FFF"
+                fullname={auth?.fullname}
                 height={"38px"}
                 width={"38px"}
-              >
-                <FiUser size={22} />
-              </Box>
+                fontSize="70%"
+              />
             </IconButton>
           )}
           <Box
