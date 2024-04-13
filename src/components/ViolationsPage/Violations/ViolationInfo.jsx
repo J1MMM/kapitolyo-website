@@ -16,7 +16,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useData from "../../../hooks/useData";
 import {
@@ -34,7 +34,11 @@ import useViolations from "../../../api/useViolations";
 import ConfirmationDialog from "../../common/ui/ConfirmationDialog";
 import SnackBar from "../../common/ui/SnackBar";
 import Vhelper from "./Vhelper";
-import { Clear } from "@mui/icons-material";
+import { Clear, PrintOutlined, QrCode } from "@mui/icons-material";
+import ViolationReceipt from "../../Receipt/violationReceipt";
+import { useReactToPrint } from "react-to-print";
+import useAuth from "../../../hooks/useAuth";
+import ROLES_LIST from "../../common/data/ROLES_LIST";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -56,6 +60,7 @@ const ViolationsInfo = ({
   initialViolationDetails,
 }) => {
   const axiosPrivate = useAxiosPrivate();
+  const { auth } = useAuth();
   const { officersNames, violationsList, setViolations } = useData();
   const [disable, setDisable] = useState(false);
   const [confirmationShown, setConfirmationShown] = useState(false);
@@ -66,8 +71,9 @@ const ViolationsInfo = ({
   const [editAlertShown, setEditAlertShown] = useState(false);
   const [closingAlert, setClosingAlert] = useState(false);
   const [updateConfirmation, setUpdateConfirmation] = useState(false);
+  const [receiptModalOpen, setReceiptModalOpen] = useState(false);
 
-  const theme = useTheme();
+  const isCashier = Boolean(auth.roles?.find((v) => v == ROLES_LIST.Cashier));
 
   const handleChange = (event) => {
     const {
@@ -119,6 +125,11 @@ const ViolationsInfo = ({
     violationDetails.violation.find((v) => v.violation == "OTHERS")
   );
 
+  const componentRef = useRef(null);
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   return (
     <>
       <DialogForm
@@ -132,7 +143,27 @@ const ViolationsInfo = ({
         actions={
           <>
             <Collapse
-              in={readOnly}
+              in={isCashier}
+              mountOnEnter
+              unmountOnExit
+              timeout={isCashier ? 300 : 0}
+            >
+              <Box display="flex" gap={1}>
+                <Button
+                  variant="outlined"
+                  startIcon={<QrCode />}
+                  size="small"
+                  onClick={() => setReceiptModalOpen(true)}
+                >
+                  generate receipt
+                </Button>
+                <Button disabled={disable} variant="contained" size="small">
+                  Mark as paid
+                </Button>
+              </Box>
+            </Collapse>
+            <Collapse
+              in={readOnly && !isCashier}
               mountOnEnter
               unmountOnExit
               timeout={readOnly ? 300 : 0}
@@ -163,7 +194,7 @@ const ViolationsInfo = ({
             </Collapse>
 
             <Collapse
-              in={!readOnly}
+              in={!readOnly && !isCashier}
               mountOnEnter
               unmountOnExit
               timeout={!readOnly ? 300 : 0}
@@ -465,10 +496,12 @@ const ViolationsInfo = ({
                 fontSize: "medium",
               }}
             >
-              {`Total Amount: ${violationDetails?.violation?.reduce(
-                (total, obj) => total + obj?.price,
-                0
-              )}.00`}
+              {`Total Amount: ${violationDetails?.violation
+                ?.reduce((total, obj) => total + obj?.price, 0)
+                .toLocaleString("en-PH", {
+                  style: "currency",
+                  currency: "PHP",
+                })}`}
             </FormHelperText>
           </FormControl>
 
@@ -556,6 +589,36 @@ const ViolationsInfo = ({
         severity={"info"}
         position={{ horizontal: "center", vertical: "top" }}
       />
+
+      <DialogForm
+        title="Violation Receipt"
+        open={receiptModalOpen}
+        onClose={() => setReceiptModalOpen(false)}
+        actions={
+          <>
+            <Button
+              size="small"
+              variant="outlined"
+              onClick={() => setReceiptModalOpen(false)}
+            >
+              cancel
+            </Button>
+            <Button
+              size="small"
+              variant="contained"
+              startIcon={<PrintOutlined />}
+              onClick={handlePrint}
+            >
+              print
+            </Button>
+          </>
+        }
+      >
+        <ViolationReceipt
+          ref={componentRef}
+          violationDetails={violationDetails}
+        />
+      </DialogForm>
     </>
   );
 };
