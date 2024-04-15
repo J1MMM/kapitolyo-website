@@ -348,6 +348,14 @@ input:-webkit-autofill,
     }
   }
 }
+
+.colored-row {
+  background-color: #ffcccc;
+
+  &:hover {
+    background-color: #ffb2b2 !important;
+  }
+}
 .break-line {
   overflow-wrap: break-word; /* Break lines at any character if necessary */
 }
