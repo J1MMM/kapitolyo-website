@@ -10,7 +10,6 @@ import DataTable from "../../common/ui/DataTable";
 import AddFranchiseForm from "./AddFranchiseForm";
 import { Box, Button, Grow, Stack, Typography } from "@mui/material";
 import helper from "../../common/data/helper";
-import { makeStyles } from "@mui/styles";
 import {
   GridPreferencePanelsValue,
   GridToolbar,
@@ -24,17 +23,7 @@ import TableToolbar from "../../common/ui/TableToolbar";
 import OutlinedButton from "../../common/ui/OutlinedButton";
 import FilterButton from "../../common/ui/FilterButton";
 
-const useStyles = makeStyles({
-  highlightedRow: {
-    backgroundColor: "#FFCCCC", // Change this to the desired color
-    "&:hover": {
-      backgroundColor: "#FFB2B2 !important", // Change this to the desired hover color
-    },
-  },
-});
-
 const ClientsTable = memo(() => {
-  const classes = useStyles();
   const axiosPrivate = useAxiosPrivate();
   const { franchises, setFranchises, franchisesLoading } = useData();
   const [franchiseDetails, setFranchiseDetails] = useState(
@@ -61,7 +50,7 @@ const ClientsTable = memo(() => {
       (str) => str?.trim() !== ""
     )?.length;
     if (nonEmptyLength >= 4) {
-      return classes.highlightedRow;
+      return "colored-row";
     }
     return ""; // Return an empty string for rows without highlighting
   };

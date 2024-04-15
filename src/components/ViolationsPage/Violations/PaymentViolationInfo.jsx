@@ -95,7 +95,8 @@ const PaymentViolationsInfo = ({
       setAlertSeverity("success");
       setAlertMsg("Payment processed successfully.");
       onClose(false);
-      setViolationDetails(Vhelper.initialDetails);
+
+      handlePrint();
     } catch (error) {
       setAlertSeverity("error");
       setAlertMsg("Update Violations Error.");
@@ -127,6 +128,10 @@ const PaymentViolationsInfo = ({
 
   return (
     <>
+      <ViolationReceipt
+        ref={componentRef}
+        violationDetails={violationDetails}
+      />
       <DialogForm
         open={open}
         title={readOnly ? "Violations Info" : "Violation Payment"}
@@ -138,7 +143,7 @@ const PaymentViolationsInfo = ({
         actions={
           paid ? (
             <>
-              <Button variant="outlined" size="small">
+              <Button variant="outlined" size="small" onClick={handlePrint}>
                 generate receipt
               </Button>
             </>
@@ -574,7 +579,7 @@ const PaymentViolationsInfo = ({
         position={{ horizontal: "center", vertical: "top" }}
       />
 
-      <DialogForm
+      {/* <DialogForm
         title="Violation Receipt"
         open={receiptModalOpen}
         onClose={() => setReceiptModalOpen(false)}
@@ -602,7 +607,7 @@ const PaymentViolationsInfo = ({
           ref={componentRef}
           violationDetails={violationDetails}
         />
-      </DialogForm>
+      </DialogForm> */}
     </>
   );
 };
