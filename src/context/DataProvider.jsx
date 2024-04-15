@@ -25,6 +25,9 @@ export const DataProvider = ({ children }) => {
   const [violations, setViolations] = useState([]);
   const [violationsLoading, setViolationsLoading] = useState(true);
 
+  const [paidList, setPaidList] = useState([]);
+  const [paidListLoading, setPaidListLoading] = useState(true);
+
   const [headerShadow, setHeaderShadow] = useState(false);
 
   return (
@@ -62,6 +65,10 @@ export const DataProvider = ({ children }) => {
         setViolationsLoading,
         violations,
         setViolations,
+        paidListLoading,
+        setPaidListLoading,
+        paidList,
+        setPaidList,
       }}
     >
       {children}

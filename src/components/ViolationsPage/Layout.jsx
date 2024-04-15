@@ -10,7 +10,7 @@ const ViolationsPageLayout = () => {
       path: "",
     },
     {
-      title: "Paid",
+      title: "Paid List",
       path: "paid",
     },
     {

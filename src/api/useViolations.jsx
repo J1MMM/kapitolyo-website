@@ -8,15 +8,20 @@ const useViolations = () => {
   const axiosPrivate = useAxiosPrivate(); // Use the useAxiosPrivate hook
 
   const {
+    violations,
     violationsListLoading,
     setViolationsListLoading,
     violationsList,
     setViolationsList,
     setViolationsLoading,
     setViolations,
+    paidList,
+    setPaidList,
+    paidListLoading,
+    setPaidListLoading,
   } = useData();
   const [error, setError] = useState(null);
-
+  //  violations data
   useEffect(() => {
     const fetchData = async () => {
       setViolationsLoading(true);
@@ -35,6 +40,7 @@ const useViolations = () => {
     fetchData();
   }, [axiosPrivate]);
 
+  //kind of violation list
   useEffect(() => {
     const fetchData = async () => {
       setViolationsListLoading(true);
@@ -52,6 +58,25 @@ const useViolations = () => {
 
     fetchData();
   }, [axiosPrivate]);
+
+  // paid list
+  useEffect(() => {
+    const fetchData = async () => {
+      setPaidListLoading(true);
+      try {
+        const response = await axiosPrivate.get("/violation/paid");
+        console.log(response.data);
+        setPaidList(response.data);
+      } catch (error) {
+        console.log(error);
+        setError(error);
+      } finally {
+        setPaidListLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [axiosPrivate, violations]);
 
   return { violationsList, violationsListLoading, error };
 };

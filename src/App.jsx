@@ -48,6 +48,7 @@ function App() {
                   ROLES_LIST.CTMO1,
                   ROLES_LIST.CTMO2,
                   ROLES_LIST.CTMO3,
+                  ROLES_LIST.Cashier,
                 ]}
               />
             }

@@ -288,3 +288,66 @@ input:-webkit-autofill,
 .MuiDataGrid-toolbar {
   border: none;
 }
+
+.table,
+.th,
+.td {
+  border: 1px solid black;
+  border-collapse: collapse;
+  padding: 8px;
+
+  .center {
+    text-align: center;
+  }
+  .w-25 {
+    width: 25%;
+  }
+  .w-75 {
+    width: 75%;
+  }
+  .w-100 {
+    width: 100%;
+  }
+  .p-3 {
+    padding: 24px;
+  }
+  .p-0 {
+    padding: 0;
+  }
+  .text-align-end {
+    text-align: end;
+  }
+  .broken-line {
+    display: block;
+    border-bottom: 2px dashed;
+    width: 100%;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
+    gap: 8px;
+    float: right;
+    margin-right: 24px;
+  }
+  .b-0 {
+    border: none !important;
+  }
+  .by-0 {
+    border-top: none;
+    border-bottom: none;
+  }
+  .payor-input {
+    border: none;
+    font-size: large;
+    width: 100%;
+    &:focus {
+      outline: none;
+    }
+  }
+}
+.break-line {
+  overflow-wrap: break-word; /* Break lines at any character if necessary */
+}

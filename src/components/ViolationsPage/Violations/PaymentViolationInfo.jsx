@@ -52,12 +52,13 @@ const MenuProps = {
   },
 };
 
-const ViolationsInfo = ({
+const PaymentViolationsInfo = ({
   open,
   onClose,
   violationDetails,
   setViolationDetails,
   initialViolationDetails,
+  paid,
 }) => {
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
@@ -73,6 +74,8 @@ const ViolationsInfo = ({
   const [updateConfirmation, setUpdateConfirmation] = useState(false);
   const [receiptModalOpen, setReceiptModalOpen] = useState(false);
 
+  const isCashier = Boolean(auth.roles?.find((v) => v == ROLES_LIST.Cashier));
+
   const handleChange = (event) => {
     const {
       target: { value },
@@ -83,20 +86,14 @@ const ViolationsInfo = ({
   const handleSubmit = async () => {
     setDisable(true);
     try {
-      const response = await axiosPrivate.put("/violation", violationDetails);
+      const response = await axiosPrivate.patch("/violation", violationDetails);
       console.log(response.data);
       setViolations((prev) => {
-        return prev?.map((obj) => {
-          if (obj._id == violationDetails._id) {
-            return response.data;
-          } else {
-            return obj;
-          }
-        });
+        return prev?.filter((v) => v._id !== violationDetails._id);
       });
       setReadOnly(true);
       setAlertSeverity("success");
-      setAlertMsg("Violations Updated Successfully");
+      setAlertMsg("Payment processed successfully.");
       onClose(false);
       setViolationDetails(Vhelper.initialDetails);
     } catch (error) {
@@ -132,79 +129,132 @@ const ViolationsInfo = ({
     <>
       <DialogForm
         open={open}
-        title={readOnly ? "Violations Info" : "Update Violation"}
+        title={readOnly ? "Violations Info" : "Violation Payment"}
         onClose={handleClose}
         onSubmit={(e) => {
           e.preventDefault();
           setUpdateConfirmation(true);
         }}
         actions={
-          <>
-            <Collapse
-              in={readOnly}
-              mountOnEnter
-              unmountOnExit
-              timeout={readOnly ? 300 : 0}
-            >
-              <Box display="flex" gap={1}>
-                <Button
-                  disabled={disable}
-                  variant="outlined"
-                  size="small"
-                  onClick={handleClose}
-                >
-                  cancel
-                </Button>
-                <Button
-                  disabled={disable}
-                  variant="contained"
-                  size="small"
-                  onClick={() => {
-                    helper.handleScrollToTop();
-                    setReadOnly(false);
-                    setEditAlertShown(true);
-                    // setViolationDetails((prev) => ({ ...prev, violation: [] }));
-                  }}
-                >
-                  Edit
-                </Button>
-              </Box>
-            </Collapse>
-
-            <Collapse
-              in={!readOnly}
-              mountOnEnter
-              unmountOnExit
-              timeout={!readOnly ? 300 : 0}
-            >
-              <Box display="flex" gap={1}>
-                <Button
-                  disabled={disable}
-                  variant="outlined"
-                  size="small"
-                  onClick={handleClose}
-                >
-                  cancel
-                </Button>
-                <Button
-                  disabled={
-                    disable || violationDetails == initialViolationDetails
-                  }
-                  variant="contained"
-                  size="small"
-                  type="submit"
-                >
-                  Submit
-                </Button>
-              </Box>
-            </Collapse>
-          </>
+          paid ? (
+            <>
+              <Button variant="outlined" size="small">
+                generate receipt
+              </Button>
+            </>
+          ) : (
+            <>
+              <Collapse
+                in={readOnly}
+                mountOnEnter
+                unmountOnExit
+                timeout={readOnly ? 300 : 0}
+              >
+                <Box display="flex" gap={1}>
+                  <Button variant="outlined" size="small" onClick={handleClose}>
+                    cancel
+                  </Button>
+                  <Button
+                    disabled={disable}
+                    variant="contained"
+                    size="small"
+                    onClick={() => {
+                      helper.handleScrollToTop();
+                      setReadOnly(false);
+                      setEditAlertShown(true);
+                    }}
+                  >
+                    Proceed to Payment
+                  </Button>
+                </Box>
+              </Collapse>
+              <Collapse
+                in={!readOnly}
+                mountOnEnter
+                unmountOnExit
+                timeout={!readOnly ? 300 : 0}
+              >
+                <Box display="flex" gap={1}>
+                  <Button variant="outlined" size="small" onClick={handleClose}>
+                    cancel
+                  </Button>
+                  <Button
+                    disabled={disable}
+                    variant="contained"
+                    size="small"
+                    type="submit"
+                  >
+                    mark as paid
+                  </Button>
+                </Box>
+              </Collapse>
+            </>
+          )
         }
       >
         <Box width={600}>
           <FlexRow>
             <OutlinedTextField
+              required={true}
+              disabled={disable}
+              label="Name of Payor"
+              value={violationDetails?.payor}
+              onChange={(e) =>
+                setViolationDetails((prev) => ({
+                  ...prev,
+                  payor: e.target.value,
+                }))
+              }
               readOnly={readOnly}
+            />
+            <OutlinedTextField
+              disabled={disable}
+              label="Remarks"
+              value={violationDetails?.remarks}
+              onChange={(e) =>
+                setViolationDetails((prev) => ({
+                  ...prev,
+                  remarks: e.target.value,
+                }))
+              }
+              readOnly={readOnly}
+            />
+          </FlexRow>
+
+          <FlexRow>
+            <OutlinedTextField
+              required={true}
+              label="OR Number"
+              value={violationDetails?.or}
+              readOnly={readOnly}
+              onChange={(e) =>
+                setViolationDetails((prev) => ({ ...prev, or: e.target.value }))
+              }
+            />
+            <FormControl margin="dense" fullWidth required>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DatePicker
+                  readOnly={readOnly}
+                  label="OR Date"
+                  slotProps={{ textField: { required: true } }}
+                  value={
+                    violationDetails?.orDate &&
+                    new Date(violationDetails?.orDate)
+                  }
+                  onChange={(date) =>
+                    setViolationDetails((prev) => ({
+                      ...prev,
+                      orDate: date,
+                    }))
+                  }
+                />
+              </LocalizationProvider>
+            </FormControl>
+          </FlexRow>
+
+          <FlexRow>
+            <OutlinedTextField
+              readOnly={true}
               required
               disabled={disable}
               label="Ticket No."
@@ -219,7 +269,7 @@ const ViolationsInfo = ({
             <FormControl margin="dense" fullWidth required>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DatePicker
-                  readOnly={readOnly}
+                  readOnly={true}
                   label="Date of Apprehension"
                   slotProps={{ textField: { required: true } }}
                   value={new Date(violationDetails?.dateApprehension)}
@@ -239,7 +289,7 @@ const ViolationsInfo = ({
               disabled={disable}
               label="Name of Violator"
               required
-              readOnly={readOnly}
+              readOnly={true}
               value={violationDetails?.name}
               onChange={(e) =>
                 setViolationDetails((prev) => ({
@@ -251,7 +301,7 @@ const ViolationsInfo = ({
             <OutlinedTextField
               disabled={disable}
               label="Address"
-              readOnly={readOnly}
+              readOnly={true}
               value={violationDetails?.address}
               onChange={(e) =>
                 setViolationDetails((prev) => ({
@@ -266,13 +316,13 @@ const ViolationsInfo = ({
             <FormControl fullWidth margin="dense">
               <InputLabel>Type of Vehicle</InputLabel>
               <Select
-                readOnly={readOnly}
+                readOnly={true}
                 label="Type of Vehicle"
                 IconComponent={
                   violationDetails.typeVehicle?.length > 1
                     ? () => (
                         <IconButton
-                          disabled={readOnly}
+                          disabled={true}
                           size="small"
                           sx={{ mr: 1 }}
                           onClick={(e) => {
@@ -308,7 +358,7 @@ const ViolationsInfo = ({
               disabled={disable}
               label="Franchise No."
               value={violationDetails?.franchiseNo}
-              readOnly={readOnly}
+              readOnly={true}
               onChange={(e) =>
                 setViolationDetails((prev) => ({
                   ...prev,
@@ -319,7 +369,7 @@ const ViolationsInfo = ({
             <OutlinedTextField
               disabled={disable}
               label="Plate No."
-              readOnly={readOnly}
+              readOnly={true}
               value={violationDetails?.plateNo}
               onChange={(e) =>
                 setViolationDetails((prev) => ({
@@ -335,13 +385,13 @@ const ViolationsInfo = ({
               <InputLabel>Confiscated D.L.</InputLabel>
               <Select
                 disabled={disable}
-                readOnly={readOnly}
+                readOnly={true}
                 label="Confiscated D.L."
                 IconComponent={
                   violationDetails.confiscatedDL?.length > 1
                     ? () => (
                         <IconButton
-                          disabled={readOnly}
+                          disabled={true}
                           size="small"
                           sx={{ mr: 1 }}
                           onClick={(e) => {
@@ -375,7 +425,7 @@ const ViolationsInfo = ({
             <FormControl fullWidth margin="dense">
               <LocalizationProvider dateAdapter={AdapterDateFns}>
                 <DesktopTimePicker
-                  readOnly={readOnly}
+                  readOnly={true}
                   label="Time of Violation"
                   value={new Date(violationDetails.timeViolation)}
                   onChange={(newValue) => {
@@ -392,7 +442,7 @@ const ViolationsInfo = ({
             <OutlinedTextField
               disabled={disable}
               label="Place of Violation"
-              readOnly={readOnly}
+              readOnly={true}
               value={violationDetails?.placeViolation}
               onChange={(e) =>
                 setViolationDetails((prev) => ({
@@ -405,7 +455,7 @@ const ViolationsInfo = ({
 
           <Autocomplete
             clearIcon={false}
-            readOnly={readOnly}
+            readOnly={true}
             options={officersNames}
             fullWidth
             value={violationDetails?.officer || null}
@@ -429,7 +479,7 @@ const ViolationsInfo = ({
               Violations Committed
             </InputLabel>
             <Select
-              readOnly={readOnly}
+              readOnly={true}
               labelId="violations-committed"
               multiple
               value={violationDetails?.violation}
@@ -455,7 +505,7 @@ const ViolationsInfo = ({
             </Select>
             <Collapse in={optionOthersSelected} unmountOnExit mountOnEnter>
               <OutlinedTextField
-                readOnly={readOnly}
+                readOnly={true}
                 required
                 disabled={disable}
                 label="Specify the violation committed"
@@ -483,51 +533,6 @@ const ViolationsInfo = ({
                 })}`}
             </FormHelperText>
           </FormControl>
-
-          <OutlinedTextField
-            disabled={disable}
-            label="Remarks"
-            value={violationDetails?.remarks}
-            onChange={(e) =>
-              setViolationDetails((prev) => ({
-                ...prev,
-                remarks: e.target.value,
-              }))
-            }
-            readOnly={readOnly}
-          />
-
-          <FlexRow>
-            <OutlinedTextField
-              disabled={true}
-              label="OR Number"
-              value={violationDetails?.or}
-              readOnly={readOnly}
-              onChange={(e) =>
-                setViolationDetails((prev) => ({ ...prev, or: e.target.value }))
-              }
-            />
-            <FormControl margin="dense" fullWidth required>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <DatePicker
-                  disabled
-                  readOnly={readOnly}
-                  label="OR Date"
-                  slotProps={{ textField: { required: true } }}
-                  value={
-                    violationDetails?.orDate &&
-                    new Date(violationDetails?.orDate)
-                  }
-                  onChange={(date) =>
-                    setViolationDetails((prev) => ({
-                      ...prev,
-                      orDate: date,
-                    }))
-                  }
-                />
-              </LocalizationProvider>
-            </FormControl>
-          </FlexRow>
         </Box>
       </DialogForm>
 
@@ -549,8 +554,8 @@ const ViolationsInfo = ({
         open={updateConfirmation}
         setOpen={setUpdateConfirmation}
         confirm={handleSubmit}
-        title="Update Confirmation"
-        content="Before proceeding, kindly confirm the update of violators information. Your changes will be saved upon submission."
+        title="Payment Confirmation"
+        content="Are you sure you want to mark this violation as paid? Once submitted, the data will be moved to the paid list."
         disabled={disable}
       />
 
@@ -602,4 +607,4 @@ const ViolationsInfo = ({
   );
 };
 
-export default ViolationsInfo;
+export default PaymentViolationsInfo;

@@ -22,6 +22,22 @@ import {
 } from "@mui/material";
 import React, { useState } from "react";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import DialogForm from "../common/ui/DialogForm";
+import FlexRow from "../common/ui/FlexRow";
+import OutlinedTextField from "../common/ui/OutlinedTextField";
+import ConfirmationDialog from "../common/ui/ConfirmationDialog";
+
+const initialAccountDetails = {
+  fname: "",
+  lname: "",
+  mname: "",
+  email: "",
+  role: "",
+  pwd: "",
+  gender: "",
+  address: "",
+  contactNo: "",
+};
 
 const AddUserDialog = ({
   open,
@@ -32,56 +48,27 @@ const AddUserDialog = ({
   setSeverity,
 }) => {
   const axiosPrivate = useAxiosPrivate();
+  const [accountDetails, setAccountDetails] = useState(initialAccountDetails);
   const [pwdVisible, setPwdVisible] = useState(false);
-
-  const [fname, setFname] = useState("");
-  const [lname, setLname] = useState("");
-  const [mname, setMname] = useState("");
-  const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
-  const [pwd, setPwd] = useState("");
-  const [gender, setGender] = useState("");
-  const [address, setAddress] = useState("");
-  const [contactNo, setContactNo] = useState("");
   const [disabled, setDisabled] = useState(false);
+  const [confirmationShown, setConfirmationShown] = useState(false);
 
-  const handleAddUser = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    setConfirmationShown(true);
+  };
+
+  const handleAddUser = async () => {
     setDisabled(true);
-
-    if (fname.length < 2 || lname.length < 2) {
-      setResMsg("All fields should be at least 2 characters");
-      setSeverity("error");
-      setSnack(true);
-      setDisabled(false);
-      return;
-    }
-
-    if (pwd.length < 8) {
-      setResMsg("Password should be at least 8 characters");
-      setSeverity("error");
-      setSnack(true);
-      setDisabled(false);
-      return;
-    }
-
     try {
-      const response = await axiosPrivate.post("users", {
-        firstname: fname.trimStart().trimEnd(),
-        lastname: lname.trimStart().trimEnd(),
-        middlename: mname.trimStart().trimEnd(),
-        email: email.trimStart().trimEnd(),
-        password: pwd.trimStart().trimEnd(),
-        address: address.trimStart().trimEnd(),
-        contactNo: contactNo.trimStart().trimEnd(),
-        gender: gender,
-        role: role,
-      });
+      const response = await axiosPrivate.post("users", accountDetails);
 
       setUsers((prev) => [...prev, response?.data?.result]);
       setResMsg(response?.data?.success);
       setSeverity("success");
       setSnack(true);
+      onClose(false);
+      setAccountDetails(initialAccountDetails);
     } catch (error) {
       if (!error?.response) {
         setResMsg("No Server Response");
@@ -90,220 +77,184 @@ const AddUserDialog = ({
       } else {
         setResMsg("Request Failed");
       }
-
       setSeverity("error");
-      setSnack(true);
-      setDisabled(false);
-
-      return;
     }
-
-    setFname("");
-    setLname("");
-    setMname("");
-    setEmail("");
-    setPwd("");
-    setGender("");
-    setAddress("");
-    setContactNo("");
-    setRole("");
-    onClose(false);
     setDisabled(false);
+    setConfirmationShown(false);
+    setSnack(true);
+    return;
   };
 
   return (
-    <Dialog open={open} onClose={() => onClose(false)} disableAutoFocus>
-      <form onSubmit={handleAddUser}>
-        <DialogTitle variant="h5" bgcolor="primary.main" color="#FFF">
-          Create Account
-        </DialogTitle>
-        <Divider />
-        <DialogContent sx={{ borderRadius: 3 }}>
-          <Box
-            display="flex"
-            gap={2}
-            sx={{
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-            }}
-          >
-            <TextField
+    <>
+      <DialogForm
+        title="Create Account"
+        onSubmit={handleSubmit}
+        open={open}
+        onClose={() => onClose(false)}
+        actions={
+          <>
+            <Button
               disabled={disabled}
-              autoFocus
-              margin="dense"
-              id="fname"
-              label="First name"
-              type="text"
-              fullWidth
               variant="outlined"
-              value={fname}
-              required
-              onChange={(e) => setFname(e.target.value)}
-            />
-            <TextField
-              disabled={disabled}
-              required
-              margin="dense"
-              id="lname"
-              label="Last name"
-              type="text"
-              fullWidth
-              variant="outlined"
-              value={lname}
-              onChange={(e) => setLname(e.target.value)}
-            />
-            <TextField
-              disabled={disabled}
-              margin="dense"
-              id="mname"
-              label="Middle name"
-              type="text"
-              fullWidth
-              variant="outlined"
-              value={mname}
-              onChange={(e) => setMname(e.target.value)}
-            />
-          </Box>
-
-          <Box
-            mt={1}
-            display="flex"
-            gap={2}
-            sx={{
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-            }}
-          >
-            <FormControl fullWidth margin="dense">
-              <InputLabel id="gender">Sex</InputLabel>
-              <Select
-                labelId="gender"
-                id="gender"
-                value={gender}
-                label="Gender"
-                onChange={(e) => setGender(e.target.value)}
-                required
-                disabled={disabled}
-              >
-                <MenuItem value={"male"}>Male</MenuItem>
-                <MenuItem value={"female"}>Female</MenuItem>
-              </Select>
-            </FormControl>
-
-            <TextField
-              disabled={disabled}
-              required
-              margin="dense"
-              id="address"
-              label="Address"
-              type="text"
-              variant="outlined"
-              fullWidth
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
-            <TextField
-              disabled={disabled}
-              required
-              margin="dense"
-              id="contact"
-              label="Contact number"
-              type="text"
-              variant="outlined"
-              fullWidth
-              value={contactNo}
-              onChange={(e) => setContactNo(e.target.value)}
-            />
-          </Box>
-          <Box
-            mt={1}
-            display="flex"
-            gap={2}
-            sx={{
-              flexDirection: {
-                xs: "column",
-                sm: "row",
-              },
-            }}
-          >
-            <TextField
-              disabled={disabled}
-              required
-              margin="dense"
-              id="email"
-              label="Email Address"
-              type="email"
-              variant="outlined"
-              fullWidth
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <FormControl fullWidth variant="outlined" margin="dense">
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <OutlinedInput
-                disabled={disabled}
-                id="pwd"
-                type={pwdVisible ? "text" : "password"}
-                value={pwd}
-                onChange={(e) => setPwd(e.target.value)}
-                required
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      disabled={disabled}
-                      edge="end"
-                      onClick={() => setPwdVisible(!pwdVisible)}
-                    >
-                      {pwdVisible ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                }
-                label="Password"
-              />
-            </FormControl>
-          </Box>
-          <FormControl margin="dense" sx={{ minWidth: 270 }}>
-            <InputLabel id="demo-simple-select-label">Station</InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={role}
-              label="Station"
-              onChange={(e) => setRole(e.target.value)}
-              disabled={disabled}
-              required
+              size="small"
+              onClick={() => onClose(false)}
             >
-              <MenuItem value={"Admin"}>Admin</MenuItem>
-              <MenuItem value={"CTMO1"}>CTMO1</MenuItem>
-              <MenuItem value={"CTMO2"}>CTMO2</MenuItem>
-              <MenuItem value={"CTMO3"}>CTMO3</MenuItem>
+              cancel
+            </Button>
+            <Button
+              disabled={disabled}
+              variant="contained"
+              size="small"
+              type="submit"
+            >
+              Submit
+            </Button>
+          </>
+        }
+      >
+        <FlexRow>
+          <OutlinedTextField
+            disabled={disabled}
+            label="First name"
+            required
+            value={accountDetails.fname}
+            onChange={(e) =>
+              setAccountDetails((prev) => ({ ...prev, fname: e.target.value }))
+            }
+          />
+          <OutlinedTextField
+            disabled={disabled}
+            required
+            label="Last name"
+            value={accountDetails.lname}
+            onChange={(e) =>
+              setAccountDetails((prev) => ({ ...prev, lname: e.target.value }))
+            }
+          />
+          <OutlinedTextField
+            disabled={disabled}
+            label="Middle name"
+            value={accountDetails.mname}
+            onChange={(e) =>
+              setAccountDetails((prev) => ({ ...prev, mname: e.target.value }))
+            }
+          />
+        </FlexRow>
+
+        <FlexRow>
+          <FormControl fullWidth margin="dense">
+            <InputLabel id="gender">Sex</InputLabel>
+            <Select
+              labelId="gender"
+              id="gender"
+              label="Gender"
+              required
+              disabled={disabled}
+              value={accountDetails.gender}
+              onChange={(e) =>
+                setAccountDetails((prev) => ({
+                  ...prev,
+                  gender: e.target.value,
+                }))
+              }
+            >
+              <MenuItem value={"male"}>Male</MenuItem>
+              <MenuItem value={"female"}>Female</MenuItem>
             </Select>
           </FormControl>
-        </DialogContent>
 
-        <DialogActions>
-          <Button
+          <OutlinedTextField
             disabled={disabled}
-            onClick={() => onClose(false)}
-            color="inherit"
-            sx={{ mb: 1 }}
+            required
+            label="Contact number"
+            value={accountDetails.contactNo}
+            onChange={(e) =>
+              setAccountDetails((prev) => ({
+                ...prev,
+                contactNo: e.target.value,
+              }))
+            }
+          />
+        </FlexRow>
+        <OutlinedTextField
+          disabled={disabled}
+          required
+          label="Address"
+          value={accountDetails.address}
+          onChange={(e) =>
+            setAccountDetails((prev) => ({ ...prev, address: e.target.value }))
+          }
+        />
+        <FlexRow>
+          <OutlinedTextField
+            disabled={disabled}
+            required
+            type="email"
+            label="Email Address"
+            value={accountDetails.email}
+            onChange={(e) =>
+              setAccountDetails((prev) => ({ ...prev, email: e.target.value }))
+            }
+          />
+
+          <FormControl fullWidth variant="outlined" margin="dense">
+            <InputLabel htmlFor="password">Password</InputLabel>
+            <OutlinedInput
+              disabled={disabled}
+              id="pwd"
+              type={pwdVisible ? "text" : "password"}
+              value={accountDetails.pwd}
+              onChange={(e) =>
+                setAccountDetails((prev) => ({ ...prev, pwd: e.target.value }))
+              }
+              required
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    disabled={disabled}
+                    edge="end"
+                    onClick={() => setPwdVisible(!pwdVisible)}
+                  >
+                    {pwdVisible ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              }
+              label="Password"
+            />
+          </FormControl>
+        </FlexRow>
+        <FormControl margin="dense" sx={{ minWidth: 340 }}>
+          <InputLabel id="demo-simple-select-label">Station</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Station"
+            value={accountDetails.role}
+            onChange={(e) =>
+              setAccountDetails((prev) => ({ ...prev, role: e.target.value }))
+            }
+            disabled={disabled}
+            required
           >
-            <Typography>Cancel</Typography>
-          </Button>
-          <Button type="submit" disabled={disabled} sx={{ mr: 1, mb: 1 }}>
-            {disabled && <CircularProgress size={16} color="inherit" />}{" "}
-            <Typography component={"span"} ml={1}>
-              Submit
-            </Typography>
-          </Button>
-        </DialogActions>
-      </form>
-    </Dialog>
+            <MenuItem value={"Admin"}>Admin</MenuItem>
+            <MenuItem value={"Cashier"}>Cashier</MenuItem>
+            <MenuItem value={"CTMO1"}>CTMO1</MenuItem>
+            <MenuItem value={"CTMO2"}>CTMO2</MenuItem>
+            <MenuItem value={"CTMO3"}>CTMO3</MenuItem>
+          </Select>
+        </FormControl>
+      </DialogForm>
+
+      <ConfirmationDialog
+        open={confirmationShown}
+        setOpen={setConfirmationShown}
+        confirm={handleAddUser}
+        title="Create Account Confirmation"
+        content="Please review the information you've provided. This account can be used after submission."
+        disabled={disabled}
+      />
+    </>
   );
 };
 
