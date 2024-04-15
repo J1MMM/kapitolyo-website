@@ -7,10 +7,13 @@ import DataTable from "../../common/ui/DataTable";
 import helper from "../../common/data/helper";
 import TableToolbar from "../../common/ui/TableToolbar";
 import FilterButton from "../../common/ui/FilterButton";
+import PaymentViolationsInfo from "../Violations/PaymentViolationInfo";
+import Vhelper from "../Violations/Vhelper";
 
 const PaidTable = () => {
   document.title = "Paid List | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
   const axiosPrivate = useAxiosPrivate();
+  const { paidList, violationsList } = useData();
 
   const [snack, setSnack] = useState(false);
   const [severity, setSeverity] = useState("success");
@@ -18,12 +21,33 @@ const PaidTable = () => {
 
   const [noResponse, setNoResponse] = useState(false);
   const [clientInfo, setClientInfo] = useState(false);
-  const [violationsInfo, setViolationsInfo] = useState(false);
+  const [initialViolationsInfo, setinitialViolationsInfo] = useState(
+    Vhelper.initialDetails
+  );
+  const [violationsInfo, setViolationsInfo] = useState(Vhelper.initialDetails);
+  const [violationsInfoShown, setViolationsInfoShown] = useState(false);
 
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [totalRows, setTotalRows] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
+
+  const handleDoubleClick = (e) => {
+    let foundviolations = paidList.find((v) => v._id == e.id);
+
+    if (violationsList.length > 0) {
+      foundviolations.violation = foundviolations.violation?.map((item1) => {
+        const foundObject = violationsList?.find(
+          (item2) => item2?._id === item1?._id
+        );
+        return foundObject;
+      });
+    }
+
+    setViolationsInfoShown(true);
+    setViolationsInfo(foundviolations);
+    setinitialViolationsInfo(foundviolations);
+  };
 
   return (
     <>
@@ -40,7 +64,7 @@ const PaidTable = () => {
           />
         )}
         columns={helper.paidListColumn}
-        rows={[]}
+        rows={paidList.map((data) => ({ ...data, id: data._id }))}
         rowCount={totalRows}
         onFilterModelChange={() => setPage(0)}
         onPaginationModelChange={(e) => {
@@ -52,6 +76,16 @@ const PaidTable = () => {
         }
         page={page}
         pageSize={pageSize}
+        onCellDoubleClick={handleDoubleClick}
+      />
+
+      <PaymentViolationsInfo
+        paid={true}
+        open={violationsInfoShown}
+        onClose={setViolationsInfoShown}
+        initialViolationDetails={initialViolationsInfo}
+        violationDetails={violationsInfo}
+        setViolationDetails={setViolationsInfo}
       />
     </>
   );

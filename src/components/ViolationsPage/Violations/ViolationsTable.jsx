@@ -11,15 +11,21 @@ import ViolationInfo from "./ViolationInfo";
 import Vhelper from "./Vhelper";
 import TableToolbar from "../../common/ui/TableToolbar";
 import FilterButton from "../../common/ui/FilterButton";
+import PaymentViolationsInfo from "./PaymentViolationInfo";
+import useAuth from "../../../hooks/useAuth";
+import ROLES_LIST from "../../common/data/ROLES_LIST";
 
 const ViolationsTable = () => {
   document.title =
     "Violators Management | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
 
   const axiosPrivate = useAxiosPrivate();
+  const { auth } = useAuth();
   const { violations, violationsLoading, violationsList } = useData();
   const [addViolatorOpen, setAddViolatorOpen] = useState(false);
   const [violationsInfoOpen, setViolationsInfoOpen] = useState(false);
+  const [paymentViolationInfoOpen, setPaymentViolationInfoOpen] =
+    useState(false);
   const [violationDetails, setViolationsDetails] = useState(
     Vhelper.initialDetails
   );
@@ -29,6 +35,8 @@ const ViolationsTable = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(100);
   const [totalRows, setTotalRows] = useState(0);
+
+  const isCashier = Boolean(auth.roles?.find((v) => v == ROLES_LIST.Cashier));
 
   const handleDoubleClick = (e) => {
     let foundviolations = violations.find((v) => v._id == e.id);
@@ -42,10 +50,14 @@ const ViolationsTable = () => {
       });
     }
 
+    if (isCashier) {
+      setPaymentViolationInfoOpen(true);
+    } else {
+      setViolationsInfoOpen(true);
+    }
+
     setViolationsDetails(foundviolations);
     setInitialViolationsDetails(foundviolations);
-    setViolationsInfoOpen(true);
-    console.log(foundviolations);
   };
 
   return (
@@ -85,6 +97,13 @@ const ViolationsTable = () => {
       />
 
       <AddViolators open={addViolatorOpen} onClose={setAddViolatorOpen} />
+      <PaymentViolationsInfo
+        open={paymentViolationInfoOpen}
+        onClose={setPaymentViolationInfoOpen}
+        violationDetails={violationDetails}
+        setViolationDetails={setViolationsDetails}
+        initialViolationDetails={initialViolationDetails}
+      />
       <ViolationInfo
         open={violationsInfoOpen}
         onClose={setViolationsInfoOpen}
