@@ -2,6 +2,26 @@ import { Error } from "@mui/icons-material";
 import { Chip, Stack, Tooltip } from "@mui/material";
 import dayjs from "dayjs";
 
+function removeOneItemPerMatch(array1, array2) {
+  const result = [];
+  const arr2 = [...array2];
+
+  // Iterate over each item in array1
+  array1.forEach((item) => {
+    // Find the index of the first occurrence of the item in array2
+    const index = arr2.findIndex((item2) => item2 === item);
+    // If a matching item is found, remove it from array2
+    if (index !== -1) {
+      arr2.splice(index, 1);
+      result.push(item);
+    } else {
+      result.push(false);
+    }
+  });
+
+  return result;
+}
+
 const initialFranchiseDetails = {
   id: "",
   date: null,
@@ -35,6 +55,7 @@ const initialFranchiseDetails = {
   fuelDisp: "",
   tplProvider: "",
   route: "",
+  paidViolations: "",
 };
 
 const clientsColumns = [
@@ -224,14 +245,29 @@ const clientsColumns = [
     width: 800,
     headerClassName: "data-grid-header",
     editable: false,
-    align: "center",
-    headerAlign: "center",
+
     renderCell: (params, i) => {
+      const violations = params.row.complaint;
+      const paidviolations = params.row.paidViolations;
+      const result = removeOneItemPerMatch(violations, paidviolations);
+
+      // console.log(params.row.mtop);
+      // console.log(violations);
+      // console.log(paidviolations);
+      // console.log(result);
       if (typeof params.value[0] == "string") {
         return (
           <Stack key={i} direction="row" gap={1}>
-            {params.value.map((v, j) => {
-              if (v != "" && v != null) return <Chip key={j} label={v} />;
+            {violations.map((v, j) => {
+              if (v != "" && v != null)
+                return (
+                  <Chip
+                    key={j}
+                    label={v}
+                    color={result[j] == v ? "primary" : "error"}
+                    size="small"
+                  />
+                );
             })}
           </Stack>
         );
@@ -275,7 +311,8 @@ function createClientsData(
   fuelDisp,
   typeofFranchise,
   kindofBusiness,
-  route
+  route,
+  paidViolations
 ) {
   return {
     id,
@@ -311,6 +348,7 @@ function createClientsData(
     typeofFranchise,
     kindofBusiness,
     route,
+    paidViolations,
   };
 }
 function countTrueValues(obj) {
@@ -385,7 +423,8 @@ const formatFranchise = (franchise) => {
     franchise.FUEL_DISP,
     franchise.TYPE_OF_FRANCHISE,
     franchise.KIND_OF_BUSINESS,
-    franchise.ROUTE
+    franchise.ROUTE,
+    franchise.PAID_VIOLATIONS
   );
 };
 
@@ -511,7 +550,10 @@ const violationsTableColumns = [
         params.value && (
           <Stack key={i} direction="row" gap={1}>
             {params.value.map(
-              (v, i) => v?.violation && <Chip key={i} label={v.violation} />
+              (v, i) =>
+                v?.violation && (
+                  <Chip key={i} label={v.violation} variant="Outlined" />
+                )
             )}
           </Stack>
         )
@@ -564,11 +606,10 @@ const officersTableColumn = [
     flex: 1,
   },
 ];
-const releasedTCTColumn = [
+const officersDashboardColumn = [
   {
-    field: "ticket",
-    headerName: "TICKET NO.",
-    width: 200,
+    field: "callsign",
+    headerName: "CALL SIGN",
     headerClassName: "data-grid-header",
     editable: false,
     menu: false,
@@ -577,43 +618,45 @@ const releasedTCTColumn = [
     align: "center",
     headerAlign: "center",
     headerClassName: "data-grid-header",
+    width: 100,
+    renderCell: (params) => {
+      const warning = params.row?.apprehended < 1;
+
+      return (
+        <Stack direction="row" gap={1}>
+          <span>
+            {warning && (
+              <Tooltip title="No apprehensions">
+                <Error fontSize="small" sx={{ color: "#D74141" }} />
+              </Tooltip>
+            )}
+          </span>
+          <span>{params.row.callsign}</span>
+        </Stack>
+      );
+    },
   },
+
   {
-    field: "tctno",
-    headerName: "TCT NO. REALEASE",
-    width: 300,
+    field: "fullname",
+    headerName: "FULLNAME",
     headerClassName: "data-grid-header",
     editable: false,
+    flex: 1,
   },
+
   {
-    field: "lastname",
-    headerName: "LAST NAME",
-    width: 250,
+    field: "apprehended",
+    headerName: "APPREHENDED",
     headerClassName: "data-grid-header",
     editable: false,
-  },
-  {
-    field: "firstname",
-    headerName: "FIRST NAME",
-    width: 250,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "m.i",
-    headerName: "M.I",
-    width: 150,
-    headerClassName: "data-grid-header",
-    editable: false,
-  },
-  {
-    field: "daterelease",
-    headerName: "DATE OF RELEASE",
-    width: 200,
-    headerClassName: "data-grid-header",
-    editable: false,
+    flex: 1,
+    sort: "asc",
+    valueFormatter: (params) =>
+      `${params.value} ${params.value > 1 ? "violators" : "violator"}`,
   },
 ];
+
 const paidListColumn = [
   {
     field: "receiptNo",
@@ -789,7 +832,10 @@ const paidListColumn = [
         params.value && (
           <Stack key={i} direction="row" gap={1}>
             {params.value.map(
-              (v, i) => v?.violation && <Chip key={i} label={v.violation} />
+              (v, i) =>
+                v?.violation && (
+                  <Chip key={i} label={v.violation} variant="Outlined" />
+                )
             )}
           </Stack>
         )
@@ -859,6 +905,7 @@ export default {
   sortData,
   sortDesc,
   createOfficersData,
-  releasedTCTColumn,
   paidListColumn,
+  removeOneItemPerMatch,
+  officersDashboardColumn,
 };

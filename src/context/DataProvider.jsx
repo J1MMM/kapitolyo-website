@@ -28,6 +28,22 @@ export const DataProvider = ({ children }) => {
   const [paidList, setPaidList] = useState([]);
   const [paidListLoading, setPaidListLoading] = useState(true);
 
+  const [tickets, setTickets] = useState([]);
+  const [ticketLoading, setTicketLoading] = useState(true);
+
+  const [franchiseAnalytics, setfranchiseAnalytics] = useState();
+  const [franchiseAnalyticsLoading, setfranchiseAnalyticsLoading] =
+    useState(true);
+
+  const [allMtops, setAllMtops] = useState([]);
+  const [registered, setRegistered] = useState(0);
+  const [unregistered, setUnregistered] = useState(0);
+
+  const [pieData, setPieData] = useState([
+    { id: 0, value: 1, label: "Registered", color: "#1A237E" },
+    { id: 1, value: 2, label: "Unregistered", color: "#ECEDFC" },
+  ]);
+
   const [headerShadow, setHeaderShadow] = useState(false);
 
   return (
@@ -69,6 +85,22 @@ export const DataProvider = ({ children }) => {
         setPaidListLoading,
         paidList,
         setPaidList,
+        ticketLoading,
+        setTicketLoading,
+        tickets,
+        setTickets,
+        unregistered,
+        setUnregistered,
+        registered,
+        setRegistered,
+        allMtops,
+        setAllMtops,
+        pieData,
+        setPieData,
+        franchiseAnalytics,
+        setfranchiseAnalytics,
+        franchiseAnalyticsLoading,
+        setfranchiseAnalyticsLoading,
       }}
     >
       {children}

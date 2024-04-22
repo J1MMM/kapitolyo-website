@@ -9,14 +9,24 @@ const xLabels = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 export default function LineGraph() {
   return (
     <LineChart
-      width={920}
-      height={400}
+      height={350}
       series={[
-        { data: aData, label: "Added", color: "#1a237e" },
-        { data: bData, label: "Renewed", color: "#59A14F" },
+        { data: aData, label: "Added", color: "#2499EF" },
+        { data: bData, label: "Renewed", color: "#532F9D" },
         { data: cData, label: "Revoked", color: "#E15759" },
       ]}
       xAxis={[{ scaleType: "point", data: xLabels }]}
+      slotProps={{
+        legend: {
+          direction: "row",
+          position: { vertical: "bottom", horizontal: "middle" },
+          padding: -5,
+
+          labelStyle: {
+            fontSize: 12,
+          },
+        },
+      }}
     />
   );
 }

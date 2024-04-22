@@ -3,6 +3,12 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import useData from "../hooks/useData";
 import helper from "../components/common/data/helper";
 
+function removeEmptyStrings(array) {
+  const filteredArray = array.filter((item) => item.trim() !== "");
+
+  return filteredArray;
+}
+
 const useFranchises = () => {
   const axiosPrivate = useAxiosPrivate(); // Use the useAxiosPrivate hook
 
@@ -12,6 +18,18 @@ const useFranchises = () => {
     franchisesLoading,
     setFranchisesLoading,
     violations,
+    unregistered,
+    setUnregistered,
+    registered,
+    setRegistered,
+    allMtops,
+    setAllMtops,
+    pieData,
+    setPieData,
+    franchiseAnalyticsLoading,
+    setfranchiseAnalyticsLoading,
+    franchiseAnalytics,
+    setfranchiseAnalytics,
   } = useData();
   const [error, setError] = useState(null);
 
@@ -47,7 +65,7 @@ const useFranchises = () => {
               data.REMARKS || "",
               data.DATE_RELEASE_OF_ST_TP &&
                 new Date(data.DATE_RELEASE_OF_ST_TP),
-              data.COMPLAINT,
+              removeEmptyStrings(data.COMPLAINT),
               data.DATE_ARCHIVED || "",
               data.OWNER_SEX || "",
               data.DRIVERS_SEX || "",
@@ -57,7 +75,8 @@ const useFranchises = () => {
               data.FUEL_DISP || "",
               data.TYPE_OF_FRANCHISE || "",
               data.KIND_OF_BUSINESS || "",
-              data.ROUTE || ""
+              data.ROUTE || "",
+              data.PAID_VIOLATIONS
             );
           });
         });
@@ -70,6 +89,63 @@ const useFranchises = () => {
 
     fetchFranchises();
   }, [axiosPrivate, violations]); // Ensure axiosPrivate is included as a dependency
+
+  useEffect(() => {
+    const update = () => {
+      const filteredData = franchises.map((v) => v.mtop);
+      setAllMtops(filteredData);
+    };
+    if (franchises.length > 0) {
+      update();
+    }
+  }, [franchises]);
+
+  useEffect(() => {
+    const update = async () => {
+      const total = violations.length;
+      const registeredCount = await violations.filter((v) =>
+        allMtops.includes(v.franchiseNo)
+      ).length;
+
+      setUnregistered(total - registeredCount);
+      setRegistered(registeredCount);
+    };
+    if (violations.length > 0 && allMtops.length > 0) {
+      update();
+    }
+  }, [violations, allMtops]);
+
+  useEffect(() => {
+    const update = () => {
+      setPieData((prev) => {
+        return prev.map((data) => {
+          if (data.label == "Registered") {
+            return { ...data, value: registered };
+          } else if (data.label == "Unregistered") {
+            return { ...data, value: unregistered };
+          } else {
+            return data;
+          }
+        });
+      });
+    };
+    update();
+  }, [registered, unregistered]);
+
+  useEffect(() => {
+    const update = async () => {
+      try {
+        const response = await axiosPrivate.get("franchise/analytics");
+
+        console.log(response.data);
+        setfranchiseAnalytics(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    update();
+  }, [franchises]);
+
   return { franchises, franchisesLoading, error };
 };
 

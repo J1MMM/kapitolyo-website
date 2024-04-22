@@ -13,12 +13,13 @@ const OverviewCard = ({ index, data }) => {
   return (
     <Grow in={show}>
       <Paper
+        className="dashboard-card"
         elevation={3}
         sx={{
           borderRadius: 2,
           width: "100%",
-          minWidth: "250px",
-          minHeight: "180px",
+          minWidth: "230px",
+          minHeight: "170px",
           p: 2,
           display: "flex",
           flexDirection: "column",

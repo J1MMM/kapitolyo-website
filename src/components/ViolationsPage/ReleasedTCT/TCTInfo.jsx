@@ -11,7 +11,7 @@ import tctHelper from "./tctHelper";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
-const AddTCT = ({ open, onClose }) => {
+const TCTInfo = ({ open, onClose, ticketDetails, setTicketDetails }) => {
   const axiosPrivate = useAxiosPrivate();
   const { setTickets } = useData();
   const [disable, setDisable] = useState(false);
@@ -19,9 +19,6 @@ const AddTCT = ({ open, onClose }) => {
   const [alertShown, setAlertShown] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState("success");
   const [alertMsg, setAlertMsg] = useState("");
-  const [ticketDetails, setTicketDetails] = useState(
-    tctHelper.initialTicketDetails
-  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,16 +28,24 @@ const AddTCT = ({ open, onClose }) => {
   const handleAddTCT = async () => {
     setDisable(true);
     try {
-      const response = await axiosPrivate.post("/ticket", ticketDetails);
-      setTickets((prev) => [...prev, response.data]);
+      const response = await axiosPrivate.put("/ticket", ticketDetails);
+      setTickets((prev) => {
+        return prev.map((v) => {
+          if (v._id == response.data._id) {
+            return response.data;
+          } else {
+            return v;
+          }
+        });
+      });
       setAlertSeverity("success");
-      setAlertMsg("Released TCT Added Successfully");
+      setAlertMsg("Released TCT Updated Successfully");
       onClose(false);
       setTicketDetails(tctHelper.initialTicketDetails);
       console.log(response.data);
     } catch (error) {
       setAlertSeverity("error");
-      setAlertMsg("Error Adding Data.");
+      setAlertMsg("Error Updating Data.");
       console.log(error);
     }
 
@@ -54,7 +59,7 @@ const AddTCT = ({ open, onClose }) => {
       <DialogForm
         open={open}
         onClose={() => onClose(false)}
-        title="Add Released TCT"
+        title="Edit Released TCT"
         onSubmit={handleSubmit}
         actions={
           <>
@@ -106,7 +111,7 @@ const AddTCT = ({ open, onClose }) => {
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DatePicker
                 label="Date of Release"
-                value={ticketDetails.dateReleased}
+                value={new Date(ticketDetails.dateReleased)}
                 onChange={(date) =>
                   setTicketDetails((prev) => ({
                     ...prev,
@@ -161,8 +166,8 @@ const AddTCT = ({ open, onClose }) => {
         open={confirmationShown}
         setOpen={setConfirmationShown}
         confirm={handleAddTCT}
-        title="Add Released TCT"
-        content="Are you sure you want to add this released TCT info? Once confirmed, the data will be added to the system."
+        title="Edit Released TCT"
+        content="Are you sure you want to update this released TCT info? Once confirmed, the data will be saved to the system."
         disabled={disable}
       />
       <SnackBar
@@ -175,4 +180,4 @@ const AddTCT = ({ open, onClose }) => {
   );
 };
 
-export default AddTCT;
+export default TCTInfo;

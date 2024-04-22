@@ -32,6 +32,7 @@ import useArchivedFranchises from "../../api/archiveFranchises";
 import useData from "../../hooks/useData";
 import useOfficers from "../../api/useOfficers";
 import useViolations from "../../api/useViolations";
+import useTickets from "../../api/useTickets";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -44,6 +45,7 @@ const Layout = () => {
   useArchivedFranchises();
   useOfficers();
   useViolations();
+  useTickets();
   const { headerShadow } = useData();
   const { auth } = useAuth();
   const [navOpen, setNavOpen] = useState(true);

@@ -36,6 +36,7 @@ const ClientsTable = memo(() => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(100);
   const [totalRows, setTotalRows] = useState(0);
+  const [paidViolations, setPaidViolations] = useState([]);
 
   const handleRowDoubleClick = (e) => {
     setClientInfo(true);
@@ -43,6 +44,15 @@ const ClientsTable = memo(() => {
 
     setFranchiseDetails(foundFranchise);
     setinitialFormInfo(foundFranchise);
+
+    const violations = foundFranchise.complaint;
+    let paidviolations = foundFranchise.paidViolations;
+    const result = helper.removeOneItemPerMatch(violations, paidviolations);
+    console.log("result");
+    console.log(violations);
+    console.log(paidViolations);
+    console.log(result);
+    setPaidViolations(result);
   };
 
   const getRowClassName = (params) => {
@@ -99,6 +109,7 @@ const ClientsTable = memo(() => {
         setFranchiseDetails={setFranchiseDetails}
         initialFormInfo={initialFormInfo}
         printable
+        paidViolations={paidViolations}
       />
 
       <AddFranchiseForm open={addclient} onClose={setAddclient} />
