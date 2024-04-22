@@ -123,7 +123,6 @@ class ViolationReceipt extends Component {
                       })}
                     </td>
                     <td className="td center">
-                      {" "}
                       {item.price.toLocaleString("en-PH", {
                         style: "currency",
                         currency: "PHP",

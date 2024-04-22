@@ -19,7 +19,7 @@ import {
   Typography,
   Zoom,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useData from "../../../hooks/useData";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -34,6 +34,8 @@ import AlertDialog from "../../common/ui/AlertDialog";
 import spcbrgy from "../../common/data/spcbrgy";
 import helper from "../../common/data/helper";
 import { QrCode, QrCode2, QrCodeOutlined } from "@mui/icons-material";
+import PrintableReport from "./PrintableReport";
+import { useReactToPrint } from "react-to-print";
 
 const ClientInfo = ({
   open,
@@ -244,8 +246,19 @@ const ClientInfo = ({
     transferForm ? setTransferConfirmation(true) : setUpdateConfirmation(true);
   };
 
+  const componentRef = useRef(null);
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
   return (
     <>
+      <Box display="none">
+        <PrintableReport
+          ref={componentRef}
+          franchiseDetails={franchiseDetails}
+        />
+      </Box>
+
       <DialogForm
         onSubmit={handleSubmit}
         title={formTitle}
@@ -343,16 +356,17 @@ const ClientInfo = ({
           )
         }
       >
-        {/* <Collapse in={printable && !updateForm && !transferForm}>
+        <Collapse in={printable && !updateForm && !transferForm}>
           <Button
             variant="outlined"
             sx={{ mb: 2 }}
             startIcon={<QrCode />}
             size="small"
+            onClick={handlePrint}
           >
             generate report
           </Button>
-        </Collapse> */}
+        </Collapse>
 
         <FlexRow>
           <OutlinedTextField

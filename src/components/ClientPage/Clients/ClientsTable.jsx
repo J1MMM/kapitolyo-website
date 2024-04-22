@@ -108,8 +108,8 @@ const ClientsTable = memo(() => {
         franchiseDetails={franchiseDetails}
         setFranchiseDetails={setFranchiseDetails}
         initialFormInfo={initialFormInfo}
-        printable
         paidViolations={paidViolations}
+        printable
       />
 
       <AddFranchiseForm open={addclient} onClose={setAddclient} />
