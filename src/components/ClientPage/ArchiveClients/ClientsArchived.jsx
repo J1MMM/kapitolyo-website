@@ -43,7 +43,7 @@ const ClientArchived = () => {
   const [isEmpty, setIsEmpty] = useState(false);
   const [noResponse, setNoResponse] = useState(false);
   const [clientInfo, setClientInfo] = useState(false);
-
+  const [paidViolations, setPaidViolations] = useState([]);
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(100);
   const [totalRows, setTotalRows] = useState(0);
@@ -60,8 +60,15 @@ const ClientArchived = () => {
 
   const handleRowDoubleClick = (e) => {
     setClientInfo(true);
-    const foundFranchise = archivedFranchises.find((v) => v.id == e.id);
+    let foundFranchise = archivedFranchises.find((v) => v.id == e.id);
+
     setFranchiseDetails(foundFranchise);
+
+    const violations = foundFranchise.complaint;
+    let paidviolations = foundFranchise.paidViolations;
+    const result = helper.removeOneItemPerMatch(violations, paidviolations);
+
+    setPaidViolations(result);
   };
 
   return (
@@ -101,6 +108,7 @@ const ClientArchived = () => {
         onClose={setClientInfo}
         franchiseDetails={franchiseDetails}
         archiveMode={true}
+        paidViolations={paidViolations}
       />
     </>
   );

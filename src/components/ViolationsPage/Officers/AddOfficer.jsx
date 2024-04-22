@@ -48,7 +48,7 @@ const AddOfficer = ({ open, onClose }) => {
       const response = await axiosPrivate.post("/officers", officerDetails);
       setOfficers((prev) => {
         const newOfficers = [...prev, response.data];
-        const sorted = helper.sortData(newOfficers, "callsign");
+        const sorted = helper.sortDesc(newOfficers, "apprehended");
         return sorted;
       });
       setAlertSeverity("success");

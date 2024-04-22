@@ -55,7 +55,7 @@ class ViolationReceipt extends Component {
               </BorderBox>
               <BorderBox sx={{}}>
                 <Typography variant="h6" m={1}>
-                  <b>No.</b> {violationDetails?.ticketNo}
+                  <b>No.</b> {violationDetails?.receiptNo}
                 </Typography>
               </BorderBox>
               <BorderBox sx={{ borderBottom: "none" }}>
@@ -87,12 +87,7 @@ class ViolationReceipt extends Component {
                   style={{ display: "flex", alignItems: "center", gap: "8px" }}
                 >
                   <b>Payor: </b>
-                  <input
-                    type="text"
-                    className="payor-input"
-                    placeholder="Name of Payor"
-                    autoFocus
-                  />
+                  {violationDetails.payor}
                 </td>
               </tr>
             </tbody>

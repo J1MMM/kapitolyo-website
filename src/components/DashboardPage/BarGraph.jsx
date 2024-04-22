@@ -1,94 +1,104 @@
 import * as React from "react";
 import { BarChart } from "@mui/x-charts/BarChart";
 import { axisClasses } from "@mui/x-charts";
+import useData from "../../hooks/useData";
 
-const chartSetting = {
-  yAxis: [
-    {
-      label: "count of clients",
-    },
-  ],
-  width: 900,
-  height: 400,
-  sx: {
-    [`.${axisClasses.left} .${axisClasses.label}`]: {
-      // transform: "translate(-20px, 0)",
-    },
-  },
+const otherSetting = {
+  grid: { horizontal: true },
 };
-const dataset = [
+const defaultDataset = [
   {
-    added: 55,
-    renewed: 90,
-    revoked: 20,
-    month: "Mon",
+    added: 0,
+    renewed: 0,
+    revoked: 0,
+    key: "Mon",
   },
   {
-    added: 40,
-    renewed: 70,
-    revoked: 30,
-    month: "Tue",
+    added: 0,
+    renewed: 0,
+    revoked: 0,
+    key: "Tue",
   },
   {
-    added: 30,
-    renewed: 53,
-    revoked: 23,
-    month: "Wed",
+    added: 0,
+    renewed: 0,
+    revoked: 0,
+    key: "Wed",
   },
   {
-    added: 54,
-    renewed: 70,
-    revoked: 11,
-    month: "Thu",
+    added: 0,
+    renewed: 0,
+    revoked: 0,
+    key: "Thu",
   },
   {
-    added: 20,
-    renewed: 69,
-    revoked: 7,
-    month: "Fri",
+    added: 0,
+    renewed: 0,
+    revoked: 0,
+    key: "Fri",
   },
   {
-    added: 30,
-    renewed: 63,
-    revoked: 19,
-    month: "Sat",
+    added: 0,
+    renewed: 0,
+    revoked: 0,
+    key: "Sat",
   },
   {
-    added: 10,
-    renewed: 60,
-    revoked: 8,
-    month: "Sun",
+    added: 0,
+    renewed: 0,
+    revoked: 0,
+    key: "Today",
   },
 ];
-
 const valueFormatter = (value) => `${value} clients`;
 
-export default function BarGraph() {
+export default function BarGraph({ dataset }) {
+  let data = defaultDataset;
+  if (
+    dataset != undefined &&
+    dataset.length > 0 &&
+    typeof dataset == "object"
+  ) {
+    data = dataset;
+  }
+  console.log(data);
   return (
     <BarChart
-      dataset={dataset}
-      xAxis={[{ scaleType: "band", dataKey: "month" }]}
+      dataset={data}
+      xAxis={[{ scaleType: "band", dataKey: "key" }]}
       series={[
         {
           dataKey: "added",
-          label: "Added Clients",
+          label: "Added",
           valueFormatter,
-          color: "#4E79A7",
+          color: "#7E57C2",
         },
         {
           dataKey: "renewed",
           label: "Renewed",
           valueFormatter,
-          color: "#59A14F",
+          color: "#409AE9",
         },
         {
           dataKey: "revoked",
           label: "Revoked",
           valueFormatter,
-          color: "#E15759",
+          color: "#9DCFF8",
         },
       ]}
-      {...chartSetting}
+      slotProps={{
+        legend: {
+          direction: "row",
+          position: { vertical: "bottom", horizontal: "middle" },
+          padding: -5,
+          itemMarkHeight: 15,
+          itemMarkWidth: 15,
+          labelStyle: {
+            fontSize: 12,
+          },
+        },
+      }}
+      {...otherSetting}
     />
   );
 }

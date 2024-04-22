@@ -22,6 +22,7 @@ import ctmo_logo from "../../assets/images/logo2.png";
 import axios from "../../api/axios";
 import "./style.scss";
 import ForgotPassModal from "../ResetPassword/ForgotPassModal";
+import ROLES_LIST from "../common/data/ROLES_LIST";
 
 const LoginComponenet = () => {
   document.title = "LOGIN | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
@@ -60,8 +61,9 @@ const LoginComponenet = () => {
       const accessToken = response?.data?.accessToken;
       const roles = response?.data?.roles;
       const fullname = response?.data?.fullname;
+      const roleCode = roles.find((v) => v != 0);
 
-      setAuth({ email, roles, accessToken, fullname });
+      setAuth({ email, roles, accessToken, fullname, roleCode });
       setEmail("");
       setPwd("");
       navigate(from, { replace: true });

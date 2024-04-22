@@ -56,7 +56,8 @@ const useArchivedFranchises = () => {
               data.FUEL_DISP,
               data.TYPE_OF_FRANCHISE,
               data.KIND_OF_BUSINESS,
-              data.ROUTE
+              data.ROUTE,
+              data.PAID_VIOLATIONS
             );
           });
         });

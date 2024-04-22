@@ -58,6 +58,7 @@ const ViolationsInfo = ({
   violationDetails,
   setViolationDetails,
   initialViolationDetails,
+  paymentBtnClick,
 }) => {
   const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
@@ -155,6 +156,7 @@ const ViolationsInfo = ({
                 >
                   cancel
                 </Button>
+
                 <Button
                   disabled={disable}
                   variant="contained"
@@ -167,6 +169,18 @@ const ViolationsInfo = ({
                   }}
                 >
                   Edit
+                </Button>
+
+                <Button
+                  sx={{
+                    display: auth.roleCode == ROLES_LIST.Admin ? "" : "none",
+                  }}
+                  disabled={disable}
+                  variant="contained"
+                  size="small"
+                  onClick={paymentBtnClick}
+                >
+                  proceed to payment
                 </Button>
               </Box>
             </Collapse>

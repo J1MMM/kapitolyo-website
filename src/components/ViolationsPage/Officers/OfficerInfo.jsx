@@ -72,7 +72,7 @@ const OfficerInfo = ({ open, onClose, officerInfo, setOfficerInfo }) => {
           }
         });
 
-        return helper.sortData(updatedOfficers, "callsign");
+        return helper.sortDesc(updatedOfficers, "apprehended");
       });
       setAlertSeverity("success");
       setAlertMsg("Officer Updated Successfully");

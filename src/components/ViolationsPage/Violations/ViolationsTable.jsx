@@ -14,6 +14,7 @@ import FilterButton from "../../common/ui/FilterButton";
 import PaymentViolationsInfo from "./PaymentViolationInfo";
 import useAuth from "../../../hooks/useAuth";
 import ROLES_LIST from "../../common/data/ROLES_LIST";
+import ViolationModal from "./ViolationModal";
 
 const ViolationsTable = () => {
   document.title =
@@ -24,6 +25,7 @@ const ViolationsTable = () => {
   const { violations, violationsLoading, violationsList } = useData();
   const [addViolatorOpen, setAddViolatorOpen] = useState(false);
   const [violationsInfoOpen, setViolationsInfoOpen] = useState(false);
+  const [vioModalShown, setVioModalShown] = useState(false);
   const [paymentViolationInfoOpen, setPaymentViolationInfoOpen] =
     useState(false);
   const [violationDetails, setViolationsDetails] = useState(
@@ -35,8 +37,6 @@ const ViolationsTable = () => {
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(100);
   const [totalRows, setTotalRows] = useState(0);
-
-  const isCashier = Boolean(auth.roles?.find((v) => v == ROLES_LIST.Cashier));
 
   const handleDoubleClick = (e) => {
     let foundviolations = violations.find((v) => v._id == e.id);
@@ -50,14 +50,13 @@ const ViolationsTable = () => {
       });
     }
 
-    if (isCashier) {
-      setPaymentViolationInfoOpen(true);
-    } else {
-      setViolationsInfoOpen(true);
-    }
-
+    setVioModalShown(true);
     setViolationsDetails(foundviolations);
     setInitialViolationsDetails(foundviolations);
+  };
+
+  const paymentBtnClick = () => {
+    console.log("click");
   };
 
   return (
@@ -70,11 +69,13 @@ const ViolationsTable = () => {
             actionButtons={
               <>
                 <FilterButton />
-                <ContainedButton
-                  title="add violator"
-                  icon={<Add sx={{ color: "#FFF" }} />}
-                  onClick={() => setAddViolatorOpen(true)}
-                />
+                {auth.roles[0] !== ROLES_LIST.Cashier && (
+                  <ContainedButton
+                    title="add violator"
+                    icon={<Add sx={{ color: "#FFF" }} />}
+                    onClick={() => setAddViolatorOpen(true)}
+                  />
+                )}
               </>
             }
           />
@@ -97,20 +98,30 @@ const ViolationsTable = () => {
       />
 
       <AddViolators open={addViolatorOpen} onClose={setAddViolatorOpen} />
+      {/* 
       <PaymentViolationsInfo
         open={paymentViolationInfoOpen}
         onClose={setPaymentViolationInfoOpen}
         violationDetails={violationDetails}
         setViolationDetails={setViolationsDetails}
         initialViolationDetails={initialViolationDetails}
+      /> */}
+      <ViolationModal
+        open={vioModalShown}
+        onClose={setVioModalShown}
+        violationDetails={violationDetails}
+        setViolationDetails={setViolationsDetails}
+        initialViolationDetails={initialViolationDetails}
       />
-      <ViolationInfo
+
+      {/* <ViolationInfo
         open={violationsInfoOpen}
         onClose={setViolationsInfoOpen}
         violationDetails={violationDetails}
         setViolationDetails={setViolationsDetails}
         initialViolationDetails={initialViolationDetails}
-      />
+        paymentBtnClick={paymentBtnClick}
+      /> */}
     </>
   );
 };

@@ -43,6 +43,7 @@ const ClientInfo = ({
   archiveMode,
   printable,
   initialFormInfo,
+  paidViolations,
 }) => {
   const axiosPrivate = useAxiosPrivate();
   const [disable, setDisable] = useState(false);
@@ -827,7 +828,12 @@ const ClientInfo = ({
                     {franchiseDetails.complaint.map((v, i) => {
                       if (v != "")
                         return (
-                          <Chip sx={{ maxWidth: 750 }} key={i} label={v} />
+                          <Chip
+                            sx={{ maxWidth: 750 }}
+                            key={i}
+                            label={v}
+                            color={paidViolations[i] == v ? "primary" : "error"}
+                          />
                         );
                     })}
                   </Box>
