@@ -47,14 +47,7 @@ const Dashboard = () => {
     headerShadow,
     setHeaderShadow,
     violations,
-    unregistered,
-    setUnregistered,
-    registered,
-    setRegistered,
-    allMtops,
-    setAllMtops,
     franchiseAnalytics,
-    pieData,
     violationAnalytics,
   } = useData();
 
@@ -90,20 +83,7 @@ const Dashboard = () => {
     },
     {
       title: "Available Franchises",
-      data: availableMTOPLoading ? (
-        <Typography
-          component={"div"}
-          display="flex"
-          alignItems="center"
-          gap={2}
-          color="primary"
-        >
-          <CircularProgress size={18} />
-          loading...
-        </Typography>
-      ) : (
-        availableMTOP.length
-      ),
+      data: availableMTOP?.length || 0,
       icon: <FaListOl color={"#1A237E"} sx={{ color: "#1A237E" }} size={16} />,
       subText: "Total count of available MTOP",
     },
@@ -296,7 +276,8 @@ const Dashboard = () => {
                 </li>
                 <li>
                   <Typography variant="body1" fontWeight={600} sx={{ mb: -1 }}>
-                    Registered ({percentFormat(registered, violations.length)})
+                    Registered ({violationAnalytics?.registeredPercentage || 0}
+                    %)
                   </Typography>
                   <Typography variant="caption" color="InactiveCaptionText">
                     percentage of registered violators
@@ -305,7 +286,7 @@ const Dashboard = () => {
                 <li>
                   <Typography variant="body1" fontWeight={600} sx={{ mb: -1 }}>
                     Unregistered (
-                    {percentFormat(unregistered, violations.length)})
+                    {violationAnalytics?.unregisteredPercentage || 0}%)
                   </Typography>
                   <Typography variant="caption" color="InactiveCaptionText">
                     percentage of unregistered violators
@@ -314,7 +295,7 @@ const Dashboard = () => {
               </ul>
             </Box>
             <Box maxHeight={500}>
-              <PieGraph pieData={pieData} />
+              <PieGraph pieData={violationAnalytics?.pieData} />
             </Box>
           </Box>
         </Paper>
