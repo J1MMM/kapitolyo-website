@@ -35,7 +35,7 @@ import ConfirmationDialog from "../../common/ui/ConfirmationDialog";
 import SnackBar from "../../common/ui/SnackBar";
 import Vhelper from "./Vhelper";
 import { Clear, PrintOutlined, QrCode } from "@mui/icons-material";
-import ViolationReceipt from "../../Receipt/violationReceipt";
+import ViolationReceipt from "../../Receipt/ViolationReceipt";
 import { useReactToPrint } from "react-to-print";
 import useAuth from "../../../hooks/useAuth";
 import ROLES_LIST from "../../common/data/ROLES_LIST";
