@@ -35,10 +35,10 @@ import ConfirmationDialog from "../../common/ui/ConfirmationDialog";
 import SnackBar from "../../common/ui/SnackBar";
 import Vhelper from "./Vhelper";
 import { Clear, PrintOutlined, QrCode } from "@mui/icons-material";
-import ViolationReceipt from "../../Receipt/violationReceipt";
 import { useReactToPrint } from "react-to-print";
 import useAuth from "../../../hooks/useAuth";
 import ROLES_LIST from "../../common/data/ROLES_LIST";
+import ViolationReceipt from "../../Receipt/violationReceipt";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;

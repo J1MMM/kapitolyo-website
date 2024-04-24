@@ -2,32 +2,26 @@ import { Add } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import useAxiosPrivate from "../../../hooks/useAxiosPrivate";
 import useData from "../../../hooks/useData";
-import TableLayout from "../../common/ui/TableLayout";
 import ContainedButton from "../../common/ui/ContainedButton";
 import DataTable from "../../common/ui/DataTable";
 import AddViolators from "./AddViolatorForm";
 import helper from "../../common/data/helper";
-import ViolationInfo from "./ViolationInfo";
 import Vhelper from "./Vhelper";
 import TableToolbar from "../../common/ui/TableToolbar";
 import FilterButton from "../../common/ui/FilterButton";
-import PaymentViolationsInfo from "./PaymentViolationInfo";
-import useAuth from "../../../hooks/useAuth";
 import ROLES_LIST from "../../common/data/ROLES_LIST";
 import ViolationModal from "./ViolationModal";
+import useAuth from "../../../hooks/useAuth";
 
 const ViolationsTable = () => {
   document.title =
     "Violators Management | TRICYCLE FRANCHISING AND RENEWAL SYSTEM";
 
-  const axiosPrivate = useAxiosPrivate();
   const { auth } = useAuth();
   const { violations, violationsLoading, violationsList } = useData();
   const [addViolatorOpen, setAddViolatorOpen] = useState(false);
-  const [violationsInfoOpen, setViolationsInfoOpen] = useState(false);
   const [vioModalShown, setVioModalShown] = useState(false);
-  const [paymentViolationInfoOpen, setPaymentViolationInfoOpen] =
-    useState(false);
+  useState(false);
   const [violationDetails, setViolationsDetails] = useState(
     Vhelper.initialDetails
   );
@@ -98,14 +92,7 @@ const ViolationsTable = () => {
       />
 
       <AddViolators open={addViolatorOpen} onClose={setAddViolatorOpen} />
-      {/* 
-      <PaymentViolationsInfo
-        open={paymentViolationInfoOpen}
-        onClose={setPaymentViolationInfoOpen}
-        violationDetails={violationDetails}
-        setViolationDetails={setViolationsDetails}
-        initialViolationDetails={initialViolationDetails}
-      /> */}
+
       <ViolationModal
         open={vioModalShown}
         onClose={setVioModalShown}
@@ -113,15 +100,6 @@ const ViolationsTable = () => {
         setViolationDetails={setViolationsDetails}
         initialViolationDetails={initialViolationDetails}
       />
-
-      {/* <ViolationInfo
-        open={violationsInfoOpen}
-        onClose={setViolationsInfoOpen}
-        violationDetails={violationDetails}
-        setViolationDetails={setViolationsDetails}
-        initialViolationDetails={initialViolationDetails}
-        paymentBtnClick={paymentBtnClick}
-      /> */}
     </>
   );
 };
