@@ -18,11 +18,6 @@ const useFranchises = () => {
     franchisesLoading,
     setFranchisesLoading,
     violations,
-    pieData,
-    setPieData,
-    franchiseAnalyticsLoading,
-    setfranchiseAnalyticsLoading,
-    franchiseAnalytics,
     setfranchiseAnalytics,
   } = useData();
   const [error, setError] = useState(null);

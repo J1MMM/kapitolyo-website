@@ -26,9 +26,7 @@ const PersistLogin = () => {
         setIsLoading(false);
       }
     };
-    setTimeout(() => {
-      !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
-    }, 1000);
+    !auth?.accessToken ? verifyRefreshToken() : setIsLoading(false);
   }, []);
 
   return (
