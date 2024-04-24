@@ -38,7 +38,7 @@ import { Clear, PrintOutlined, QrCode } from "@mui/icons-material";
 import { useReactToPrint } from "react-to-print";
 import useAuth from "../../../hooks/useAuth";
 import ROLES_LIST from "../../common/data/ROLES_LIST";
-import ViolationReceipt from "../../Receipt/violationReceipt";
+import ViolationReceipt from "../../Receipt/ViolationReceipt";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
