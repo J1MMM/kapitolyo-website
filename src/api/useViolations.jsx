@@ -19,6 +19,8 @@ const useViolations = () => {
     setPaidList,
     paidListLoading,
     setPaidListLoading,
+    violationAnalytics,
+    setviolationAnalytics,
   } = useData();
   const [error, setError] = useState(null);
   //  violations data
@@ -77,6 +79,20 @@ const useViolations = () => {
 
     fetchData();
   }, [axiosPrivate, violations]);
+
+  useEffect(() => {
+    const update = async () => {
+      try {
+        const response = await axiosPrivate.get("violation/analytics");
+
+        console.log(response.data);
+        setviolationAnalytics(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    update();
+  }, [violations]);
 
   return { violationsList, violationsListLoading, error };
 };

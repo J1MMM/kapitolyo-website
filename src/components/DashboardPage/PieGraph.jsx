@@ -38,6 +38,8 @@ export default function PieGraph({ pieData }) {
           startAngle: -180,
           endAngle: 360,
           paddingAngle: 3,
+          valueFormatter: (params) =>
+            `${params.value} ${params.value > 1 ? "violators" : "violator"}`,
         },
       ]}
       slotProps={{

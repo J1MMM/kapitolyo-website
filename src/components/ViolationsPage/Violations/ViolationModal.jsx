@@ -300,7 +300,7 @@ const ViolationModal = ({
           {paymentMode && (
             <>
               <FlexRow>
-                <OutlinedTextField
+                {/* <OutlinedTextField
                   required={true}
                   disabled={disable}
                   readOnly={readOnly || !paymentMode}
@@ -312,20 +312,7 @@ const ViolationModal = ({
                       payor: e.target.value,
                     }))
                   }
-                />
-
-                <OutlinedTextField
-                  disabled={disable}
-                  label="Remarks"
-                  value={violationDetails?.remarks}
-                  onChange={(e) =>
-                    setViolationDetails((prev) => ({
-                      ...prev,
-                      remarks: e.target.value,
-                    }))
-                  }
-                  readOnly={readOnly}
-                />
+                /> */}
               </FlexRow>
 
               <FlexRow>
@@ -361,6 +348,19 @@ const ViolationModal = ({
                   </LocalizationProvider>
                 </FormControl>
               </FlexRow>
+
+              <OutlinedTextField
+                disabled={disable}
+                label="Remarks"
+                value={violationDetails?.remarks}
+                onChange={(e) =>
+                  setViolationDetails((prev) => ({
+                    ...prev,
+                    remarks: e.target.value,
+                  }))
+                }
+                readOnly={readOnly}
+              />
             </>
           )}
           <FlexRow>
@@ -682,7 +682,7 @@ const ViolationModal = ({
                   readOnly={readOnly}
                 />
 
-                <OutlinedTextField
+                {/* <OutlinedTextField
                   required={true}
                   disabled={disable || editMode}
                   readOnly={readOnly || !paymentMode}
@@ -694,7 +694,7 @@ const ViolationModal = ({
                       payor: e.target.value,
                     }))
                   }
-                />
+                /> */}
               </FlexRow>
 
               <FlexRow>

@@ -85,7 +85,7 @@ const OfficersTable = () => {
           Apprehending Officers
         </Typography>
         <Chip
-          label={`${officers.length} total officers`}
+          label={`${officers.length} Total Officers`}
           size="small"
           color="primary"
           variant="outlined"

@@ -359,7 +359,7 @@ const ClientInfo = ({
         <Collapse in={printable && !updateForm && !transferForm}>
           <Button
             variant="outlined"
-            sx={{ mb: 2 }}
+            sx={{ mb: 2, py: 1 }}
             startIcon={<QrCode />}
             size="small"
             onClick={handlePrint}
