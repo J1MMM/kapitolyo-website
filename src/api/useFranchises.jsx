@@ -18,12 +18,6 @@ const useFranchises = () => {
     franchisesLoading,
     setFranchisesLoading,
     violations,
-    unregistered,
-    setUnregistered,
-    registered,
-    setRegistered,
-    allMtops,
-    setAllMtops,
     pieData,
     setPieData,
     franchiseAnalyticsLoading,
@@ -89,48 +83,6 @@ const useFranchises = () => {
 
     fetchFranchises();
   }, [axiosPrivate, violations]); // Ensure axiosPrivate is included as a dependency
-
-  useEffect(() => {
-    const update = () => {
-      const filteredData = franchises.map((v) => v.mtop);
-      setAllMtops(filteredData);
-    };
-    if (franchises.length > 0) {
-      update();
-    }
-  }, [franchises]);
-
-  useEffect(() => {
-    const update = async () => {
-      const total = violations.length;
-      const registeredCount = await violations.filter((v) =>
-        allMtops.includes(v.franchiseNo)
-      ).length;
-
-      setUnregistered(total - registeredCount);
-      setRegistered(registeredCount);
-    };
-    if (violations.length > 0 && allMtops.length > 0) {
-      update();
-    }
-  }, [violations, allMtops]);
-
-  useEffect(() => {
-    const update = () => {
-      setPieData((prev) => {
-        return prev.map((data) => {
-          if (data.label == "Registered") {
-            return { ...data, value: registered };
-          } else if (data.label == "Unregistered") {
-            return { ...data, value: unregistered };
-          } else {
-            return data;
-          }
-        });
-      });
-    };
-    update();
-  }, [registered, unregistered]);
 
   useEffect(() => {
     const update = async () => {

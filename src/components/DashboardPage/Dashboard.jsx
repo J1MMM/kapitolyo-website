@@ -92,6 +92,7 @@ const Dashboard = () => {
     setAllMtops,
     franchiseAnalytics,
     pieData,
+    violationAnalytics,
   } = useData();
 
   const [selectedBtn, setSelectedBtn] = useState("daily");
@@ -302,15 +303,16 @@ const Dashboard = () => {
               position: "relative",
             }}
           >
-            <Box>
+            <Box display="flex" flexDirection="column">
               <Typography variant="h6">Violators Overview</Typography>
 
               <ul
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  justifyContent: "space-between",
-                  gap: 30,
+                  flex: 1,
+                  justifyContent: "center",
+                  gap: 28,
                 }}
               >
                 <li>
@@ -323,10 +325,18 @@ const Dashboard = () => {
                 </li>
                 <li>
                   <Typography variant="body1" fontWeight={600} sx={{ mb: -1 }}>
+                    Recently Paid ({violationAnalytics?.recentlyPaid || 0})
+                  </Typography>
+                  <Typography variant="caption" color="InactiveCaptionText">
+                    total number of violators recently paid
+                  </Typography>
+                </li>
+                <li>
+                  <Typography variant="body1" fontWeight={600} sx={{ mb: -1 }}>
                     Registered ({percentFormat(registered, violations.length)})
                   </Typography>
                   <Typography variant="caption" color="InactiveCaptionText">
-                    total number of registered violators
+                    percentage of registered violators
                   </Typography>
                 </li>
                 <li>
@@ -335,15 +345,7 @@ const Dashboard = () => {
                     {percentFormat(unregistered, violations.length)})
                   </Typography>
                   <Typography variant="caption" color="InactiveCaptionText">
-                    total number of unregistered violators
-                  </Typography>
-                </li>
-                <li>
-                  <Typography variant="body1" fontWeight={600} sx={{ mb: -1 }}>
-                    Recently Paid (124)
-                  </Typography>
-                  <Typography variant="caption" color="InactiveCaptionText">
-                    total number of violators recently paid
+                    percentage of unregistered violators
                   </Typography>
                 </li>
               </ul>

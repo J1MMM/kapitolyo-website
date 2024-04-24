@@ -61,7 +61,6 @@ export default function BarGraph({ dataset }) {
   ) {
     data = dataset;
   }
-  console.log(data);
   return (
     <BarChart
       dataset={data}

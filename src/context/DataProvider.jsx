@@ -35,6 +35,8 @@ export const DataProvider = ({ children }) => {
   const [franchiseAnalyticsLoading, setfranchiseAnalyticsLoading] =
     useState(true);
 
+  const [violationAnalytics, setviolationAnalytics] = useState();
+
   const [allMtops, setAllMtops] = useState([]);
   const [registered, setRegistered] = useState(0);
   const [unregistered, setUnregistered] = useState(0);
@@ -101,6 +103,8 @@ export const DataProvider = ({ children }) => {
         setfranchiseAnalytics,
         franchiseAnalyticsLoading,
         setfranchiseAnalyticsLoading,
+        violationAnalytics,
+        setviolationAnalytics,
       }}
     >
       {children}
